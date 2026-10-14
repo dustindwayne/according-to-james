@@ -1,13 +1,11 @@
-# According to James v0.5.0 — Depth, lighting and goofy James
+# According to James v0.6.0 — Music, movement and dance party
 
-A playable Unity 2D dungeon crawler with shaded stone architecture, generated beveled floor tiles, soft actor shadows and animated torch/shrine lighting.
+Enemies now complete navigation waypoints instead of stopping just short and repeatedly targeting the same point. Chase and patrol routes refresh on arrival; unreachable destinations resolve to reachable grid cells.
 
-- New 24-pose James sheet: left/right pacing, six goofy dance poses and six conversation gestures. James stops pacing when approached but keeps animating; collision and interaction follow his position.
-- Stable character size and isolated sprite extraction prevent neighboring sprites leaking into animation frames.
-- Boss anticipation/recoil, breathing, swirling clouds and rotating projectiles add motion to combat. Existing directional hero and enemy animation sheets remain in use.
-- Left/right doors, collision passages and arrival positions align to the background openings across all three dungeons.
-- Thirty floors, three bosses, Settings-only difficulty, mystery gifts, trapped chests, secrets and shrine checkpoints remain playable.
+- HUD captions, room-map labels and menu text sit inside the generated frames. James advice supports two centered lines; long dynamic labels fit without clipping.
+- User-provided MP3 tracks play on the title screen, in rooms without living enemies, and during combat including bosses. Track changes crossfade; pausing resumes the current song at its position. James comedy cues, victory music and effects remain.
+- New James YMCA, Macarena and robot rows add 24 full-body animation poses. James cycles these routines alongside his existing goofy dance, pacing and conversation gestures.
 
-Validation: Unity Windows build; 30-floor campaign and 1,800-layout model checks; James pacing/proximity/interaction tests; side-door transition and arrival tests; rendered menu, dancing/pacing James, chest, and dungeon/boss checks. Audio still needs manual listening.
+Verified: 30-floor campaign, 1,800 physical room layouts, doorway alignment, James interactions, waypoint regression in both directions, walking-frame progression, and 87 obstacle-room chase scenarios. Windows runtime checks verify imported music and menu/exploration/combat switching, all captured text fits, buttons work, and no runtime errors were logged. Independent agent reviewed all menu/HUD captures. MP3 decode and signal-level checks passed; manual listening is still useful for subjective loop quality.
 
-Extract the ZIP before running AccordingToJames.exe; keep the Data folder and DLLs alongside it. Unity: 6000.3.12f1. The prior 3D blockout is retained in source but is not the active renderer.
+Extract the Windows ZIP before running AccordingToJames.exe. Keep the Data folder and DLLs alongside it. Unity editor: 6000.3.12f1.

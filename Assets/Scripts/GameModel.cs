@@ -11,7 +11,7 @@ namespace AccordingToJames
     [Serializable] public class Enemy : Actor
     {
         public int id,kind,phase,hitSwing=-1;
-        public bool boss; public float attackTimer=1.8f,flash,brainTimer; public string state="patrol"; public float targetX,targetY;
+        public float navGoalX,navGoalY;public bool hasNavGoal;public bool boss; public float attackTimer=1.8f,flash,brainTimer; public string state="patrol"; public float targetX,targetY;
     }
     [Serializable] public class Block { public float x,y,w,h; public Block(float x,float y,float w,float h){this.x=x;this.y=y;this.w=w;this.h=h;} }
     [Serializable] public class Shot { public float x,y,vx,vy,life,age; public string type; }
@@ -182,21 +182,21 @@ namespace AccordingToJames
         // Breadth-first navigation around room props; enemies make decisions every 0.4s.
         void Route(Enemy e,float tx,float ty)
         {
-            const int w=23,h=11;int sx=Math.Max(0,Math.Min(w-1,(int)((e.x-95)/35))),sy=Math.Max(0,Math.Min(h-1,(int)((e.y-125)/35))),gx=Math.Max(0,Math.Min(w-1,(int)((tx-95)/35))),gy=Math.Max(0,Math.Min(h-1,(int)((ty-125)/35)));
+            const int w=23,h=11;int sx=Math.Max(0,Math.Min(w-1,(int)Math.Round((e.x-95)/35))),sy=Math.Max(0,Math.Min(h-1,(int)Math.Round((e.y-125)/35))),gx=Math.Max(0,Math.Min(w-1,(int)Math.Round((tx-95)/35))),gy=Math.Max(0,Math.Min(h-1,(int)Math.Round((ty-125)/35)));
             int start=sy*w+sx,goal=gy*w+gx;var prev=new int[w*h];for(int i=0;i<prev.Length;i++)prev[i]=-1;var q=new Queue<int>();q.Enqueue(start);prev[start]=start;
             while(q.Count>0){int c=q.Dequeue();if(c==goal)break;foreach(int d in new[]{-1,1,-w,w}){int n=c+d;if(n<0||n>=prev.Length||prev[n]>=0||(Math.Abs(d)==1&&n/w!=c/w)||Blocked(95+n%w*35,125+n/w*35))continue;prev[n]=c;q.Enqueue(n);}}
-            if(prev[goal]<0){e.targetX=e.x;e.targetY=e.y;return;}int next=goal;while(prev[next]!=start&&next!=start)next=prev[next];e.targetX=95+next%w*35;e.targetY=125+next/w*35;
+            if(prev[goal]<0){int nearest=start;float best=float.MaxValue;for(int c=0;c<prev.Length;c++)if(prev[c]>=0){float distance=Distance(tx-(95+c%w*35),ty-(125+c/w*35));if(distance<best){best=distance;nearest=c;}}goal=nearest;}if(e.state=="patrol"){e.navGoalX=95+goal%w*35;e.navGoalY=125+goal/w*35;}int next=goal;while(prev[next]!=start&&next!=start)next=prev[next];e.targetX=95+next%w*35;e.targetY=125+next/w*35;
         }
         void Think(Enemy e,float dt,float dist)
         {
             e.brainTimer-=dt;
             if(e.state=="windup"){if(e.brainTimer<=0){e.state="strike";e.brainTimer=.2f;if(!e.boss&&e.kind==1){float len=Math.Max(1,dist);AddShot(e.x,e.y,(player.x-e.x)/len*180,(player.y-e.y)/len*180,"candy");}}return;}
             if(e.state=="strike"){if(e.brainTimer<=0){e.state="recover";e.brainTimer=.75f;}return;}
-            if(e.state=="recover"){if(e.brainTimer<=0)e.state="chase";return;}
+            if(e.state=="recover"){if(e.brainTimer<=0){e.state="chase";e.brainTimer=0;}return;}
             bool sees=dist<390||e.boss;
             if(sees&&(dist<47||(!e.boss&&e.kind==1&&dist<260))){e.state="windup";e.brainTimer=.5f;return;}
-            if(e.brainTimer<=0){e.brainTimer=.4f;if(!sees){e.state="patrol";Route(e,150+Roll(650),130+Roll(350));}else if(!e.boss&&e.kind==2&&e.hp<e.maxHp*.5f){e.state="retreat";Route(e,e.x+(e.x-player.x),e.y+(e.y-player.y));}else{e.state="chase";Route(e,player.x,player.y);}}
-            float vx=e.targetX-e.x,vy=e.targetY-e.y,len2=Distance(vx,vy);if(len2>6){float speed=e.boss?28:55+Dungeon*10;Move(e,vx/len2*speed*dt,vy/len2*speed*dt);}
+            if(e.brainTimer<=0){e.brainTimer=.4f;if(!sees){e.state="patrol";if(!e.hasNavGoal||Distance(e.x-e.navGoalX,e.y-e.navGoalY)<25){e.navGoalX=150+Roll(650);e.navGoalY=130+Roll(350);e.hasNavGoal=true;}Route(e,e.navGoalX,e.navGoalY);}else if(!e.boss&&e.kind==2&&e.hp<e.maxHp*.5f){e.state="retreat";Route(e,e.x+(e.x-player.x),e.y+(e.y-player.y));}else{e.state="chase";Route(e,player.x,player.y);}}
+            float vx=e.targetX-e.x,vy=e.targetY-e.y,len2=Distance(vx,vy);if(len2>.1f){float speed=e.boss?28:55+Dungeon*10;float step=Math.Min(len2,speed*dt);Move(e,vx/len2*step,vy/len2*step);if(!e.moving)e.brainTimer=0;}else e.brainTimer=0;
         }
         public bool Validate()
         {

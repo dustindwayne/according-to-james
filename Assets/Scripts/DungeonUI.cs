@@ -58,7 +58,7 @@ namespace AccordingToJames
         }
         Text Text(Transform parent,float x,float y,float w,float h,string value,int size=18,Color? color=null,bool bold=false,TextAnchor align=TextAnchor.UpperLeft,string key=null)
         {
-            var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key!=null)labels[key]=text;return text;
+            var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key=="dungeon"||key=="effect"||key=="james-result"){text.resizeTextForBestFit=true;text.resizeTextMinSize=Mathf.Max(12,size-3);text.resizeTextMaxSize=size;}if(key!=null)labels[key]=text;return text;
         }
         Image Picture(Transform parent,Sprite sprite,float x,float y,float w,float h){var n=Node(parent,"Portrait",x,y,w,h);var image=n.gameObject.AddComponent<Image>();image.sprite=sprite;image.preserveAspect=true;image.raycastTarget=false;return image;}
         void Button(Transform parent,float x,float y,float w,string title,Action action,bool primary=false,bool enabled=true,float height=54)
@@ -83,26 +83,26 @@ namespace AccordingToJames
         }
         void HUD()
         {
-            var g=owner.Game;var p=Frame(root,160,18,960,84);Text(p,24,14,280,17,"DUNGEON "+new[]{"I","II","III"}[g.Dungeon],11,Gold,true);Text(p,24,38,300,30,"",22,Cream,true,key:"dungeon");
-            Box(p,326,18,1,49,Edge);Text(p,348,14,100,17,"FLOOR",11,Muted,true);Text(p,348,39,100,30,"",24,Cream,true,key:"floor");Text(p,458,14,100,17,"ROOM",11,Muted,true);Text(p,458,39,100,30,"",24,Cream,true,key:"room");
-            Text(p,570,14,130,18,"HEALTH",11,Muted,true);Text(p,680,14,108,18,"",12,Cream,true,TextAnchor.UpperRight,"health");Box(p,570,44,218,15,new Color(.2f,.12f,.12f));healthFill=Box(p,570,44,218,15,Red);Box(p,570,45,218,2,new Color(1,.7f,.5f,.28f));
-            Box(p,815,18,1,49,Edge);Text(p,842,14,90,18,"SWORD",11,Muted,true);Text(p,842,39,90,30,"",24,Gold,true,key:"sword");
+            var g=owner.Game;var p=Frame(root,160,18,960,84);Text(p,24,22,280,17,"DUNGEON "+new[]{"I","II","III"}[g.Dungeon],11,Gold,true);Text(p,24,43,300,28,"",21,Cream,true,key:"dungeon");
+            Box(p,326,18,1,49,Edge);Text(p,348,22,100,17,"FLOOR",11,Muted,true);Text(p,348,43,100,28,"",22,Cream,true,key:"floor");Text(p,458,22,100,17,"ROOM",11,Muted,true);Text(p,458,43,100,28,"",22,Cream,true,key:"room");
+            Text(p,570,22,130,18,"HEALTH",11,Muted,true);Text(p,680,22,108,18,"",12,Cream,true,TextAnchor.UpperRight,"health");Box(p,570,51,218,12,new Color(.2f,.12f,.12f));healthFill=Box(p,570,51,218,12,Red);Box(p,570,52,218,2,new Color(1,.7f,.5f,.28f));
+            Box(p,815,18,1,49,Edge);Text(p,842,22,90,18,"SWORD",11,Muted,true);Text(p,842,43,90,28,"",22,Gold,true,key:"sword");
             Box(root,157,107,966,2,Edge);Box(root,157,710,966,2,Edge);Box(root,157,107,2,605,Edge);Box(root,1121,107,2,605,Edge);
-            var controls=Frame(root,160,724,960,56);Text(controls,20,17,365,24,"SPACE  Swing     SHIFT  Dodge     E  Interact",14,Cream);Text(controls,414,11,140,18,"",10,Muted,true,key:"dodge");Box(controls,414,33,96,5,Edge);dodgeFill=Box(controls,414,33,96,5,Green);
-            Text(controls,550,16,208,24,"",12,Gold,true,key:"effect");Button(controls,752,8,84,"Map",()=>owner.OpenMap(),false,true,40);Button(controls,846,8,96,"Pause",()=>owner.TogglePause(),false,true,40);
+            var controls=Frame(root,160,724,960,56);Text(controls,26,17,365,24,"SPACE  Swing     SHIFT  Dodge     E  Interact",14,Cream);Text(controls,414,11,140,18,"",10,Muted,true,key:"dodge");Box(controls,414,33,96,5,Edge);dodgeFill=Box(controls,414,33,96,5,Green);
+            Text(controls,542,18,200,20,"",12,Gold,true,key:"effect");Button(controls,752,8,84,"Map",()=>owner.OpenMap(),false,true,40);Button(controls,846,8,96,"Pause",()=>owner.TogglePause(),false,true,40);
             Text(root,160,784,700,16,"",10,Muted,true,key:"checkpoint");Text(root,850,784,270,16,"",10,Gold,true,TextAnchor.UpperRight,"objective");
-            toastBox=Frame(root,275,570,730,64,new Color(.05f,.055f,.065f,.95f));notice=Text(toastBox,24,14,682,42,"",16,Cream,false,TextAnchor.MiddleCenter);
-            contextBox=Frame(root,370,657,540,40,new Color(.05f,.055f,.065f,.96f));Text(contextBox,14,9,34,24,"[E]",15,Gold,true);context=Text(contextBox,56,9,468,24,"",15,Cream);
+            toastBox=Frame(root,275,570,730,64,new Color(.05f,.055f,.065f,.95f));notice=Text(toastBox,40,12,650,40,"",16,Cream,false,TextAnchor.MiddleCenter);
+            contextBox=Frame(root,370,657,540,40,new Color(.05f,.055f,.065f,.96f));Text(contextBox,26,9,34,24,"[E]",15,Gold,true);context=Text(contextBox,66,9,446,24,"",15,Cream);
             if(g.Current.boss&&g.Current.enemies.Exists(e=>e.hp>0)){var b=Frame(root,415,125,450,66,new Color(.045f,.055f,.07f,.95f));Text(b,25,12,400,24,GameModel.BossNames[g.Dungeon],16,Gold,true,TextAnchor.MiddleCenter);Box(b,25,45,400,6,Edge);bossFill=Box(b,25,45,400,6,Red);}
         }
         RectTransform Modal(string eyebrow,string title,float width,float height)
         {
-            Box(root,0,0,1280,800,new Color(.015f,.02f,.03f,.82f),true);var p=Frame(root,(1280-width)/2,(800-height-56)/2,width,height+56);Text(p,36,70,width-72,20,eyebrow,12,Gold,true);Text(p,36,110,width-72,56,title,32,Cream,true);Box(p,36,170,width-72,1,Edge);return Node(p,"Menu content",0,38,width,height);
+            Box(root,0,0,1280,800,new Color(.015f,.02f,.03f,.82f),true);var p=Frame(root,(1280-width)/2,(800-height-56)/2,width,height+56);Text(p,48,82,width-96,20,eyebrow,12,Gold,true);Text(p,48,118,width-96,46,title,32,Cream,true);Box(p,36,170,width-72,1,Edge);return Node(p,"Menu content",0,38,width,height);
         }
         void James()
         {
             var g=owner.Game;var p=Modal("ACCORDING TO JAMES…","Advice of questionable quality.",860,548);portrait=Picture(p,owner.NpcPortrait,38,155,120,188);
-            var paper=Box(p,178,150,646,102,Color.white);paper.sprite=owner.Art.Menus[0,1];paper.type=Image.Type.Sliced;Text(p,214,181,574,36,"“"+GameModel.Advice[g.Current.advice]+"”",22,new Color(.2f,.12f,.07f),true);Text(p,190,269,628,66,"",17,Muted,key:"james-result");
+            var paper=Box(p,178,150,646,102,Color.white);paper.sprite=owner.Art.Menus[0,1];paper.type=Image.Type.Sliced;Text(p,218,170,566,62,"“"+GameModel.Advice[g.Current.advice]+"”",21,new Color(.2f,.12f,.07f),true,TextAnchor.MiddleCenter);Text(p,190,269,628,66,"",17,Muted,key:"james-result");
             Button(p,36,354,384,g.Current.giftTaken?"Gift already accepted":"Accept mystery gift",()=>owner.TalkChoice("gift"),true,!g.Current.giftTaken);Button(p,440,354,384,g.Current.fingerPulled?"Finger already pulled":"Pull his finger",()=>owner.TalkChoice("finger"),false,!g.Current.fingerPulled);
             Button(p,36,422,384,"Ask about a secret",()=>owner.TalkChoice("secret"),false,g.Current.secret);Button(p,440,422,384,"Thanks, James. I guess.",()=>owner.TalkChoice("leave"));Text(p,36,502,788,22,"No item names. No guarantees. Usually only a little regret.",12,Muted,false,TextAnchor.MiddleCenter);
         }
@@ -114,7 +114,7 @@ namespace AccordingToJames
         {
             var p=Modal("MAKE YOUR OWN BAD DECISIONS","Settings",720,570);Text(p,36,158,648,24,"STARTING DIFFICULTY",12,Gold,true);Text(p,36,187,648,24,"Applies to new runs. Every floor grows harder.",16,Muted);
             float[] values={.75f,1,1.5f};string[] names={"Mellow","Normal","Spicy"};for(int i=0;i<3;i++){float v=values[i];Button(p,36+i*224,227,208,names[i],()=>{owner.SetDifficulty(v);Invalidate();},owner.Initial==v);}
-            Text(p,36,314,648,25,"CHIPTUNE VOLUME",12,Gold,true);Text(p,36,348,648,24,Mathf.RoundToInt(owner.Volume*100)+"%",20,Cream,true,TextAnchor.MiddleCenter);
+            Text(p,36,314,648,25,"MUSIC VOLUME",12,Gold,true);Text(p,36,348,648,24,Mathf.RoundToInt(owner.Volume*100)+"%",20,Cream,true,TextAnchor.MiddleCenter);
             Button(p,36,342,120,"Quieter",()=>{owner.SetVolume(owner.Volume-.1f);Invalidate();},false,true,42);Button(p,564,342,120,"Louder",()=>{owner.SetVolume(owner.Volume+.1f);Invalidate();},false,true,42);Box(p,188,393,344,6,Edge);Box(p,188,393,344*owner.Volume,6,Gold);
             Button(p,36,431,648,"Reduced motion: "+(owner.ReducedMotion?"On":"Off"),()=>{owner.SetReducedMotion(!owner.ReducedMotion);Invalidate();});Button(p,36,501,648,"Done",()=>owner.CloseSettings(),true);
         }
@@ -122,7 +122,7 @@ namespace AccordingToJames
         {
             var g=owner.Game;var p=Modal("YOUR BAD IDEA, MAPPED","Floor "+g.floor.ToString("00")+" · Room map",700,560);Text(p,36,147,628,25,"Clear every room to open the stairs.",16,Muted);
             for(int i=0;i<g.rooms.Count;i++){float x=75+i%2*310,y=196+i/2*88;foreach(var neighbor in g.Neighbors(i))if(neighbor.Value>i){if(neighbor.Key=="right")Box(p,x+240,y+33,70,2,Edge);if(neighbor.Key=="down")Box(p,x+119,y+68,2,20,Edge);}}
-            for(int i=0;i<g.rooms.Count;i++){var room=g.rooms[i];float x=75+i%2*310,y=196+i/2*88;var node=Frame(p,x,y,240,68,i==g.room?new Color(.23f,.18f,.10f):Panel);Text(node,15,10,210,22,"ROOM "+(i+1).ToString("00")+(i==g.room?" · YOU":""),15,i==g.room?Gold:Cream,true);Text(node,15,36,210,21,!room.visited?"Unexplored":room.cleared?"Cleared":"Enemies remain",12,room.visited&&room.cleared?Green:Muted);}
+            for(int i=0;i<g.rooms.Count;i++){var room=g.rooms[i];float x=75+i%2*310,y=196+i/2*88;var node=Frame(p,x,y,240,68,i==g.room?new Color(.23f,.18f,.10f):Panel);Text(node,28,18,184,19,"ROOM "+(i+1).ToString("00")+(i==g.room?" · YOU":""),14,i==g.room?Gold:Cream,true,TextAnchor.MiddleCenter);Text(node,28,39,184,18,!room.visited?"Unexplored":room.cleared?"Cleared":"Enemies remain",12,room.visited&&room.cleared?Green:Muted,false,TextAnchor.MiddleCenter);}
             Button(p,36,475,628,"Back to the dungeon",()=>owner.CloseMap(),true);
         }
         void Ending()
@@ -132,6 +132,21 @@ namespace AccordingToJames
             else if(owner.HasCheckpoint){Button(p,36,239,608,"Return to last rest shrine",()=>owner.ContinueRun(),true);Button(p,36,305,608,"Start a new run",()=>owner.NewRun());}
             else Button(p,36,239,608,"Start a new run",()=>owner.NewRun(),true);
             Button(p,36,!won&&owner.HasCheckpoint?371:305,608,"Return to title",()=>owner.ReturnToTitle());
+        }
+        public void ValidateTextFit()
+        {
+            Refresh();Canvas.ForceUpdateCanvases();var failures=new List<string>();
+            foreach(var label in root.GetComponentsInChildren<Text>())
+            {
+                if(!label.gameObject.activeInHierarchy||string.IsNullOrWhiteSpace(label.text))continue;
+                var rect=label.rectTransform.rect;var settings=label.GetGenerationSettings(rect.size);
+                if(label.resizeTextForBestFit){label.cachedTextGenerator.Populate(label.text,settings);settings.fontSize=label.cachedTextGenerator.fontSizeUsedForBestFit;settings.resizeTextForBestFit=false;}
+                float required=label.cachedTextGeneratorForLayout.GetPreferredHeight(label.text,settings)/label.pixelsPerUnit;
+                if(required>rect.height+2)failures.Add(label.gameObject.name+" needs "+required.ToString("0.0")+"px; has "+rect.height.ToString("0.0")+"px");
+                var parent=label.transform.parent as RectTransform;
+                if(parent){var position=label.rectTransform.anchoredPosition;if(position.x<-.5f||-position.y<-.5f||position.x+rect.width>parent.rect.width+.5f||-position.y+rect.height>parent.rect.height+.5f)failures.Add(label.gameObject.name+" lies outside its panel");}
+            }
+            if(failures.Count>0)throw new Exception("UI text fit: "+string.Join("; ",failures));
         }
         public void RenderTo(RenderTexture target){Refresh();Canvas.ForceUpdateCanvases();uiCamera.targetTexture=target;uiCamera.rect=new Rect(0,0,1,1);uiCamera.Render();uiCamera.targetTexture=null;Canvas.ForceUpdateCanvases();}
         void OnDestroy(){if(canvas)Destroy(canvas.gameObject);if(uiCamera)Destroy(uiCamera.gameObject);}

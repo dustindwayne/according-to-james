@@ -31,3 +31,7 @@ Source artwork was generated with the built-in image generator. Current atlas pr
 ## Current presentation (v0.5)
 
 The active game is 2D, with illustrated dimensional walls, generated beveled floor tiles, soft shadows, warm torch/shrine lighting and camera-facing shaded character art. James has 24 new poses and autonomous pacing/dancing. The experimental ProceduralDungeon component is retained for reference but is not instantiated by the game. Imported Meshy experiments remain outside the Unity repository.
+
+## v0.6 audio and movement
+
+Resources/Audio contains the user's supplied Menu, Exploration and Combat MP3 tracks. Music crossfades on room/state changes and resumes after pause without restarting the same track. Enemy waypoint arrival now completes the step and advances the route. James cycles four dance routines, including YMCA, Macarena and robot. Text fit is checked in the rendered presentation harness.

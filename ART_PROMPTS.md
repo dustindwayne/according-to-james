@@ -41,3 +41,9 @@ JamesGoofy.png: generated from JamesAnimated.png as likeness reference. Producti
 FloorDepth.png: generated transparent 3x4 atlas. Four blue-gray cellar slab variants, four warm brown-gray pantry variants, four violet-gray kitchen variants. Prompt required square orthographic floor slabs with upper-left lighting, shaded bevels, recessed mortar, chisel marks, clean/cracked/scuffed/moss variants, quiet readable interiors, transparent separated subjects, no perspective diamonds, walls, furniture or lettering.
 
 Compiled outputs are Resources/Art/Compiled/JamesGoofy.png and FloorDepth.png. The compiler masks each connected subject, shares scale across all James poses, pads animation cells and adds safely trimmed UI portraits. Runtime soft shadows and light pools are generated Unity effects; actor lighting uses nearest torch distance. Floor variants use a deterministic coordinate hash.
+
+## v0.6 James dance party
+
+JamesDanceParty.png is a generated transparent3x8 sheet referencing JamesGoofy.png for likeness. Exact requested rows: eight YMCA keyframes (preparation, Y, transition, M, transition, C, transition, A); eight Macarena keyframes (one/both arms forward, palms up, one/both shoulders, hands behind head, hands on hips, quarter-turn hip wiggle); eight robot keyframes (stiff idle, raised right forearm, squared elbows, raised left forearm, mechanical left/right lean, sideways step, reset). Prompt required identical cap/navy star shirt/overalls/boots, smiling salt-and-pepper beard, full hats/raised hands/boots inside cells, no text or motion marks, dimensional pixel-like shading, consistent scale and transparent gutters.
+
+Compiled into padded 384x320 cells with subject masks and a shared scale across poses; runtime routines hold keyframes at2fps. Safe cropped portrait views are also imported. Single-character GIF preview: ../James-movements.gif (existing motions followed by new dances).

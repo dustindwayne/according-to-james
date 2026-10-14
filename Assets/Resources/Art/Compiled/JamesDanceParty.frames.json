@@ -1,0 +1,177 @@
+{
+    "source": "Assets/ArtSources/JamesDanceParty.png",
+    "rows": 3,
+    "columns": 8,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "JamesDanceParty_0_0",
+            "sourceX": 59,
+            "sourceY": 513,
+            "sourceWidth": 163,
+            "sourceHeight": 239
+        },
+        {
+            "name": "JamesDanceParty_0_1",
+            "sourceX": 284,
+            "sourceY": 514,
+            "sourceWidth": 234,
+            "sourceHeight": 236
+        },
+        {
+            "name": "JamesDanceParty_0_2",
+            "sourceX": 575,
+            "sourceY": 513,
+            "sourceWidth": 176,
+            "sourceHeight": 239
+        },
+        {
+            "name": "JamesDanceParty_0_3",
+            "sourceX": 835,
+            "sourceY": 512,
+            "sourceWidth": 159,
+            "sourceHeight": 242
+        },
+        {
+            "name": "JamesDanceParty_0_4",
+            "sourceX": 1079,
+            "sourceY": 512,
+            "sourceWidth": 199,
+            "sourceHeight": 239
+        },
+        {
+            "name": "JamesDanceParty_0_5",
+            "sourceX": 1323,
+            "sourceY": 511,
+            "sourceWidth": 240,
+            "sourceHeight": 242
+        },
+        {
+            "name": "JamesDanceParty_0_6",
+            "sourceX": 1603,
+            "sourceY": 512,
+            "sourceWidth": 169,
+            "sourceHeight": 245
+        },
+        {
+            "name": "JamesDanceParty_0_7",
+            "sourceX": 1853,
+            "sourceY": 512,
+            "sourceWidth": 154,
+            "sourceHeight": 242
+        },
+        {
+            "name": "JamesDanceParty_1_0",
+            "sourceX": 25,
+            "sourceY": 264,
+            "sourceWidth": 205,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesDanceParty_1_1",
+            "sourceX": 285,
+            "sourceY": 263,
+            "sourceWidth": 200,
+            "sourceHeight": 243
+        },
+        {
+            "name": "JamesDanceParty_1_2",
+            "sourceX": 566,
+            "sourceY": 263,
+            "sourceWidth": 184,
+            "sourceHeight": 242
+        },
+        {
+            "name": "JamesDanceParty_1_3",
+            "sourceX": 836,
+            "sourceY": 264,
+            "sourceWidth": 158,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesDanceParty_1_4",
+            "sourceX": 1087,
+            "sourceY": 264,
+            "sourceWidth": 166,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesDanceParty_1_5",
+            "sourceX": 1324,
+            "sourceY": 264,
+            "sourceWidth": 186,
+            "sourceHeight": 243
+        },
+        {
+            "name": "JamesDanceParty_1_6",
+            "sourceX": 1596,
+            "sourceY": 263,
+            "sourceWidth": 181,
+            "sourceHeight": 242
+        },
+        {
+            "name": "JamesDanceParty_1_7",
+            "sourceX": 1859,
+            "sourceY": 265,
+            "sourceWidth": 149,
+            "sourceHeight": 237
+        },
+        {
+            "name": "JamesDanceParty_2_0",
+            "sourceX": 57,
+            "sourceY": 17,
+            "sourceWidth": 160,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesDanceParty_2_1",
+            "sourceX": 305,
+            "sourceY": 17,
+            "sourceWidth": 179,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesDanceParty_2_2",
+            "sourceX": 552,
+            "sourceY": 17,
+            "sourceWidth": 204,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesDanceParty_2_3",
+            "sourceX": 809,
+            "sourceY": 17,
+            "sourceWidth": 183,
+            "sourceHeight": 240
+        },
+        {
+            "name": "JamesDanceParty_2_4",
+            "sourceX": 1046,
+            "sourceY": 17,
+            "sourceWidth": 235,
+            "sourceHeight": 239
+        },
+        {
+            "name": "JamesDanceParty_2_5",
+            "sourceX": 1323,
+            "sourceY": 17,
+            "sourceWidth": 223,
+            "sourceHeight": 238
+        },
+        {
+            "name": "JamesDanceParty_2_6",
+            "sourceX": 1594,
+            "sourceY": 17,
+            "sourceWidth": 193,
+            "sourceHeight": 243
+        },
+        {
+            "name": "JamesDanceParty_2_7",
+            "sourceX": 1830,
+            "sourceY": 17,
+            "sourceWidth": 194,
+            "sourceHeight": 240
+        }
+    ]
+}

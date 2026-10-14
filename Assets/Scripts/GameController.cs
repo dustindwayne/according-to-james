@@ -10,12 +10,14 @@ namespace AccordingToJames
         public GameModel Game=>game;public SpriteAtlas Art=>art;public bool TitleScreen=>panel=="title";public bool IsPaused=>paused;public bool SettingsOpen=>settingsOpen;public bool MapOpen=>mapOpen;public bool HasCheckpoint=>PlayerPrefs.HasKey("JamesCheckpointV2");public bool ToastVisible=>toastLife>0;public string ToastMessage=>toast;public float Initial=>initial;public float Volume=>volume;public bool ReducedMotion=>reducedMotion;
         public void NewRun(){StartRun();}public void ContinueRun(){if(HasCheckpoint)StartRun(true);}public void OpenSettings(){settingsOpen=true;}public void CloseSettings(){settingsOpen=false;PlayerPrefs.SetFloat("JamesDifficulty",initial);PlayerPrefs.SetFloat("JamesVolume",volume);PlayerPrefs.SetInt("JamesReducedMotion",reducedMotion?1:0);PlayerPrefs.Save();}
         public void SetDifficulty(float value){initial=value;}public void SetVolume(float value){volume=Mathf.Clamp01(value);music.Volume=volume;}public void SetReducedMotion(bool value){reducedMotion=value;}
-        public void Resume(){paused=false;music.Play(Tune());}public void TogglePause(){if(game==null||game.status!="playing")return;paused=!paused;if(paused)music.Pause();else music.Play(Tune());}public void ReturnToTitle(){panel="title";paused=settingsOpen=mapOpen=false;music.Play("cellars");}public void OpenMap(){if(game!=null&&game.status=="playing")mapOpen=true;}public void CloseMap(){mapOpen=false;}public void TalkChoice(string choice){game.JamesChoice(choice);if(choice=="gift"||choice=="finger"){npcGestureFrame=choice=="gift"?2:3;npcGestureUntil=Time.unscaledTime+1.5f;}ProcessEvents();if(choice=="leave")music.Play(Tune());}
+        public void Resume(){paused=false;music.Play(Tune());}public void TogglePause(){if(game==null||game.status!="playing")return;paused=!paused;if(paused)music.Pause();else music.Play(Tune());}public void ReturnToTitle(){panel="title";paused=settingsOpen=mapOpen=false;music.Play("menu");}public void OpenMap(){if(game!=null&&game.status=="playing")mapOpen=true;}public void CloseMap(){mapOpen=false;}public void TalkChoice(string choice){game.JamesChoice(choice);if(choice=="gift"||choice=="finger"){npcGestureFrame=choice=="gift"?2:3;npcGestureUntil=Time.unscaledTime+1.5f;}ProcessEvents();if(choice=="leave")music.Play(Tune());}
         float npcGestureUntil;int npcGestureFrame;
         int JamesRow=>game!=null&&game.status=="talking"?3:game!=null&&game.Current.jamesWalking?(game.Current.jamesFacing=="left"?0:1):game!=null&&game.Current.jamesClock%18>=6&&game.Current.jamesClock%18<14?2:3;
         int JamesFrame=>reducedMotion?0:JamesRow==3?(Time.unscaledTime<npcGestureUntil?npcGestureFrame:Mathf.FloorToInt(Time.unscaledTime*.7f)%6):Mathf.FloorToInt(game.Current.jamesClock*(JamesRow==2?3:8))%6;
-        public Sprite NpcSprite=>art.JamesGoofy[JamesRow,JamesFrame];
-        public Sprite NpcPortrait=>art.JamesGoofyPortraits[JamesRow,JamesFrame];
+        int JamesDance=>game==null?0:(int)(game.Current.jamesClock/18)%4;
+        int DanceFrame=>reducedMotion?0:Mathf.FloorToInt((game.Current.jamesClock%18-6)*2)%8;
+        public Sprite NpcSprite=>JamesRow==2&&JamesDance>0?art.JamesDanceParty[JamesDance-1,DanceFrame]:art.JamesGoofy[JamesRow,JamesFrame];
+        public Sprite NpcPortrait=>JamesRow==2&&JamesDance>0?art.JamesDancePortraits[JamesDance-1,DanceFrame]:art.JamesGoofyPortraits[JamesRow,JamesFrame];
         readonly List<SpriteRenderer> pool=new List<SpriteRenderer>();int used;
         bool paused,settingsOpen,mapOpen;string toast="",panel="title";float toastLife;
         float initial=1,volume=.35f;bool reducedMotion;float guiScale,offsetX,offsetY;
@@ -25,7 +27,7 @@ namespace AccordingToJames
         void CapturePresentation(string name){
             var target=new RenderTexture(1280,800,24);var previous=RenderTexture.active;RenderTexture.active=target;GL.Clear(true,true,new Color(.02f,.025f,.035f));
             var oldRect=cam.pixelRect;cam.targetTexture=target;cam.rect=new Rect(160/1280f,90/800f,960/1280f,600/800f);cam.Render();cam.targetTexture=null;cam.pixelRect=oldRect;
-            ui.RenderTo(target);RenderTexture.active=target;var image=new Texture2D(1280,800,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,800),0,0);image.Apply();System.IO.File.WriteAllBytes(System.IO.Path.Combine(captureDir,name),image.EncodeToPNG());RenderTexture.active=previous;target.Release();Destroy(target);Destroy(image);
+            ui.RenderTo(target);ui.ValidateTextFit();RenderTexture.active=target;var image=new Texture2D(1280,800,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,800),0,0);image.Apply();System.IO.File.WriteAllBytes(System.IO.Path.Combine(captureDir,name),image.EncodeToPNG());RenderTexture.active=previous;target.Release();Destroy(target);Destroy(image);
         }
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void Boot(){if(!FindFirstObjectByType<GameController>())new GameObject("According to James").AddComponent<GameController>();}
@@ -34,7 +36,7 @@ namespace AccordingToJames
         {
             Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
             softLight=Radial(false);softShadow=Radial(true);art=new SpriteAtlas();music=gameObject.AddComponent<Chiptunes>();music.Volume=volume;
-            var c=new GameObject("Dungeon Camera");cam=c.AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=3;cam.transform.position=new Vector3(0,0,-10);cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.025f,.04f,.065f);cam.cullingMask=~(1<<5);c.AddComponent<AudioListener>();music.Play("cellars");ui=gameObject.AddComponent<DungeonUI>();ui.Initialize(this);
+            var c=new GameObject("Dungeon Camera");cam=c.AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=3;cam.transform.position=new Vector3(0,0,-10);cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.025f,.04f,.065f);cam.cullingMask=~(1<<5);c.AddComponent<AudioListener>();music.Play("menu");ui=gameObject.AddComponent<DungeonUI>();ui.Initialize(this);
         }
         void StartRun(bool resume=false)
         {
@@ -42,7 +44,7 @@ namespace AccordingToJames
             else game=new GameModel(initial,UnityEngine.Random.Range(1,1000000));
             panel="";paused=false;settingsOpen=false;mapOpen=false;ProcessEvents();music.Play(Tune());
         }
-        string Tune(){if(game==null)return "cellars";if(game.status=="talking"||game.status=="dead")return "james";if(game.status=="won")return "victory";return game.Current.boss&&!game.Current.cleared?"boss":new[]{"cellars","pantry","crypt"}[game.Dungeon];}
+        string Tune(){if(TitleScreen||game==null)return "menu";if(game.status=="talking"||game.status=="dead")return "james";if(game.status=="won")return "victory";return game.Current.enemies.Exists(e=>e.hp>0)?"combat":"exploration";}
         void Save(){if(game!=null&&game.status!="dead"&&game.status!="won"){PlayerPrefs.SetString("JamesCheckpointV2",JsonUtility.ToJson(game));PlayerPrefs.Save();}}
         void Update()
         {
@@ -69,9 +71,9 @@ namespace AccordingToJames
                 smokeFrames++;
                 if(captureDir==null){game.Tick(.02f,1,0);if(smokeFrames==140){Debug.Log("ACCORDING_TO_JAMES_RUNTIME_OK");Application.Quit(0);}}
                 else{
-                    if(smokeFrames==20)CapturePresentation("title-screen.png");
+                    if(smokeFrames==20){music.VerifySuppliedTracks();music.VerifyTrack("menu");CapturePresentation("title-screen.png");}
                     if(smokeFrames==40)ui.PressForCheck("Start Game");
-                    if(smokeFrames==60)CapturePresentation("game-hud.png");
+                    if(smokeFrames==60){music.VerifyTrack("exploration");CapturePresentation("game-hud.png");}
                     if(smokeFrames==80){game.player.x=480;game.player.y=290;game.Interact();ui.PressForCheck("Accept mystery gift");}
                     if(smokeFrames==110)CapturePresentation("james-menu.png");
                     if(smokeFrames==130){ui.PressForCheck("Thanks, James. I guess.");ui.PressForCheck("Map");}
@@ -81,7 +83,7 @@ namespace AccordingToJames
                     if(smokeFrames==230){ui.PressForCheck("Settings");float oldVolume=volume;bool oldMotion=reducedMotion;ui.PressForCheck("Mellow");ui.PressForCheck("Normal");ui.PressForCheck("Quieter");ui.PressForCheck("Louder");ui.PressForCheck("Reduced motion: "+(reducedMotion?"On":"Off"));ui.PressForCheck("Reduced motion: "+(reducedMotion?"On":"Off"));SetVolume(oldVolume);SetReducedMotion(oldMotion);SetDifficulty(game.initial);}
                     if(smokeFrames==260)CapturePresentation("settings-menu.png");
                     if(smokeFrames==280){ui.PressForCheck("Done");ui.PressForCheck("Back to the dungeon");game.floor=20;game.NewFloor();game.EnterRoom(game.rooms.Count-1);game.player.inv=99;ProcessEvents();}
-                    if(smokeFrames==320)CapturePresentation("boss-hud.png");
+                    if(smokeFrames==320){music.VerifyTrack("combat");CapturePresentation("boss-hud.png");}
                     if(smokeFrames==340)game.status="dead";
                     if(smokeFrames==360)CapturePresentation("death-menu.png");
                     if(smokeFrames==380)game.status="won";
@@ -92,12 +94,18 @@ namespace AccordingToJames
                     if(smokeFrames==460){game.Current.jamesClock=2;}
                     if(smokeFrames==480)CapturePresentation("james-pacing.png");
                     if(smokeFrames==500){game.EnterRoom(2);game.player.x=250;game.player.y=285;}
-                    if(smokeFrames==510)CapturePresentation("treasure-room.png");
+                    if(smokeFrames==510){music.VerifyTrack("exploration");CapturePresentation("treasure-room.png");}
                     if(smokeFrames==520)game.Interact();
                     if(smokeFrames==530)CapturePresentation("chest-opening.png");
                     if(smokeFrames==550){game.floor=30;game.NewFloor();game.EnterRoom(game.rooms.Count-1);game.player.inv=99;}
                     if(smokeFrames==580)CapturePresentation("kitchen-boss.png");
-                    if(smokeFrames==620){Debug.Log("ACCORDING_TO_JAMES_PRESENTATION_OK: title, HUD, dialogue, map, pause, settings, boss, death, victory and actual button actions");Application.Quit(0);}
+                    if(smokeFrames==620){NewRun();game.Current.jamesClock=26;}
+                    if(smokeFrames==630)CapturePresentation("james-ymca.png");
+                    if(smokeFrames==640)game.Current.jamesClock=44;
+                    if(smokeFrames==650)CapturePresentation("james-macarena.png");
+                    if(smokeFrames==660)game.Current.jamesClock=62;
+                    if(smokeFrames==670)CapturePresentation("james-robot.png");
+                    if(smokeFrames==700){Debug.Log("ACCORDING_TO_JAMES_PRESENTATION_OK: title, HUD, dialogue, map, pause, settings, boss, death, victory and actual button actions");Application.Quit(0);}
                 }
             }
         }

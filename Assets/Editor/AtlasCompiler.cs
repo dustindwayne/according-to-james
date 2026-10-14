@@ -18,7 +18,7 @@ namespace AccordingToJames.Editor
         {
             Directory.CreateDirectory(Output);
             Compile("FloorDepth",3,4,320,320,true);Compile("Props",4,4,320,320,false);Compile("Menus",3,2,640,512,true);
-            Compile("Hero",4,8,384,320,false);Compile("JamesGoofy",4,6,384,320,false);Compile("JamesAnimated",2,4,384,320,false);
+            Compile("Hero",4,8,384,320,false);Compile("JamesGoofy",4,6,384,320,false);Compile("JamesDanceParty",3,8,384,320,false);Compile("JamesAnimated",2,4,384,320,false);
             Compile("BossGranny",4,4,384,320,false);Compile("BossLunchLady",4,4,384,320,false);Compile("BossChef",4,4,384,320,false);
             Compile("Enemies",3,6,384,320,false);Compile("Effects",2,4,320,320,false);
             foreach(var name in new[]{"RoomCellars","RoomPantry","RoomKitchen"}){File.Copy(Sources+name+".png",Output+name+".png",true);AssetDatabase.ImportAsset(Output+name+".png",ImportAssetOptions.ForceSynchronousImport);}
@@ -47,7 +47,7 @@ namespace AccordingToJames.Editor
             var target=new Texture2D(cols*cw,rows*ch,TextureFormat.RGBA32,false);var output=new Color32[target.width*target.height];var metas=new List<SpriteMetaData>();var report=new Report{source=path,rows=rows,columns=cols,cellWidth=cw,cellHeight=ch};
             for(int row=0;row<rows;row++){
                 float scale=Math.Min((cw-40f)/frames.Skip(row*cols).Take(cols).Max(p=>p.x1-p.x0+1),(ch-64f)/frames.Skip(row*cols).Take(cols).Max(p=>p.y1-p.y0+1));
-                if(name=="JamesGoofy")scale=Math.Min((cw-40f)/frames.Max(p=>p.x1-p.x0+1),(ch-64f)/frames.Max(p=>p.y1-p.y0+1));
+                if(name=="JamesGoofy"||name=="JamesDanceParty")scale=Math.Min((cw-40f)/frames.Max(p=>p.x1-p.x0+1),(ch-64f)/frames.Max(p=>p.y1-p.y0+1));
                 for(int col=0;col<cols;col++){
                     var p=frames[row*cols+col];int sw=p.x1-p.x0+1,sh=p.y1-p.y0+1,dw=Mathf.CeilToInt(sw*scale),dh=Mathf.CeilToInt(sh*scale),baseX=col*cw,baseY=(rows-1-row)*ch;
                     int left=baseX+(cw-dw)/2,bottom=baseY+(ui?(ch-dh)/2:16);
@@ -68,7 +68,7 @@ namespace AccordingToJames.Editor
         }
         public static void Validate()
         {
-            foreach(var spec in new[]{("FloorDepth",12),("Props",16),("Menus",6),("Hero",32),("JamesAnimated",16),("JamesGoofy",48),("BossGranny",16),("BossLunchLady",16),("BossChef",16),("Enemies",18),("Effects",8)}){
+            foreach(var spec in new[]{("FloorDepth",12),("Props",16),("Menus",6),("Hero",32),("JamesAnimated",16),("JamesGoofy",48),("JamesDanceParty",48),("BossGranny",16),("BossLunchLady",16),("BossChef",16),("Enemies",18),("Effects",8)}){
                 var sprites=AssetDatabase.LoadAllAssetsAtPath(Output+spec.Item1+".png").OfType<Sprite>().ToArray();if(sprites.Length!=spec.Item2)throw new Exception(spec.Item1+": imported "+sprites.Length+" sprites, expected "+spec.Item2);
                 foreach(var sprite in sprites){if(sprite.rect.width<=0||sprite.rect.height<=0||sprite.rect.xMin<0||sprite.rect.yMin<0||sprite.rect.xMax>sprite.texture.width||sprite.rect.yMax>sprite.texture.height)throw new Exception("Invalid sprite rectangle: "+sprite.name);}
             }
