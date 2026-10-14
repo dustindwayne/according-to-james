@@ -1,11 +1,11 @@
-# According to James v0.6.0 — Music, movement and dance party
+# According to James v0.6.1 — Android controls
 
-Enemies now complete navigation waypoints instead of stopping just short and repeatedly targeting the same point. Chase and patrol routes refresh on arrival; unreachable destinations resolve to reachable grid cells.
+Includes Windows and Android builds of the dungeon crawler.
 
-- HUD captions, room-map labels and menu text sit inside the generated frames. James advice supports two centered lines; long dynamic labels fit without clipping.
-- User-provided MP3 tracks play on the title screen, in rooms without living enemies, and during combat including bosses. Track changes crossfade; pausing resumes the current song at its position. James comedy cues, victory music and effects remain.
-- New James YMCA, Macarena and robot rows add 24 full-body animation poses. James cycles these routines alongside his existing goofy dance, pacing and conversation gestures.
+- Android landscape play with a movement stick and Swing, Dodge and Interact buttons, plus the existing Map and Pause menus.
+- Touch movement releases correctly and respects menu/paused states; UI and room viewport follow the device safe area.
+- Includes v0.6 music, corrected enemy navigation, fitted menu text and James's YMCA, Macarena and robot routines.
 
-Verified: 30-floor campaign, 1,800 physical room layouts, doorway alignment, James interactions, waypoint regression in both directions, walking-frame progression, and 87 obstacle-room chase scenarios. Windows runtime checks verify imported music and menu/exploration/combat switching, all captured text fits, buttons work, and no runtime errors were logged. Independent agent reviewed all menu/HUD captures. MP3 decode and signal-level checks passed; manual listening is still useful for subjective loop quality.
+Android APK: ARM64, minimum Android 8.0 (API26), target API36, signed for direct installation. Built with Unity6000.6.5f1 from an isolated copy; the Windows source project remains on Unity6000.3.12f1. APK signature/manifest checks and desktop touch-pointer/action/text-fit/runtime checks passed. Physical phone testing has not been performed.
 
-Extract the Windows ZIP before running AccordingToJames.exe. Keep the Data folder and DLLs alongside it. Unity editor: 6000.3.12f1.
+Windows: extract the ZIP and run AccordingToJames.exe with its Data folder and DLLs alongside it. Android: download the APK and open it on a compatible phone; allow installation from that source if prompted.

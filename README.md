@@ -35,3 +35,9 @@ The active game is 2D, with illustrated dimensional walls, generated beveled flo
 ## v0.6 audio and movement
 
 Resources/Audio contains the user's supplied Menu, Exploration and Combat MP3 tracks. Music crossfades on room/state changes and resumes after pause without restarting the same track. Enemy waypoint arrival now completes the step and advances the route. James cycles four dance routines, including YMCA, Macarena and robot. Text fit is checked in the rendered presentation harness.
+
+## Android build
+
+Use build-android.ps1 with an Android-capable Unity6000.6.5f1 editor, Android SDK, matching NDKr27c and OpenJDK17 paths. The script stages Assets, Packages and ProjectSettings outside the source checkout, builds ARM64IL2CPP in landscape, and outputs ../According-to-James-Android.apk. This keeps the Windows project's editor version intact. The default APK uses Unity's development signing identity for direct installation; a store release needs a dedicated signing key. Phone gameplay remains to be tested.
+
+Android controls: drag the left stick to move; use right-side Swing, Dodge and Interact. Map and Pause remain at the bottom. Touch input is disabled while menus/dialogue block gameplay. Desktop --touch-preview --self-test runs pointer-direction/release and action checks alongside the rendered UI checks.

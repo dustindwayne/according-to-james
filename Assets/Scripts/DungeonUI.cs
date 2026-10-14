@@ -28,7 +28,7 @@ namespace AccordingToJames
         void LateUpdate(){Refresh();}
         public void Refresh()
         {
-            if(!owner)return;var g=owner.Game;string key=owner.TitleScreen?"title":"game";
+            if(!owner)return;if(owner.MobileControlsEnabled){var safe=Screen.safeArea;float scale=Mathf.Min(safe.width/1280f,safe.height/800f);root.localScale=Vector3.one*(scale/canvas.scaleFactor);root.anchoredPosition=new Vector2(safe.center.x-Screen.width/2f,safe.center.y-Screen.height/2f)/canvas.scaleFactor;}var g=owner.Game;string key=owner.TitleScreen?"title":"game";
             if(g!=null&&!owner.TitleScreen)key+=":"+g.floor+":"+g.room+":"+(g.Current.boss&&g.Current.enemies.Exists(e=>e.hp>0))+":"+g.status+":"+g.Current.giftTaken+":"+g.Current.fingerPulled;
             key+=":"+owner.IsPaused+":"+owner.SettingsOpen+":"+owner.MapOpen;
             if(key!=screenKey){screenKey=key;Rebuild();}
@@ -79,21 +79,30 @@ namespace AccordingToJames
             var p=Frame(root,806,176,390,448);Text(p,34,103,322,24,"3 DUNGEONS · 30 FLOORS",15,Cream,true,TextAnchor.MiddleCenter);
             Button(p,34,152,322,"Start Game",()=>owner.NewRun(),true,true,60);Button(p,34,229,322,"Continue",()=>owner.ContinueRun(),false,owner.HasCheckpoint,60);Button(p,34,306,322,"Settings",()=>owner.OpenSettings(),false,true,60);
             Text(p,34,387,322,26,owner.HasCheckpoint?"Continue from your last rest shrine.":"No saved adventure yet.",13,Cream,false,TextAnchor.MiddleCenter);
-            Frame(root,28,744,560,36,new Color(1,1,1,.95f));Text(root,44,754,532,24,"WASD MOVE    SPACE SWING    SHIFT DODGE    E INTERACT",12,Cream,true);
+            Frame(root,28,744,560,36,new Color(1,1,1,.95f));Text(root,44,754,532,24,owner.MobileControlsEnabled?"DRAG TO MOVE     TAP SWING, DODGE OR INTERACT":"WASD MOVE    SPACE SWING    SHIFT DODGE    E INTERACT",12,Cream,true);
         }
         void HUD()
         {
-            var g=owner.Game;var p=Frame(root,160,18,960,84);Text(p,24,22,280,17,"DUNGEON "+new[]{"I","II","III"}[g.Dungeon],11,Gold,true);Text(p,24,43,300,28,"",21,Cream,true,key:"dungeon");
+            var g=owner.Game;if(owner.MobileControlsEnabled)TouchControls();var p=Frame(root,160,18,960,84);Text(p,24,22,280,17,"DUNGEON "+new[]{"I","II","III"}[g.Dungeon],11,Gold,true);Text(p,24,43,300,28,"",21,Cream,true,key:"dungeon");
             Box(p,326,18,1,49,Edge);Text(p,348,22,100,17,"FLOOR",11,Muted,true);Text(p,348,43,100,28,"",22,Cream,true,key:"floor");Text(p,458,22,100,17,"ROOM",11,Muted,true);Text(p,458,43,100,28,"",22,Cream,true,key:"room");
             Text(p,570,22,130,18,"HEALTH",11,Muted,true);Text(p,680,22,108,18,"",12,Cream,true,TextAnchor.UpperRight,"health");Box(p,570,51,218,12,new Color(.2f,.12f,.12f));healthFill=Box(p,570,51,218,12,Red);Box(p,570,52,218,2,new Color(1,.7f,.5f,.28f));
             Box(p,815,18,1,49,Edge);Text(p,842,22,90,18,"SWORD",11,Muted,true);Text(p,842,43,90,28,"",22,Gold,true,key:"sword");
             Box(root,157,107,966,2,Edge);Box(root,157,710,966,2,Edge);Box(root,157,107,2,605,Edge);Box(root,1121,107,2,605,Edge);
-            var controls=Frame(root,160,724,960,56);Text(controls,26,17,365,24,"SPACE  Swing     SHIFT  Dodge     E  Interact",14,Cream);Text(controls,414,11,140,18,"",10,Muted,true,key:"dodge");Box(controls,414,33,96,5,Edge);dodgeFill=Box(controls,414,33,96,5,Green);
+            var controls=Frame(root,160,724,960,56);Text(controls,26,17,365,24,owner.MobileControlsEnabled?"DRAG TO MOVE · TAP TO ACT":"SPACE  Swing     SHIFT  Dodge     E  Interact",14,Cream);Text(controls,414,11,140,18,"",10,Muted,true,key:"dodge");Box(controls,414,33,96,5,Edge);dodgeFill=Box(controls,414,33,96,5,Green);
             Text(controls,542,18,200,20,"",12,Gold,true,key:"effect");Button(controls,752,8,84,"Map",()=>owner.OpenMap(),false,true,40);Button(controls,846,8,96,"Pause",()=>owner.TogglePause(),false,true,40);
             Text(root,160,784,700,16,"",10,Muted,true,key:"checkpoint");Text(root,850,784,270,16,"",10,Gold,true,TextAnchor.UpperRight,"objective");
             toastBox=Frame(root,275,570,730,64,new Color(.05f,.055f,.065f,.95f));notice=Text(toastBox,40,12,650,40,"",16,Cream,false,TextAnchor.MiddleCenter);
             contextBox=Frame(root,370,657,540,40,new Color(.05f,.055f,.065f,.96f));Text(contextBox,26,9,34,24,"[E]",15,Gold,true);context=Text(contextBox,66,9,446,24,"",15,Cream);
             if(g.Current.boss&&g.Current.enemies.Exists(e=>e.hp>0)){var b=Frame(root,415,125,450,66,new Color(.045f,.055f,.07f,.95f));Text(b,25,12,400,24,GameModel.BossNames[g.Dungeon],16,Gold,true,TextAnchor.MiddleCenter);Box(b,25,45,400,6,Edge);bossFill=Box(b,25,45,400,6,Red);}
+        }
+        void TouchControls()
+        {
+            var stickPanel=Frame(root,8,472,144,144,new Color(1,1,1,.85f));stickPanel.GetComponent<Image>().raycastTarget=true;
+            var stick=stickPanel.gameObject.AddComponent<TouchStick>();stick.owner=owner;var knob=Box(stickPanel,0,0,48,48,Gold,true);knob.sprite=owner.Art.Menus[1,1];knob.type=Image.Type.Sliced;knob.rectTransform.anchorMin=knob.rectTransform.anchorMax=knob.rectTransform.pivot=new Vector2(.5f,.5f);knob.rectTransform.anchoredPosition=Vector2.zero;knob.raycastTarget=false;stick.knob=knob.rectTransform;
+            Text(root,12,626,136,24,"MOVE",16,Gold,true,TextAnchor.MiddleCenter);
+            Button(root,1128,442,144,"Swing",()=>owner.TouchAction("swing"),true,true,64);
+            Button(root,1128,520,144,"Dodge",()=>owner.TouchAction("dodge"),false,true,64);
+            Button(root,1128,598,144,"Interact",()=>owner.TouchAction("interact"),false,true,64);
         }
         RectTransform Modal(string eyebrow,string title,float width,float height)
         {
@@ -132,6 +141,12 @@ namespace AccordingToJames
             else if(owner.HasCheckpoint){Button(p,36,239,608,"Return to last rest shrine",()=>owner.ContinueRun(),true);Button(p,36,305,608,"Start a new run",()=>owner.NewRun());}
             else Button(p,36,239,608,"Start a new run",()=>owner.NewRun(),true);
             Button(p,36,!won&&owner.HasCheckpoint?371:305,608,"Return to title",()=>owner.ReturnToTitle());
+        }
+        public void VerifyTouchControls()
+        {
+            Refresh();Canvas.ForceUpdateCanvases();var stick=root.GetComponentInChildren<TouchStick>();if(!stick)throw new Exception("Missing touch stick");var rect=(RectTransform)stick.transform;var point=rect.TransformPoint(rect.rect.center+new Vector2(40,40));var e=new PointerEventData(EventSystem.current){pointerId=41,position=RectTransformUtility.WorldToScreenPoint(uiCamera,point),pointerPressRaycast=new RaycastResult{module=canvas.GetComponent<GraphicRaycaster>()}};
+            stick.OnPointerDown(e);if(owner.TouchMove.x<.3f||owner.TouchMove.y>-.3f)throw new Exception("Touch stick direction mismatch");stick.OnPointerUp(e);if(owner.TouchMove!=Vector2.zero)throw new Exception("Touch movement did not release");
+            PressForCheck("Swing");if(owner.Game.player.attack<=0)throw new Exception("Touch swing failed");PressForCheck("Dodge");if(owner.Game.player.dodge<=0)throw new Exception("Touch dodge failed");Debug.Log("ACCORDING_TO_JAMES_TOUCH_OK: directional input, release, swing and dodge");
         }
         public void ValidateTextFit()
         {

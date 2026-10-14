@@ -6,6 +6,9 @@ namespace AccordingToJames
 {
     public class GameController : MonoBehaviour
     {
+        public Vector2 TouchMove;public bool MobileControlsEnabled {get;private set;}
+        public bool CanTouchControl=>game!=null&&!TitleScreen&&!settingsOpen&&!mapOpen&&!paused&&game.status=="playing";
+        public void TouchAction(string action){if(!CanTouchControl)return;if(action=="swing")game.Attack();else if(action=="dodge")game.Dodge(TouchMove.x,TouchMove.y);else if(action=="interact")game.Interact();ProcessEvents();}
         GameModel game;SpriteAtlas art;Chiptunes music;Camera cam;DungeonUI ui;
         public GameModel Game=>game;public SpriteAtlas Art=>art;public bool TitleScreen=>panel=="title";public bool IsPaused=>paused;public bool SettingsOpen=>settingsOpen;public bool MapOpen=>mapOpen;public bool HasCheckpoint=>PlayerPrefs.HasKey("JamesCheckpointV2");public bool ToastVisible=>toastLife>0;public string ToastMessage=>toast;public float Initial=>initial;public float Volume=>volume;public bool ReducedMotion=>reducedMotion;
         public void NewRun(){StartRun();}public void ContinueRun(){if(HasCheckpoint)StartRun(true);}public void OpenSettings(){settingsOpen=true;}public void CloseSettings(){settingsOpen=false;PlayerPrefs.SetFloat("JamesDifficulty",initial);PlayerPrefs.SetFloat("JamesVolume",volume);PlayerPrefs.SetInt("JamesReducedMotion",reducedMotion?1:0);PlayerPrefs.Save();}
@@ -34,7 +37,7 @@ namespace AccordingToJames
         Sprite softLight,softShadow;
         void Awake()
         {
-            Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
+            MobileControlsEnabled=Application.isMobilePlatform||Array.IndexOf(Environment.GetCommandLineArgs(),"--touch-preview")>=0;Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
             softLight=Radial(false);softShadow=Radial(true);art=new SpriteAtlas();music=gameObject.AddComponent<Chiptunes>();music.Volume=volume;
             var c=new GameObject("Dungeon Camera");cam=c.AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=3;cam.transform.position=new Vector3(0,0,-10);cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.025f,.04f,.065f);cam.cullingMask=~(1<<5);c.AddComponent<AudioListener>();music.Play("menu");ui=gameObject.AddComponent<DungeonUI>();ui.Initialize(this);
         }
@@ -48,7 +51,7 @@ namespace AccordingToJames
         void Save(){if(game!=null&&game.status!="dead"&&game.status!="won"){PlayerPrefs.SetString("JamesCheckpointV2",JsonUtility.ToJson(game));PlayerPrefs.Save();}}
         void Update()
         {
-            guiScale=Mathf.Min(Screen.width/1280f,Screen.height/800f);offsetX=(Screen.width-1280*guiScale)/2;offsetY=(Screen.height-800*guiScale)/2;
+            var safe=MobileControlsEnabled?Screen.safeArea:new Rect(0,0,Screen.width,Screen.height);guiScale=Mathf.Min(safe.width/1280f,safe.height/800f);offsetX=safe.x+(safe.width-1280*guiScale)/2;offsetY=Screen.height-safe.yMax+(safe.height-800*guiScale)/2;
             cam.pixelRect=new Rect(offsetX+160*guiScale,Screen.height-(offsetY+710*guiScale),960*guiScale,600*guiScale);cam.aspect=1.6f;
             if(toastLife>0)toastLife-=Time.unscaledDeltaTime;
             if(Input.GetKeyDown(KeyCode.Escape)){if(settingsOpen)CloseSettings();else if(mapOpen)CloseMap();else if(game!=null&&game.status=="talking")TalkChoice("leave");else if(!TitleScreen)TogglePause();}
@@ -58,6 +61,7 @@ namespace AccordingToJames
                 else if(game.status=="playing"){
                     float dx=(Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0);
                     float dy=(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0);
+                    if(MobileControlsEnabled){dx+=TouchMove.x;dy+=TouchMove.y;}
                     if(Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.J))game.Attack();
                     if(Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKeyDown(KeyCode.RightShift)||Input.GetKeyDown(KeyCode.K))game.Dodge(dx,dy);
                     if(Input.GetKeyDown(KeyCode.E)||Input.GetKeyDown(KeyCode.X))game.Interact();
@@ -73,6 +77,7 @@ namespace AccordingToJames
                 else{
                     if(smokeFrames==20){music.VerifySuppliedTracks();music.VerifyTrack("menu");CapturePresentation("title-screen.png");}
                     if(smokeFrames==40)ui.PressForCheck("Start Game");
+                    if(smokeFrames==62&&MobileControlsEnabled)ui.VerifyTouchControls();
                     if(smokeFrames==60){music.VerifyTrack("exploration");CapturePresentation("game-hud.png");}
                     if(smokeFrames==80){game.player.x=480;game.player.y=290;game.Interact();ui.PressForCheck("Accept mystery gift");}
                     if(smokeFrames==110)CapturePresentation("james-menu.png");
