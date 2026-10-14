@@ -1,14 +1,21 @@
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 namespace AccordingToJames
 {
     public class GameController : MonoBehaviour
     {
+        public bool ControllerConnected=>Gamepad.current!=null;
+        static bool Held(Key key)=>Keyboard.current!=null&&Keyboard.current[key].isPressed;
+        static bool Pressed(Key key)=>Keyboard.current!=null&&Keyboard.current[key].wasPressedThisFrame;
         public Vector2 TouchMove;public bool MobileControlsEnabled {get;private set;}
         public bool CanTouchControl=>game!=null&&!TitleScreen&&!settingsOpen&&!mapOpen&&!paused&&game.status=="playing";
         public void TouchAction(string action){if(!CanTouchControl)return;if(action=="swing")game.Attack();else if(action=="dodge")game.Dodge(TouchMove.x,TouchMove.y);else if(action=="interact")game.Interact();ProcessEvents();}
+        public ReleaseUpdater Updater {get;private set;}public bool DesktopFeatures=>!Application.isMobilePlatform;public bool Fullscreen {get;private set;}public bool ExitRequested {get;private set;}
+        public void ExitToDesktop(){PlayerPrefs.Save();ExitRequested=true;if(!smoke)Application.Quit();}
+        public void SetFullscreen(bool value){Fullscreen=value;Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed;if(!value)Screen.SetResolution(1280,800,FullScreenMode.Windowed);PlayerPrefs.SetInt("JamesFullscreen",value?1:0);PlayerPrefs.Save();}
         GameModel game;SpriteAtlas art;Chiptunes music;Camera cam;DungeonUI ui;
         public GameModel Game=>game;public SpriteAtlas Art=>art;public bool TitleScreen=>panel=="title";public bool IsPaused=>paused;public bool SettingsOpen=>settingsOpen;public bool MapOpen=>mapOpen;public bool HasCheckpoint=>PlayerPrefs.HasKey("JamesCheckpointV2");public bool ToastVisible=>toastLife>0;public string ToastMessage=>toast;public float Initial=>initial;public float Volume=>volume;public bool ReducedMotion=>reducedMotion;
         public void NewRun(){StartRun();}public void ContinueRun(){if(HasCheckpoint)StartRun(true);}public void OpenSettings(){settingsOpen=true;}public void CloseSettings(){settingsOpen=false;PlayerPrefs.SetFloat("JamesDifficulty",initial);PlayerPrefs.SetFloat("JamesVolume",volume);PlayerPrefs.SetInt("JamesReducedMotion",reducedMotion?1:0);PlayerPrefs.Save();}
@@ -25,7 +32,9 @@ namespace AccordingToJames
         bool paused,settingsOpen,mapOpen;string toast="",panel="title";float toastLife;
         float initial=1,volume=.35f;bool reducedMotion;float guiScale,offsetX,offsetY;
         int smokeFrames;bool smoke;string captureDir;
-        void Start(){var args=Environment.GetCommandLineArgs();smoke=Array.IndexOf(args,"--self-test")>=0;int capture=Array.IndexOf(args,"--capture-dir");if(capture>=0&&capture+1<args.Length){captureDir=args[capture+1];System.IO.Directory.CreateDirectory(captureDir);}if(smoke&&captureDir==null)StartRun();}
+        void Start(){var args=Environment.GetCommandLineArgs();smoke=Array.IndexOf(args,"--self-test")>=0;int capture=Array.IndexOf(args,"--capture-dir");if(capture>=0&&capture+1<args.Length){captureDir=args[capture+1];System.IO.Directory.CreateDirectory(captureDir);}if(smoke&&captureDir==null)StartRun();if(Array.IndexOf(args,"--controller-check-test")>=0)gameObject.AddComponent<ControllerAudit>().Run(this);if(Array.IndexOf(args,"--quit-title-test")>=0)StartCoroutine(VerifyQuit(false));if(Array.IndexOf(args,"--quit-pause-test")>=0)StartCoroutine(VerifyQuit(true));if(Array.IndexOf(args,"--update-check-test")>=0){int folder=Array.IndexOf(args,"--update-test-directory");if(folder>=0&&folder+1<args.Length)Updater.TestDirectory=args[folder+1];StartCoroutine(VerifyUpdateDownload());}}
+        System.Collections.IEnumerator VerifyQuit(bool fromPause){yield return null;if(fromPause){NewRun();TogglePause();}yield return null;ui.PressForCheck("Exit to Desktop");}
+        System.Collections.IEnumerator VerifyUpdateDownload(){Updater.Check("0.0.0");while(Updater.Busy)yield return null;if(!Updater.CanDownload)throw new Exception("Update check failed: "+Updater.Message);Updater.Download();while(Updater.Busy)yield return null;if(!Updater.Downloaded)throw new Exception("Update download failed: "+Updater.Message);Debug.Log("ACCORDING_TO_JAMES_UPDATER_OK: checked live GitHub release, downloaded and verified "+Updater.DownloadPath);Application.Quit(0);}
         void CaptureWorld(string name){var target=new RenderTexture(960,600,24);var previous=RenderTexture.active;var oldRect=cam.pixelRect;cam.targetTexture=target;cam.rect=new Rect(0,0,1,1);cam.Render();RenderTexture.active=target;var image=new Texture2D(960,600,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,960,600),0,0);image.Apply();System.IO.File.WriteAllBytes(System.IO.Path.Combine(captureDir,name),image.EncodeToPNG());cam.targetTexture=null;cam.pixelRect=oldRect;RenderTexture.active=previous;target.Release();Destroy(target);Destroy(image);}
         void CapturePresentation(string name){
             var target=new RenderTexture(1280,800,24);var previous=RenderTexture.active;RenderTexture.active=target;GL.Clear(true,true,new Color(.02f,.025f,.035f));
@@ -37,7 +46,7 @@ namespace AccordingToJames
         Sprite softLight,softShadow;
         void Awake()
         {
-            MobileControlsEnabled=Application.isMobilePlatform||Array.IndexOf(Environment.GetCommandLineArgs(),"--touch-preview")>=0;Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
+            Updater=gameObject.AddComponent<ReleaseUpdater>();Fullscreen=PlayerPrefs.GetInt("JamesFullscreen",0)==1;if(!Application.isMobilePlatform)SetFullscreen(Fullscreen);MobileControlsEnabled=Application.isMobilePlatform||Array.IndexOf(Environment.GetCommandLineArgs(),"--touch-preview")>=0;Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
             softLight=Radial(false);softShadow=Radial(true);art=new SpriteAtlas();music=gameObject.AddComponent<Chiptunes>();music.Volume=volume;
             var c=new GameObject("Dungeon Camera");cam=c.AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=3;cam.transform.position=new Vector3(0,0,-10);cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.025f,.04f,.065f);cam.cullingMask=~(1<<5);c.AddComponent<AudioListener>();music.Play("menu");ui=gameObject.AddComponent<DungeonUI>();ui.Initialize(this);
         }
@@ -54,18 +63,20 @@ namespace AccordingToJames
             var safe=MobileControlsEnabled?Screen.safeArea:new Rect(0,0,Screen.width,Screen.height);guiScale=Mathf.Min(safe.width/1280f,safe.height/800f);offsetX=safe.x+(safe.width-1280*guiScale)/2;offsetY=Screen.height-safe.yMax+(safe.height-800*guiScale)/2;
             cam.pixelRect=new Rect(offsetX+160*guiScale,Screen.height-(offsetY+710*guiScale),960*guiScale,600*guiScale);cam.aspect=1.6f;
             if(toastLife>0)toastLife-=Time.unscaledDeltaTime;
-            if(Input.GetKeyDown(KeyCode.Escape)){if(settingsOpen)CloseSettings();else if(mapOpen)CloseMap();else if(game!=null&&game.status=="talking")TalkChoice("leave");else if(!TitleScreen)TogglePause();}
-            if(mapOpen&&Input.GetKeyDown(KeyCode.M))CloseMap();
-            if(game!=null&&!TitleScreen&&!settingsOpen&&!mapOpen&&!paused){
-                if(game.status=="talking"&&Input.GetKeyDown(KeyCode.Return))TalkChoice("leave");
+            var pad=Gamepad.current;bool handledMenu=false;bool back=pad!=null&&pad.buttonSouth.wasPressedThisFrame&&(settingsOpen||mapOpen||paused||game!=null&&game.status=="talking");
+            if(TitleScreen&&pad!=null&&pad.startButton.wasPressedThisFrame){NewRun();handledMenu=true;}
+            else if(Pressed(Key.Escape)||back||pad!=null&&pad.startButton.wasPressedThisFrame){handledMenu=true;if(settingsOpen)CloseSettings();else if(mapOpen)CloseMap();else if(game!=null&&game.status=="talking")TalkChoice("leave");else if(!TitleScreen)TogglePause();}
+            if(mapOpen&&Pressed(Key.M))CloseMap();
+            if(game!=null&&!TitleScreen&&!settingsOpen&&!mapOpen&&!paused&&!handledMenu){
+                if(game.status=="talking"&&Pressed(Key.Escape))TalkChoice("leave");
                 else if(game.status=="playing"){
-                    float dx=(Input.GetKey(KeyCode.D)||Input.GetKey(KeyCode.RightArrow)?1:0)-(Input.GetKey(KeyCode.A)||Input.GetKey(KeyCode.LeftArrow)?1:0);
-                    float dy=(Input.GetKey(KeyCode.S)||Input.GetKey(KeyCode.DownArrow)?1:0)-(Input.GetKey(KeyCode.W)||Input.GetKey(KeyCode.UpArrow)?1:0);
-                    if(MobileControlsEnabled){dx+=TouchMove.x;dy+=TouchMove.y;}
-                    if(Input.GetKeyDown(KeyCode.Space)||Input.GetKeyDown(KeyCode.J))game.Attack();
-                    if(Input.GetKeyDown(KeyCode.LeftShift)||Input.GetKeyDown(KeyCode.RightShift)||Input.GetKeyDown(KeyCode.K))game.Dodge(dx,dy);
-                    if(Input.GetKeyDown(KeyCode.E)||Input.GetKeyDown(KeyCode.X))game.Interact();
-                    if(Input.GetKeyDown(KeyCode.M))OpenMap();
+                    float dx=(Held(Key.D)||Held(Key.RightArrow)?1:0)-(Held(Key.A)||Held(Key.LeftArrow)?1:0);
+                    float dy=(Held(Key.S)||Held(Key.DownArrow)?1:0)-(Held(Key.W)||Held(Key.UpArrow)?1:0);
+                    if(MobileControlsEnabled){dx+=TouchMove.x;dy+=TouchMove.y;}if(pad!=null){var move=pad.dpad.ReadValue();if(move.sqrMagnitude<.01f)move=pad.leftStick.ReadValue();dx+=move.x;dy-=move.y;}
+                    if(Pressed(Key.Space)||Pressed(Key.J)||pad!=null&&pad.buttonSouth.wasPressedThisFrame)game.Attack();
+                    if(Pressed(Key.LeftShift)||Pressed(Key.RightShift)||Pressed(Key.K)||pad!=null&&pad.buttonWest.wasPressedThisFrame)game.Dodge(dx,dy);
+                    if(Pressed(Key.E)||Pressed(Key.X)||pad!=null&&pad.buttonEast.wasPressedThisFrame)game.Interact();
+                    if(Pressed(Key.M)||pad!=null&&(pad.buttonNorth.wasPressedThisFrame||pad.selectButton.wasPressedThisFrame))OpenMap();
                     if(!mapOpen)game.Tick(Time.deltaTime,dx,dy);
                 }
             }
@@ -85,7 +96,7 @@ namespace AccordingToJames
                     if(smokeFrames==160)CapturePresentation("room-map.png");
                     if(smokeFrames==180){ui.PressForCheck("Back to the dungeon");ui.PressForCheck("Pause");}
                     if(smokeFrames==210)CapturePresentation("pause-menu.png");
-                    if(smokeFrames==230){ui.PressForCheck("Settings");float oldVolume=volume;bool oldMotion=reducedMotion;ui.PressForCheck("Mellow");ui.PressForCheck("Normal");ui.PressForCheck("Quieter");ui.PressForCheck("Louder");ui.PressForCheck("Reduced motion: "+(reducedMotion?"On":"Off"));ui.PressForCheck("Reduced motion: "+(reducedMotion?"On":"Off"));SetVolume(oldVolume);SetReducedMotion(oldMotion);SetDifficulty(game.initial);}
+                    if(smokeFrames==230){ui.PressForCheck("Settings");if(DesktopFeatures){bool saved=Fullscreen;ui.PressForCheck("Display: "+(Fullscreen?"Fullscreen":"Windowed"));if(Fullscreen==saved)throw new Exception("Display toggle failed");ui.PressForCheck("Display: "+(Fullscreen?"Fullscreen":"Windowed"));if(Fullscreen!=saved)throw new Exception("Display setting restore failed");Debug.Log("ACCORDING_TO_JAMES_DISPLAY_OK: fullscreen toggle and windowed restore");}float oldVolume=volume;bool oldMotion=reducedMotion;ui.PressForCheck("Mellow");ui.PressForCheck("Normal");ui.PressForCheck("Quieter");ui.PressForCheck("Louder");ui.PressForCheck("Reduced motion: "+(reducedMotion?"On":"Off"));ui.PressForCheck("Reduced motion: "+(reducedMotion?"On":"Off"));SetVolume(oldVolume);SetReducedMotion(oldMotion);SetDifficulty(game.initial);}
                     if(smokeFrames==260)CapturePresentation("settings-menu.png");
                     if(smokeFrames==280){ui.PressForCheck("Done");ui.PressForCheck("Back to the dungeon");game.floor=20;game.NewFloor();game.EnterRoom(game.rooms.Count-1);game.player.inv=99;ProcessEvents();}
                     if(smokeFrames==320){music.VerifyTrack("combat");CapturePresentation("boss-hud.png");}

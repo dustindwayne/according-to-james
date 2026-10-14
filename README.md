@@ -43,3 +43,9 @@ Resources/Audio contains the user's supplied Menu, Exploration and Combat MP3 tr
 Use build-android.ps1 with an Android-capable Unity6000.6.5f1 editor, Android SDK, matching NDKr27c and OpenJDK17 paths. The script stages Assets, Packages and ProjectSettings outside the source checkout, builds ARM64IL2CPP in landscape, and outputs ../According-to-James-Android.apk. This keeps the Windows project's editor version intact. The default APK uses Unity's development signing identity for direct installation; a store release needs a dedicated signing key. Phone gameplay remains to be tested.
 
 Android controls: drag the left stick to move; use right-side Swing, Dodge and Interact. Map and Pause remain at the bottom. Touch input is disabled while menus/dialogue block gameplay. Desktop --touch-preview --self-test runs pointer-direction/release and action checks alongside the rendered UI checks.
+
+## Desktop settings and updates (v0.7)
+
+Title and Pause menus include Exit to Desktop. Windowed/Fullscreen is saved in Settings. Check for updates queries the public repository's latest stable release; Download update saves a verified ZIP in the game's persistent-data Updates folder. Open download folder lets you extract the update manually. No downloaded executable is launched automatically. Shrine saves are stored separately from the game installation.
+
+Gamepads follow SNES button positions: B(bottom) Swing, Y(left) Dodge, A(right) Interact/Confirm, X(top) Map, Start Pause, Select Map; D-pad or left stick Move/Menu navigation, B Back. Recognized Input System gamepads use these physical positions even when their printed Xbox/PlayStation labels differ. --controller-check-test verifies these actions and menu navigation with a virtual gamepad; real hardware testing remains useful.

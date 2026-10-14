@@ -18,7 +18,7 @@ namespace AccordingToJames.Editor
             if(!File.Exists(path)){Directory.CreateDirectory("Assets/Scenes");var s=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);EditorSceneManager.SaveScene(s,path);}
             EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(path,true)};
             if(EditorSceneManager.GetActiveScene().path!=path)EditorSceneManager.OpenScene(path);
-            PlayerSettings.companyName="According to James";PlayerSettings.productName="According to James";PlayerSettings.defaultScreenWidth=1280;PlayerSettings.defaultScreenHeight=800;
+            PlayerSettings.bundleVersion=AccordingToJames.BuildVersion.Current;PlayerSettings.companyName="According to James";PlayerSettings.productName="According to James";PlayerSettings.defaultScreenWidth=1280;PlayerSettings.defaultScreenHeight=800;
             AssetDatabase.SaveAssets();
         }
         public static void BuildWindows(){EnsureScene();Directory.CreateDirectory("Assets/Resources/Materials");if(!AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/Materials/DungeonSurface.mat"))AssetDatabase.CreateAsset(new Material(Shader.Find("Standard")),"Assets/Resources/Materials/DungeonSurface.mat");AssetDatabase.SaveAssets();AtlasCompiler.CompileAll();Directory.CreateDirectory("Builds/Windows");var report=BuildPipeline.BuildPlayer(new[]{"Assets/Scenes/Dungeon.unity"},"Builds/Windows/AccordingToJames.exe",BuildTarget.StandaloneWindows64,BuildOptions.None);if(report.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new System.Exception("Unity player build failed");}

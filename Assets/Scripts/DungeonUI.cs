@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +12,7 @@ namespace AccordingToJames
     public sealed class DungeonUI : MonoBehaviour
     {
         GameController owner;Canvas canvas;Camera uiCamera;RectTransform root;
-        Font font;string screenKey="";readonly Dictionary<string,Text> labels=new Dictionary<string,Text>();
+        RectTransform navigationRoot;Font font;string screenKey="";readonly Dictionary<string,Text> labels=new Dictionary<string,Text>();
         Image healthFill,dodgeFill,bossFill,portrait;RectTransform toastBox,contextBox;Text notice,context;
         static readonly Color Ink=new Color(.035f,.045f,.06f),Panel=new Color(.065f,.08f,.10f),Gold=new Color(.87f,.66f,.32f),Cream=new Color(.95f,.9f,.77f),Muted=new Color(.61f,.64f,.65f),Edge=new Color(.35f,.29f,.2f),Red=new Color(.79f,.32f,.27f),Green=new Color(.34f,.67f,.55f);
         public void Initialize(GameController controller)
@@ -20,7 +22,11 @@ namespace AccordingToJames
             var go=new GameObject("Dungeon Interface",typeof(RectTransform),typeof(Canvas),typeof(CanvasScaler),typeof(GraphicRaycaster));go.layer=5;canvas=go.GetComponent<Canvas>();canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=uiCamera;canvas.planeDistance=1;
             var scaler=go.GetComponent<CanvasScaler>();scaler.uiScaleMode=CanvasScaler.ScaleMode.ScaleWithScreenSize;scaler.referenceResolution=new Vector2(1280,800);scaler.screenMatchMode=CanvasScaler.ScreenMatchMode.Expand;
             var design=Node(go.transform,"1280 x 800 interface",0,0,1280,800);design.anchorMin=design.anchorMax=design.pivot=new Vector2(.5f,.5f);design.anchoredPosition=Vector2.zero;root=design;
-            if(!FindFirstObjectByType<EventSystem>())new GameObject("Menu Input",typeof(EventSystem),typeof(StandaloneInputModule));
+            if(!FindFirstObjectByType<EventSystem>()){
+                var inputObject=new GameObject("Menu Input",typeof(EventSystem),typeof(InputSystemUIInputModule));var module=inputObject.GetComponent<InputSystemUIInputModule>();module.AssignDefaultActions();
+                var snesAsset=ScriptableObject.CreateInstance<InputActionAsset>();var snesMap=snesAsset.AddActionMap("SNES UI");var submit=snesMap.AddAction("SNES A Confirm",InputActionType.Button);submit.AddBinding("<Gamepad>/buttonEast");submit.AddBinding("<Keyboard>/enter");
+                var cancel=snesMap.AddAction("SNES B Back",InputActionType.Button);cancel.AddBinding("<Gamepad>/buttonSouth");cancel.AddBinding("<Keyboard>/escape");module.submit=InputActionReference.Create(submit);module.cancel=InputActionReference.Create(cancel);snesMap.Enable();
+            }
             Rebuild();
         }
         public void Invalidate(){screenKey="";}
@@ -30,8 +36,8 @@ namespace AccordingToJames
         {
             if(!owner)return;if(owner.MobileControlsEnabled){var safe=Screen.safeArea;float scale=Mathf.Min(safe.width/1280f,safe.height/800f);root.localScale=Vector3.one*(scale/canvas.scaleFactor);root.anchoredPosition=new Vector2(safe.center.x-Screen.width/2f,safe.center.y-Screen.height/2f)/canvas.scaleFactor;}var g=owner.Game;string key=owner.TitleScreen?"title":"game";
             if(g!=null&&!owner.TitleScreen)key+=":"+g.floor+":"+g.room+":"+(g.Current.boss&&g.Current.enemies.Exists(e=>e.hp>0))+":"+g.status+":"+g.Current.giftTaken+":"+g.Current.fingerPulled;
-            key+=":"+owner.IsPaused+":"+owner.SettingsOpen+":"+owner.MapOpen;
-            if(key!=screenKey){screenKey=key;Rebuild();}
+            key+=":"+owner.IsPaused+":"+owner.SettingsOpen+":"+owner.MapOpen+":"+owner.Fullscreen+":"+owner.Updater.State+":"+owner.ControllerConnected;
+            if(key!=screenKey){screenKey=key;Rebuild();}Set("update-status",owner.Updater.Message);
             if(g!=null&&!owner.TitleScreen){Set("dungeon",GameModel.DungeonNames[g.Dungeon]);Set("floor",g.floor.ToString("00")+" / 30");Set("room",(g.room+1).ToString("00")+" / "+g.rooms.Count.ToString("00"));Set("health",Mathf.CeilToInt(g.player.hp)+" / "+Mathf.CeilToInt(g.player.maxHp));Set("sword",g.Sword.ToString("00"));
                 Fill(healthFill,g.player.hp/g.player.maxHp,218);Fill(dodgeFill,1-g.player.dodgeCooldown/1.25f,96);Set("dodge",g.player.dodgeCooldown>0?"RECHARGING":"DODGE READY");
                 Set("checkpoint",g.checkpointFloor>0?"LAST REST SHRINE · FLOOR "+g.checkpointFloor.ToString("00"):"NO SHRINE SAVE YET · REST ON FLOORS 1, 5, 9 OF EACH DUNGEON");
@@ -58,28 +64,30 @@ namespace AccordingToJames
         }
         Text Text(Transform parent,float x,float y,float w,float h,string value,int size=18,Color? color=null,bool bold=false,TextAnchor align=TextAnchor.UpperLeft,string key=null)
         {
-            var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key=="dungeon"||key=="effect"||key=="james-result"){text.resizeTextForBestFit=true;text.resizeTextMinSize=Mathf.Max(12,size-3);text.resizeTextMaxSize=size;}if(key!=null)labels[key]=text;return text;
+            var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key=="dungeon"||key=="effect"||key=="james-result"||key=="update-status"){text.resizeTextForBestFit=true;text.resizeTextMinSize=Mathf.Max(12,size-3);text.resizeTextMaxSize=size;}if(key!=null)labels[key]=text;return text;
         }
         Image Picture(Transform parent,Sprite sprite,float x,float y,float w,float h){var n=Node(parent,"Portrait",x,y,w,h);var image=n.gameObject.AddComponent<Image>();image.sprite=sprite;image.preserveAspect=true;image.raycastTarget=false;return image;}
         void Button(Transform parent,float x,float y,float w,string title,Action action,bool primary=false,bool enabled=true,float height=54)
         {
-            var image=Box(parent,x,y,w,height,Color.white,true);var n=image.rectTransform;image.sprite=owner.Art.Menus[1,primary?1:0];image.type=Image.Type.Sliced;image.pixelsPerUnitMultiplier=2;
+            var image=Box(parent,x,y,w,height,Color.white,true);var n=image.rectTransform;image.sprite=owner.Art.Menus[1,primary?1:0];image.type=Image.Type.Sliced;image.pixelsPerUnitMultiplier=3;
             var button=n.gameObject.AddComponent<Button>();button.targetGraphic=image;var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(1.2f,1.15f,1.05f);colors.pressedColor=new Color(.7f,.7f,.7f);colors.disabledColor=new Color(.5f,.5f,.5f,.7f);button.colors=colors;button.interactable=enabled;button.onClick.AddListener(()=>{action();Invalidate();});
-            button.transition=Selectable.Transition.SpriteSwap;button.spriteState=new SpriteState{highlightedSprite=primary?owner.Art.Menus[1,1]:owner.Art.Menus[2,1],pressedSprite=owner.Art.Menus[1,1],selectedSprite=primary?owner.Art.Menus[1,1]:owner.Art.Menus[2,1],disabledSprite=owner.Art.Menus[2,0]};Text(n,16,0,w-32,height,title,18,primary&&enabled?Ink:Cream,true,TextAnchor.MiddleCenter);
+            button.transition=Selectable.Transition.SpriteSwap;button.spriteState=new SpriteState{highlightedSprite=primary?owner.Art.Menus[1,1]:owner.Art.Menus[2,1],pressedSprite=owner.Art.Menus[1,1],selectedSprite=primary?owner.Art.Menus[1,1]:owner.Art.Menus[2,1],disabledSprite=owner.Art.Menus[2,0]};Text(n,24,6,w-48,height-12,title,17,primary&&enabled?Ink:Cream,true,TextAnchor.MiddleCenter);
         }
         void Rebuild()
         {
-            if(EventSystem.current)EventSystem.current.SetSelectedGameObject(null);for(int i=root.childCount-1;i>=0;i--){var child=root.GetChild(i).gameObject;child.SetActive(false);Destroy(child);}labels.Clear();healthFill=dodgeFill=bossFill=portrait=null;toastBox=contextBox=null;
+            if(EventSystem.current)EventSystem.current.SetSelectedGameObject(null);for(int i=root.childCount-1;i>=0;i--){var child=root.GetChild(i).gameObject;child.SetActive(false);Destroy(child);}labels.Clear();navigationRoot=null;healthFill=dodgeFill=bossFill=portrait=null;toastBox=contextBox=null;
             if(owner.TitleScreen)Title();else if(owner.Game!=null)HUD();
             if(owner.SettingsOpen)Settings();else if(owner.MapOpen)Map();else if(owner.IsPaused)Pause();else if(owner.Game!=null&&!owner.TitleScreen){if(owner.Game.status=="talking")James();else if(owner.Game.status=="dead"||owner.Game.status=="won")Ending();}
+            if(owner.ControllerConnected&&navigationRoot&&EventSystem.current){foreach(var button in navigationRoot.GetComponentsInChildren<Button>())if(button.interactable){EventSystem.current.SetSelectedGameObject(button.gameObject);break;}}
         }
         void Title()
         {
-            Box(root,0,0,1280,800,Ink);var tex=Resources.Load<Texture2D>("Art/TitleScreen");if(tex){var image=Node(root,"Generated title artwork",0,0,1280,800).gameObject.AddComponent<RawImage>();image.texture=tex;image.raycastTarget=false;}
-            var p=Frame(root,806,176,390,448);Text(p,34,103,322,24,"3 DUNGEONS · 30 FLOORS",15,Cream,true,TextAnchor.MiddleCenter);
+            navigationRoot=root;Box(root,0,0,1280,800,Ink);var tex=Resources.Load<Texture2D>("Art/TitleScreen");if(tex){var image=Node(root,"Generated title artwork",0,0,1280,800).gameObject.AddComponent<RawImage>();image.texture=tex;image.raycastTarget=false;}
+            var p=Frame(root,806,125,390,548);Text(p,34,103,322,24,"3 DUNGEONS · 30 FLOORS",15,Cream,true,TextAnchor.MiddleCenter);
             Button(p,34,152,322,"Start Game",()=>owner.NewRun(),true,true,60);Button(p,34,229,322,"Continue",()=>owner.ContinueRun(),false,owner.HasCheckpoint,60);Button(p,34,306,322,"Settings",()=>owner.OpenSettings(),false,true,60);
-            Text(p,34,387,322,26,owner.HasCheckpoint?"Continue from your last rest shrine.":"No saved adventure yet.",13,Cream,false,TextAnchor.MiddleCenter);
-            Frame(root,28,744,560,36,new Color(1,1,1,.95f));Text(root,44,754,532,24,owner.MobileControlsEnabled?"DRAG TO MOVE     TAP SWING, DODGE OR INTERACT":"WASD MOVE    SPACE SWING    SHIFT DODGE    E INTERACT",12,Cream,true);
+            if(owner.DesktopFeatures)Button(p,34,383,322,"Exit to Desktop",()=>owner.ExitToDesktop(),false,true,60);
+            Text(p,34,464,322,26,owner.HasCheckpoint?"Continue from your last rest shrine.":"No saved adventure yet.",13,Cream,false,TextAnchor.MiddleCenter);
+            Frame(root,28,744,560,36,new Color(1,1,1,.95f));Text(root,44,754,532,24,owner.ControllerConnected?"D-PAD MOVE   B SWING   Y DODGE   A INTERACT   START PAUSE":owner.MobileControlsEnabled?"DRAG TO MOVE     TAP SWING, DODGE OR INTERACT":"WASD MOVE    SPACE SWING    SHIFT DODGE    E INTERACT",12,Cream,true);
         }
         void HUD()
         {
@@ -88,11 +96,11 @@ namespace AccordingToJames
             Text(p,570,22,130,18,"HEALTH",11,Muted,true);Text(p,680,22,108,18,"",12,Cream,true,TextAnchor.UpperRight,"health");Box(p,570,51,218,12,new Color(.2f,.12f,.12f));healthFill=Box(p,570,51,218,12,Red);Box(p,570,52,218,2,new Color(1,.7f,.5f,.28f));
             Box(p,815,18,1,49,Edge);Text(p,842,22,90,18,"SWORD",11,Muted,true);Text(p,842,43,90,28,"",22,Gold,true,key:"sword");
             Box(root,157,107,966,2,Edge);Box(root,157,710,966,2,Edge);Box(root,157,107,2,605,Edge);Box(root,1121,107,2,605,Edge);
-            var controls=Frame(root,160,724,960,56);Text(controls,26,17,365,24,owner.MobileControlsEnabled?"DRAG TO MOVE · TAP TO ACT":"SPACE  Swing     SHIFT  Dodge     E  Interact",14,Cream);Text(controls,414,11,140,18,"",10,Muted,true,key:"dodge");Box(controls,414,33,96,5,Edge);dodgeFill=Box(controls,414,33,96,5,Green);
+            var controls=Frame(root,160,724,960,56);Text(controls,26,17,365,24,owner.ControllerConnected?"B Swing     Y Dodge     A Interact":owner.MobileControlsEnabled?"DRAG TO MOVE · TAP TO ACT":"SPACE  Swing     SHIFT  Dodge     E  Interact",14,Cream);Text(controls,414,11,140,18,"",10,Muted,true,key:"dodge");Box(controls,414,33,96,5,Edge);dodgeFill=Box(controls,414,33,96,5,Green);
             Text(controls,542,18,200,20,"",12,Gold,true,key:"effect");Button(controls,752,8,84,"Map",()=>owner.OpenMap(),false,true,40);Button(controls,846,8,96,"Pause",()=>owner.TogglePause(),false,true,40);
             Text(root,160,784,700,16,"",10,Muted,true,key:"checkpoint");Text(root,850,784,270,16,"",10,Gold,true,TextAnchor.UpperRight,"objective");
             toastBox=Frame(root,275,570,730,64,new Color(.05f,.055f,.065f,.95f));notice=Text(toastBox,40,12,650,40,"",16,Cream,false,TextAnchor.MiddleCenter);
-            contextBox=Frame(root,370,657,540,40,new Color(.05f,.055f,.065f,.96f));Text(contextBox,26,9,34,24,"[E]",15,Gold,true);context=Text(contextBox,66,9,446,24,"",15,Cream);
+            contextBox=Frame(root,370,657,540,40,new Color(.05f,.055f,.065f,.96f));Text(contextBox,26,9,34,24,owner.ControllerConnected?"[A]":"[E]",15,Gold,true);context=Text(contextBox,66,9,446,24,"",15,Cream);
             if(g.Current.boss&&g.Current.enemies.Exists(e=>e.hp>0)){var b=Frame(root,415,125,450,66,new Color(.045f,.055f,.07f,.95f));Text(b,25,12,400,24,GameModel.BossNames[g.Dungeon],16,Gold,true,TextAnchor.MiddleCenter);Box(b,25,45,400,6,Edge);bossFill=Box(b,25,45,400,6,Red);}
         }
         void TouchControls()
@@ -106,7 +114,7 @@ namespace AccordingToJames
         }
         RectTransform Modal(string eyebrow,string title,float width,float height)
         {
-            Box(root,0,0,1280,800,new Color(.015f,.02f,.03f,.82f),true);var p=Frame(root,(1280-width)/2,(800-height-56)/2,width,height+56);Text(p,48,82,width-96,20,eyebrow,12,Gold,true);Text(p,48,118,width-96,46,title,32,Cream,true);Box(p,36,170,width-72,1,Edge);return Node(p,"Menu content",0,38,width,height);
+            Box(root,0,0,1280,800,new Color(.015f,.02f,.03f,.82f),true);var p=Frame(root,(1280-width)/2,(800-height-56)/2,width,height+56);Text(p,48,82,width-96,20,eyebrow,12,Gold,true);Text(p,48,118,width-96,46,title,32,Cream,true);Box(p,36,170,width-72,1,Edge);navigationRoot=p;return Node(p,"Menu content",0,38,width,height);
         }
         void James()
         {
@@ -117,15 +125,25 @@ namespace AccordingToJames
         }
         void Pause()
         {
-            var p=Modal("A MOMENT OF QUESTIONABLE JUDGMENT","Take a breather.",600,490);Text(p,36,154,528,55,"James is probably preparing another suggestion.\nYou may wish to remain paused.",17,Muted);Button(p,36,227,528,"Back to the dungeon",()=>owner.Resume(),true);Button(p,36,293,528,"Settings",()=>owner.OpenSettings());Button(p,36,359,528,"Return to title",()=>owner.ReturnToTitle());Text(p,36,438,528,28,"Only rest shrines save progress.",13,Gold,false,TextAnchor.MiddleCenter);
+            var p=Modal("A MOMENT OF QUESTIONABLE JUDGMENT","Take a breather.",600,560);Text(p,36,154,528,55,"James is probably preparing another suggestion.\nYou may wish to remain paused.",17,Muted);Button(p,36,227,528,"Back to the dungeon",()=>owner.Resume(),true);Button(p,36,293,528,"Settings",()=>owner.OpenSettings());Button(p,36,359,528,"Return to title",()=>owner.ReturnToTitle());if(owner.DesktopFeatures)Button(p,36,425,528,"Exit to Desktop",()=>owner.ExitToDesktop());Text(p,36,504,528,28,"Only rest shrines save progress.",13,Gold,false,TextAnchor.MiddleCenter);
         }
         void Settings()
         {
-            var p=Modal("MAKE YOUR OWN BAD DECISIONS","Settings",720,570);Text(p,36,158,648,24,"STARTING DIFFICULTY",12,Gold,true);Text(p,36,187,648,24,"Applies to new runs. Every floor grows harder.",16,Muted);
-            float[] values={.75f,1,1.5f};string[] names={"Mellow","Normal","Spicy"};for(int i=0;i<3;i++){float v=values[i];Button(p,36+i*224,227,208,names[i],()=>{owner.SetDifficulty(v);Invalidate();},owner.Initial==v);}
-            Text(p,36,314,648,25,"MUSIC VOLUME",12,Gold,true);Text(p,36,348,648,24,Mathf.RoundToInt(owner.Volume*100)+"%",20,Cream,true,TextAnchor.MiddleCenter);
-            Button(p,36,342,120,"Quieter",()=>{owner.SetVolume(owner.Volume-.1f);Invalidate();},false,true,42);Button(p,564,342,120,"Louder",()=>{owner.SetVolume(owner.Volume+.1f);Invalidate();},false,true,42);Box(p,188,393,344,6,Edge);Box(p,188,393,344*owner.Volume,6,Gold);
-            Button(p,36,431,648,"Reduced motion: "+(owner.ReducedMotion?"On":"Off"),()=>{owner.SetReducedMotion(!owner.ReducedMotion);Invalidate();});Button(p,36,501,648,"Done",()=>owner.CloseSettings(),true);
+            var p=Modal("MAKE YOUR OWN BAD DECISIONS","Settings",800,640);
+            Text(p,36,145,728,20,"STARTING DIFFICULTY",12,Gold,true);Text(p,36,170,728,24,"Applies to new runs. Every floor grows harder.",16,Muted);
+            float[] values={.75f,1,1.5f};string[] names={"Mellow","Normal","Spicy"};for(int i=0;i<3;i++){float v=values[i];Button(p,36+i*244,194,232,names[i],()=>{owner.SetDifficulty(v);Invalidate();},owner.Initial==v,true,44);}
+            Text(p,36,251,728,20,"MUSIC VOLUME",12,Gold,true);Text(p,184,279,432,24,Mathf.RoundToInt(owner.Volume*100)+"%",20,Cream,true,TextAnchor.MiddleCenter);
+            Button(p,36,273,132,"Quieter",()=>{owner.SetVolume(owner.Volume-.1f);Invalidate();},false,true,42);Button(p,632,273,132,"Louder",()=>{owner.SetVolume(owner.Volume+.1f);Invalidate();},false,true,42);Box(p,208,314,384,5,Edge);Box(p,208,314,384*owner.Volume,5,Gold);
+            Button(p,36,334,354,"Reduced motion: "+(owner.ReducedMotion?"On":"Off"),()=>{owner.SetReducedMotion(!owner.ReducedMotion);Invalidate();},false,true,46);
+            if(owner.DesktopFeatures)Button(p,410,334,354,"Display: "+(owner.Fullscreen?"Fullscreen":"Windowed"),()=>owner.SetFullscreen(!owner.Fullscreen),false,true,46);
+            else Text(p,410,345,354,24,"Landscape touch controls",16,Muted,false,TextAnchor.MiddleCenter);
+            Text(p,36,398,728,20,"GAME UPDATES · GITHUB",12,Gold,true);
+            if(owner.DesktopFeatures){Button(p,36,426,354,owner.Updater.Busy?"Please wait…":"Check for updates",()=>owner.Updater.Check(),false,!owner.Updater.Busy,46);
+                Button(p,410,426,354,owner.Updater.Downloaded?"Open download folder":"Download update",()=>{if(owner.Updater.Downloaded)owner.Updater.OpenDownload();else owner.Updater.Download();},owner.Updater.CanDownload,owner.Updater.CanDownload||owner.Updater.Downloaded,46);
+                Text(p,44,489,712,50,"",16,Cream,false,TextAnchor.MiddleCenter,"update-status");}
+            else {Button(p,36,426,728,"View GitHub releases",()=>Application.OpenURL("https://github.com/dustindwayne/according-to-james/releases/latest"),false,true,46);Text(p,44,489,712,50,"Version "+BuildVersion.Current,16,Cream,false,TextAnchor.MiddleCenter);}
+            Text(p,36,533,728,20,"SNES: B Swing · Y Dodge · A Interact · X Map · Start Pause",13,Muted,false,TextAnchor.MiddleCenter);
+            Button(p,36,561,728,"Done",()=>owner.CloseSettings(),true,true,50);
         }
         void Map()
         {

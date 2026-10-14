@@ -14,7 +14,7 @@ namespace AccordingToJames.Editor {
    PlayerSettings.SetApplicationIdentifier(NamedBuildTarget.Android,"com.accordingtojames.dungeon");
    PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android,ScriptingImplementation.IL2CPP);PlayerSettings.Android.targetArchitectures=AndroidArchitecture.ARM64;
    PlayerSettings.Android.minSdkVersion=AndroidSdkVersions.AndroidApiLevel26;PlayerSettings.Android.targetSdkVersion=AndroidSdkVersions.AndroidApiLevel36;
-   PlayerSettings.defaultInterfaceOrientation=UIOrientation.LandscapeLeft;PlayerSettings.Android.useCustomKeystore=false;PlayerSettings.Android.bundleVersionCode=7;PlayerSettings.bundleVersion="0.6.1";
+   PlayerSettings.defaultInterfaceOrientation=UIOrientation.LandscapeLeft;PlayerSettings.Android.useCustomKeystore=false;PlayerSettings.Android.bundleVersionCode=AccordingToJames.BuildVersion.AndroidCode;PlayerSettings.bundleVersion=AccordingToJames.BuildVersion.Current;
    PlayerSettings.SetGraphicsAPIs(BuildTarget.Android,new[]{UnityEngine.Rendering.GraphicsDeviceType.OpenGLES3});EditorUserBuildSettings.buildAppBundle=false;
    Directory.CreateDirectory("Builds/Android");var report=BuildPipeline.BuildPlayer(new[]{"Assets/Scenes/Dungeon.unity"},"Builds/Android/AccordingToJames.apk",BuildTarget.Android,BuildOptions.None);if(report.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new Exception("Android build failed");
 #else
