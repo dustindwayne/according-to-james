@@ -7,12 +7,12 @@ namespace AccordingToJames
     // Only compiled Unity sprites are used at runtime. No procedural substitute artwork.
     public sealed class SpriteAtlas
     {
-        public readonly Sprite[,] Hero,JamesFrames,JamesPortraits,Enemies,Bosses,Props,Menus,Effects;
+        public readonly Sprite[,] FloorDepth,Hero,JamesGoofy,JamesGoofyPortraits,JamesFrames,JamesPortraits,Enemies,Bosses,Props,Menus,Effects;
         public readonly Sprite[] Rooms;
         public Sprite James=>JamesFrames[0,0];
         public SpriteAtlas()
         {
-            Hero=Sheet("Hero",4,8);JamesFrames=Sheet("JamesAnimated",2,4);JamesPortraits=Sheet("JamesAnimated",2,4,"_portrait");Enemies=Sheet("Enemies",3,6);
+            FloorDepth=Sheet("FloorDepth",3,4);Hero=Sheet("Hero",4,8);JamesGoofy=Sheet("JamesGoofy",4,6);JamesGoofyPortraits=Sheet("JamesGoofy",4,6,"_portrait");JamesFrames=Sheet("JamesAnimated",2,4);JamesPortraits=Sheet("JamesAnimated",2,4,"_portrait");Enemies=Sheet("Enemies",3,6);
             Props=Sheet("Props",4,4);Menus=Sheet("Menus",3,2);Effects=Sheet("Effects",2,4);Bosses=new Sprite[12,4];
             string[] bosses={"BossGranny","BossLunchLady","BossChef"};for(int b=0;b<3;b++){var sheet=Sheet(bosses[b],4,4);for(int row=0;row<4;row++)for(int col=0;col<4;col++)Bosses[b*4+row,col]=sheet[row,col];}
             Rooms=new Sprite[3];string[] rooms={"RoomCellars","RoomPantry","RoomKitchen"};for(int i=0;i<3;i++){var texture=Resources.Load<Texture2D>("Art/Compiled/"+rooms[i]);if(!texture)throw new Exception("Missing dungeon art: "+rooms[i]);Rooms[i]=Sprite.Create(texture,new Rect(0,0,texture.width,texture.height),new Vector2(.5f,.5f),100);}

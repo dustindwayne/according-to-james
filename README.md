@@ -27,3 +27,7 @@ To rebuild Windows, run `build.ps1` in PowerShell. To run the independent campai
 Validation: Unity compiles and builds Windows successfully. Independent campaign checks cover all thirty floors, connectivity, three boss patterns, checkpoint schedule, safe gifts, finger pulls, trapped chests, secret pitfalls, pathfinding, ranged attacks and retreat. The native runtime self-test initializes the sprite atlas, world rendering, music and movement. Run the built executable with `--self-test` for this check. Audible playback still needs a manual playthrough.
 
 Source artwork was generated with the built-in image generator. Current atlas prompts and paths are recorded in `ART_PROMPTS.md`. This repository contains only the Unity project; Windows builds are distributed through Releases.
+
+## Current presentation (v0.5)
+
+The active game is 2D, with illustrated dimensional walls, generated beveled floor tiles, soft shadows, warm torch/shrine lighting and camera-facing shaded character art. James has 24 new poses and autonomous pacing/dancing. The experimental ProceduralDungeon component is retained for reference but is not instantiated by the game. Imported Meshy experiments remain outside the Unity repository.

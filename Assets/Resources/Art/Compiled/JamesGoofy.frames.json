@@ -1,0 +1,177 @@
+{
+    "source": "Assets/ArtSources/JamesGoofy.png",
+    "rows": 4,
+    "columns": 6,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "JamesGoofy_0_0",
+            "sourceX": 86,
+            "sourceY": 772,
+            "sourceWidth": 172,
+            "sourceHeight": 242
+        },
+        {
+            "name": "JamesGoofy_0_1",
+            "sourceX": 340,
+            "sourceY": 770,
+            "sourceWidth": 172,
+            "sourceHeight": 244
+        },
+        {
+            "name": "JamesGoofy_0_2",
+            "sourceX": 571,
+            "sourceY": 771,
+            "sourceWidth": 173,
+            "sourceHeight": 243
+        },
+        {
+            "name": "JamesGoofy_0_3",
+            "sourceX": 804,
+            "sourceY": 773,
+            "sourceWidth": 183,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesGoofy_0_4",
+            "sourceX": 1052,
+            "sourceY": 774,
+            "sourceWidth": 174,
+            "sourceHeight": 240
+        },
+        {
+            "name": "JamesGoofy_0_5",
+            "sourceX": 1291,
+            "sourceY": 774,
+            "sourceWidth": 178,
+            "sourceHeight": 240
+        },
+        {
+            "name": "JamesGoofy_1_0",
+            "sourceX": 65,
+            "sourceY": 510,
+            "sourceWidth": 175,
+            "sourceHeight": 252
+        },
+        {
+            "name": "JamesGoofy_1_1",
+            "sourceX": 317,
+            "sourceY": 515,
+            "sourceWidth": 177,
+            "sourceHeight": 246
+        },
+        {
+            "name": "JamesGoofy_1_2",
+            "sourceX": 549,
+            "sourceY": 516,
+            "sourceWidth": 173,
+            "sourceHeight": 246
+        },
+        {
+            "name": "JamesGoofy_1_3",
+            "sourceX": 792,
+            "sourceY": 512,
+            "sourceWidth": 178,
+            "sourceHeight": 249
+        },
+        {
+            "name": "JamesGoofy_1_4",
+            "sourceX": 1045,
+            "sourceY": 512,
+            "sourceWidth": 174,
+            "sourceHeight": 249
+        },
+        {
+            "name": "JamesGoofy_1_5",
+            "sourceX": 1281,
+            "sourceY": 510,
+            "sourceWidth": 178,
+            "sourceHeight": 251
+        },
+        {
+            "name": "JamesGoofy_2_0",
+            "sourceX": 20,
+            "sourceY": 274,
+            "sourceWidth": 283,
+            "sourceHeight": 241
+        },
+        {
+            "name": "JamesGoofy_2_1",
+            "sourceX": 321,
+            "sourceY": 277,
+            "sourceWidth": 169,
+            "sourceHeight": 236
+        },
+        {
+            "name": "JamesGoofy_2_2",
+            "sourceX": 546,
+            "sourceY": 276,
+            "sourceWidth": 203,
+            "sourceHeight": 239
+        },
+        {
+            "name": "JamesGoofy_2_3",
+            "sourceX": 765,
+            "sourceY": 276,
+            "sourceWidth": 276,
+            "sourceHeight": 230
+        },
+        {
+            "name": "JamesGoofy_2_4",
+            "sourceX": 1072,
+            "sourceY": 275,
+            "sourceWidth": 195,
+            "sourceHeight": 229
+        },
+        {
+            "name": "JamesGoofy_2_5",
+            "sourceX": 1302,
+            "sourceY": 278,
+            "sourceWidth": 180,
+            "sourceHeight": 222
+        },
+        {
+            "name": "JamesGoofy_3_0",
+            "sourceX": 78,
+            "sourceY": 17,
+            "sourceWidth": 165,
+            "sourceHeight": 261
+        },
+        {
+            "name": "JamesGoofy_3_1",
+            "sourceX": 317,
+            "sourceY": 17,
+            "sourceWidth": 178,
+            "sourceHeight": 259
+        },
+        {
+            "name": "JamesGoofy_3_2",
+            "sourceX": 573,
+            "sourceY": 17,
+            "sourceWidth": 159,
+            "sourceHeight": 255
+        },
+        {
+            "name": "JamesGoofy_3_3",
+            "sourceX": 801,
+            "sourceY": 17,
+            "sourceWidth": 191,
+            "sourceHeight": 256
+        },
+        {
+            "name": "JamesGoofy_3_4",
+            "sourceX": 1041,
+            "sourceY": 17,
+            "sourceWidth": 247,
+            "sourceHeight": 256
+        },
+        {
+            "name": "JamesGoofy_3_5",
+            "sourceX": 1318,
+            "sourceY": 17,
+            "sourceWidth": 176,
+            "sourceHeight": 254
+        }
+    ]
+}

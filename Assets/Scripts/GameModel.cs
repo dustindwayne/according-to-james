@@ -17,7 +17,7 @@ namespace AccordingToJames
     [Serializable] public class Shot { public float x,y,vx,vy,life,age; public string type; }
     [Serializable] public class Room
     {
-        public int id,advice;public string role; public float chestAnim; public bool boss,visited,cleared,loot,looted,james,chest,chestOpened,chestTrap,secret,secretKnown,secretUsed,secretTrap,giftTaken,fingerPulled,shrine;
+        public int id,advice;public float jamesX=480,jamesY=235,jamesClock;public bool jamesWalking;public string jamesFacing="right";public string role; public float chestAnim; public bool boss,visited,cleared,loot,looted,james,chest,chestOpened,chestTrap,secret,secretKnown,secretUsed,secretTrap,giftTaken,fingerPulled,shrine;
         public List<Enemy> enemies=new List<Enemy>(); public List<Block> obstacles=new List<Block>(),spikes=new List<Block>(); public List<Shot> shots=new List<Shot>();
     }
     public class GameEvent { public string type; public int value; public GameEvent(string t,int v=0){type=t;value=v;} }
@@ -29,7 +29,7 @@ namespace AccordingToJames
         [NonSerialized] public List<GameEvent> events=new List<GameEvent>();
         public static readonly string[] DungeonNames={"Butterscotch Cellars","The Scorched Pantry","Grumble's Midnight Kitchen"};
         public const float FloorLeft=95,FloorRight=865,FloorTop=125,FloorBottom=475;
-        public const float SecretX=270,SecretY=145;
+        public const float SecretX=270,SecretY=145; public const float DoorCenterY=300;
         public static readonly string[] BossNames={"Butterscotch Granny","Lunch Lady Ladle Fury","Chef Grumble"};
         public static readonly string[] Advice={"Drink that. It's probably fine.","Step on the trap. Builds character.","Catch the candy with your face.","Stand in the green cloud.","Fight all of them. You got this.","That cafeteria tray is a hug.","Flour is just free seasoning.","Sausages are a shortcut. Trust me.","Go down another floor. It gets easier."};
         public static readonly string[] Followup={"What could possibly go wrong?","Traps are just floor hugs.","Dentists hate this one trick.","It is probably a healing mist.","I'll watch from way over here.","Go on. Get a little closer.","Breathe deep. Tastes like pie.","Those sausages are decorative.","I have absolutely no evidence for that."};
@@ -37,6 +37,9 @@ namespace AccordingToJames
         public float Scale {get{return initial*(float)Math.Pow(1.08,floor-1);}}
         public int Sword {get{return 4+(floor-1)/3*2+(boost>0?2:0);}}
         public Room Current {get{return rooms[room];}}
+        public float JamesX=>Current.jamesX==0?480:Current.jamesX;
+        public float JamesY=>Current.jamesY==0?235:Current.jamesY;
+        void AnimateJames(float dt){var r=Current;if(!r.james)return;r.jamesWalking=false;r.jamesClock+=dt;if(Distance(player.x-JamesX,player.y-JamesY)<125)return;float phase=r.jamesClock%18;if(phase<6){float target=480+(float)Math.Sin(phase*Math.PI/3)*55;float delta=target-JamesX;r.jamesFacing=delta<0?"left":"right";r.jamesWalking=Math.Abs(delta)>.02f;r.jamesX=JamesX+Math.Sign(delta)*Math.Min(Math.Abs(delta),60*dt);r.jamesY=235;}}
         public bool AllCleared {get{return rooms.TrueForAll(r=>r.cleared&&r.visited);}}
         public static int RoomCount(int f){return 4+(f-1)%3;}
         public GameModel(float difficulty=1,int seed=71337){initial=difficulty;this.seed=seed;randomState=seed;NewFloor();}
@@ -68,7 +71,7 @@ namespace AccordingToJames
         public bool EnterRoom(int id,string side="")
         {
             if(id<0||id>=rooms.Count)return false;bool previouslyCleared=AllCleared;room=id;
-            player.x=side=="left"?865:side=="right"?95:480;player.y=side=="left"||side=="right"?310:side=="up"?470:side=="down"?125:450;
+            player.x=side=="left"?865:side=="right"?95:480;player.y=side=="left"||side=="right"?DoorCenterY:side=="up"?470:side=="down"?125:450;
             player.inv=.8f;player.attack=0;player.moving=false;Current.visited=true;Emit("room",id);if(!Current.cleared)Notice("The portcullises drop. Clear this room to lift them.");if(!previouslyCleared&&AllCleared)Emit("stairsOpen");return true;
         }
         public static float Distance(float x,float y){return (float)Math.Sqrt(x*x+y*y);}
@@ -79,15 +82,15 @@ namespace AccordingToJames
             if(x>=FloorLeft&&x<=FloorRight&&y>=FloorTop&&y<=FloorBottom)return true;
             if(DoorOpen("up")&&x>=438&&x<=522&&y>=30&&y<FloorTop)return true;
             if(DoorOpen("down")&&x>=438&&x<=522&&y>FloorBottom&&y<=565)return true;
-            if(DoorOpen("left")&&y>=276&&y<=344&&x>=30&&x<FloorLeft)return true;
-            if(DoorOpen("right")&&y>=276&&y<=344&&x>FloorRight&&x<=930)return true;return false;
+            if(DoorOpen("left")&&y>=DoorCenterY-34&&y<=DoorCenterY+34&&x>=30&&x<FloorLeft)return true;
+            if(DoorOpen("right")&&y>=DoorCenterY-34&&y<=DoorCenterY+34&&x>FloorRight&&x<=930)return true;return false;
         }
         public bool Blocked(float x,float y)
         {
             if(!FloorAllows(x,y))return true;
             if(Current.chest&&Math.Abs(x-205)<40&&Math.Abs(y-235)<21)return true;
             if(Current.shrine&&Math.Abs(x-710)<31&&Math.Abs(y-420)<17)return true;
-            if(Current.james&&Distance(x-480,y-235)<23)return true;
+            if(Current.james&&Distance(x-JamesX,y-JamesY)<23)return true;
             if(room==rooms.Count-1&&!AllCleared&&x>762&&x<848&&y>155&&y<233)return true;
             return Current.obstacles.Exists(o=>x+13>o.x&&x-13<o.x+o.w&&y+8>o.y&&y-8<o.y+o.h);
         }
@@ -114,10 +117,10 @@ namespace AccordingToJames
             if(Current.shrine&&Distance(player.x-710,player.y-420)<75)return "checkpoint";
             if(Current.chest&&!Current.chestOpened&&Distance(player.x-205,player.y-235)<85)return "chest";
             if(Current.secret&&Current.secretKnown&&!Current.secretUsed&&Distance(player.x-SecretX,player.y-SecretY)<75)return "secret";
-            if(Current.james&&Distance(player.x-480,player.y-235)<105)return "james";
+            if(Current.james&&Distance(player.x-JamesX,player.y-JamesY)<105)return "james";
             if(Current.loot&&!Current.looted&&Distance(player.x-195,player.y-210)<100)return "loot";
             if(room==rooms.Count-1&&Distance(player.x-805,player.y-200)<75)return AllCleared?"stairs":"locked";
-            if(!Current.cleared&&((player.x<160&&Math.Abs(player.y-310)<65)||(player.x>800&&Math.Abs(player.y-310)<65)||(player.y<170&&Math.Abs(player.x-480)<65)||(player.y>430&&Math.Abs(player.x-480)<65)))return "barred";return "";
+            if(!Current.cleared&&((player.x<160&&Math.Abs(player.y-DoorCenterY)<65)||(player.x>800&&Math.Abs(player.y-DoorCenterY)<65)||(player.y<170&&Math.Abs(player.x-480)<65)||(player.y>430&&Math.Abs(player.x-480)<65)))return "barred";return "";
         }
         public bool Interact()
         {
@@ -150,7 +153,7 @@ namespace AccordingToJames
         }
         public void Tick(float dt,float dx=0,float dy=0)
         {
-            if(status!="playing")return;dt=Math.Max(0,Math.Min(.04f,dt));time+=dt;Actor p=player;Room r=Current;
+            if(status!="playing")return;dt=Math.Max(0,Math.Min(.04f,dt));time+=dt;Actor p=player;Room r=Current;AnimateJames(dt);
             if(fall>0){fall=Math.Max(0,fall-dt);p.moving=false;return;}
             p.inv=Math.Max(0,p.inv-dt);p.attack=Math.Max(0,p.attack-dt);p.attackCooldown=Math.Max(0,p.attackCooldown-dt);p.dodge=Math.Max(0,p.dodge-dt);p.dodgeCooldown=Math.Max(0,p.dodgeCooldown-dt);p.slow=Math.Max(0,p.slow-dt);
             float len=Distance(dx,dy);if(len>1){dx/=len;dy/=len;}if(len>.15f&&p.dodge<=0)p.dir=Math.Abs(dx)>Math.Abs(dy)?dx<0?"left":"right":dy<0?"up":"down";
@@ -158,8 +161,8 @@ namespace AccordingToJames
             if(p.dodge>0){dx=p.dx;dy=p.dy;}float speed=p.dodge>0?380:p.slow>0||dizzy>0?145:190;Move(p,dx*speed*dt,dy*speed*dt);
             var n=Neighbors(room);
             r.chestAnim=Math.Max(0,r.chestAnim-dt);
-            if(p.x<45&&Math.Abs(p.y-310)<34&&dx<0&&DoorOpen("left")){EnterRoom(n["left"],"left");return;}
-            if(p.x>915&&Math.Abs(p.y-310)<34&&dx>0&&DoorOpen("right")){EnterRoom(n["right"],"right");return;}
+            if(p.x<45&&Math.Abs(p.y-DoorCenterY)<34&&dx<0&&DoorOpen("left")){EnterRoom(n["left"],"left");return;}
+            if(p.x>915&&Math.Abs(p.y-DoorCenterY)<34&&dx>0&&DoorOpen("right")){EnterRoom(n["right"],"right");return;}
             if(p.y<50&&Math.Abs(p.x-480)<42&&dy<0&&DoorOpen("up")){EnterRoom(n["up"],"up");return;}
             if(p.y>550&&Math.Abs(p.x-480)<42&&dy>0&&DoorOpen("down")){EnterRoom(n["down"],"down");return;}
             foreach(Enemy e in r.enemies)
@@ -203,4 +206,5 @@ namespace AccordingToJames
         }
     }
 }
+
 

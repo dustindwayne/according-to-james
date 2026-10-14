@@ -1,0 +1,93 @@
+{
+    "source": "Assets/ArtSources/FloorDepth.png",
+    "rows": 3,
+    "columns": 4,
+    "cellWidth": 320,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "FloorDepth_0_0",
+            "sourceX": 48,
+            "sourceY": 758,
+            "sourceWidth": 294,
+            "sourceHeight": 295
+        },
+        {
+            "name": "FloorDepth_0_1",
+            "sourceX": 401,
+            "sourceY": 758,
+            "sourceWidth": 295,
+            "sourceHeight": 295
+        },
+        {
+            "name": "FloorDepth_0_2",
+            "sourceX": 751,
+            "sourceY": 758,
+            "sourceWidth": 298,
+            "sourceHeight": 295
+        },
+        {
+            "name": "FloorDepth_0_3",
+            "sourceX": 1107,
+            "sourceY": 758,
+            "sourceWidth": 294,
+            "sourceHeight": 295
+        },
+        {
+            "name": "FloorDepth_1_0",
+            "sourceX": 48,
+            "sourceY": 405,
+            "sourceWidth": 294,
+            "sourceHeight": 297
+        },
+        {
+            "name": "FloorDepth_1_1",
+            "sourceX": 401,
+            "sourceY": 405,
+            "sourceWidth": 295,
+            "sourceHeight": 298
+        },
+        {
+            "name": "FloorDepth_1_2",
+            "sourceX": 752,
+            "sourceY": 404,
+            "sourceWidth": 297,
+            "sourceHeight": 298
+        },
+        {
+            "name": "FloorDepth_1_3",
+            "sourceX": 1107,
+            "sourceY": 404,
+            "sourceWidth": 294,
+            "sourceHeight": 297
+        },
+        {
+            "name": "FloorDepth_2_0",
+            "sourceX": 48,
+            "sourceY": 49,
+            "sourceWidth": 294,
+            "sourceHeight": 299
+        },
+        {
+            "name": "FloorDepth_2_1",
+            "sourceX": 401,
+            "sourceY": 49,
+            "sourceWidth": 295,
+            "sourceHeight": 300
+        },
+        {
+            "name": "FloorDepth_2_2",
+            "sourceX": 752,
+            "sourceY": 49,
+            "sourceWidth": 297,
+            "sourceHeight": 300
+        },
+        {
+            "name": "FloorDepth_2_3",
+            "sourceX": 1107,
+            "sourceY": 48,
+            "sourceWidth": 294,
+            "sourceHeight": 299
+        }
+    ]
+}

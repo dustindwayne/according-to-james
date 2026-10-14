@@ -1,13 +1,13 @@
-# According to James v0.4.0 — Dungeon art and clear menus
+# According to James v0.5.0 — Depth, lighting and goofy James
 
-The start menu now has Start Game, Continue, and Settings on a generated dungeon panel, with the original-poster title artwork. Continue is disabled until a shrine checkpoint exists.
+A playable Unity 2D dungeon crawler with shaded stone architecture, generated beveled floor tiles, soft actor shadows and animated torch/shrine lighting.
 
-- Generated stone and wood menu graphics, readable dialogue panels, and native Unity buttons.
-- Imported animation sheets for James, the hero, three ridiculous bosses and enemies. James has eight idle and interaction poses with uncropped portraits.
-- Three generated dungeon backgrounds, chest opening/trap states, barred doors, shrines, stairs, pits and attack effects.
-- Doors physically block movement until combat is cleared. Stairs require every room to be visited and cleared; connected exits and interaction areas remain reachable.
-- Health carries between floors; difficulty remains in Settings and saves remain restricted to rest shrines.
+- New 24-pose James sheet: left/right pacing, six goofy dance poses and six conversation gestures. James stops pacing when approached but keeps animating; collision and interaction follow his position.
+- Stable character size and isolated sprite extraction prevent neighboring sprites leaking into animation frames.
+- Boss anticipation/recoil, breathing, swirling clouds and rotating projectiles add motion to combat. Existing directional hero and enemy animation sheets remain in use.
+- Left/right doors, collision passages and arrival positions align to the background openings across all three dungeons.
+- Thirty floors, three bosses, Settings-only difficulty, mystery gifts, trapped chests, secrets and shrine checkpoints remain playable.
 
-Validation: complete 30-floor campaign checks; 1,800 room layouts across three difficulties and four seeds; Unity Windows build and rendered menu/button checks. Audible playback still needs manual listening.
+Validation: Unity Windows build; 30-floor campaign and 1,800-layout model checks; James pacing/proximity/interaction tests; side-door transition and arrival tests; rendered menu, dancing/pacing James, chest, and dungeon/boss checks. Audio still needs manual listening.
 
-Extract the Windows ZIP before running AccordingToJames.exe. Keep its Data folder and DLLs alongside it. Unity editor: 6000.3.12f1.
+Extract the ZIP before running AccordingToJames.exe; keep the Data folder and DLLs alongside it. Unity: 6000.3.12f1. The prior 3D blockout is retained in source but is not the active renderer.

@@ -1,0 +1,1221 @@
+fileFormatVersion: 2
+guid: e87916308954bec4488afbf9dfbc6a74
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 1
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: JamesGoofy_0_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 960
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40695e74c92e7e260800000000000000
+      internalID: 7126914096186103300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_0_portrait
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 968
+        width: 185
+        height: 254
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 40e140a6299429c60800000000000000
+      internalID: 7823396395888680452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 960
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0c28ea0a2100fcc0800000000000000
+      internalID: -3679439615478453234
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_1_portrait
+      rect:
+        serializedVersion: 2
+        x: 483
+        y: 968
+        width: 185
+        height: 256
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2ce72be286c2e91d0800000000000000
+      internalID: -3342185047490658622
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_2
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 960
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de2728eb53974ff90800000000000000
+      internalID: -6920773455625162003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_2_portrait
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 968
+        width: 186
+        height: 255
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d70c78ff2422d360800000000000000
+      internalID: 7192851343315044309
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_3
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 960
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2891efc0374b93d60800000000000000
+      internalID: 7870520230038870402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_3_portrait
+      rect:
+        serializedVersion: 2
+        x: 1246
+        y: 968
+        width: 196
+        height: 253
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0a8f8a5cdc936fed0800000000000000
+      internalID: -2380651797071464288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_4
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 960
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 31aae4d57bf65e750800000000000000
+      internalID: 6333591284301605395
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_4_portrait
+      rect:
+        serializedVersion: 2
+        x: 1634
+        y: 968
+        width: 187
+        height: 252
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 01f22e9515b2ccde0800000000000000
+      internalID: -1311625763071316208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_5
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 960
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f19015771caa90a50800000000000000
+      internalID: 6487904486111119647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_0_5_portrait
+      rect:
+        serializedVersion: 2
+        x: 2016
+        y: 968
+        width: 191
+        height: 252
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9e4314bfa8800e7b0800000000000000
+      internalID: -5197144576971688727
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 640
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 869153707c3c0d920800000000000000
+      internalID: 3013123410297690472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_0_portrait
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 648
+        width: 188
+        height: 264
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 975551ad4c9153630800000000000000
+      internalID: 3906056585076888953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 640
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b422745225a603d40800000000000000
+      internalID: 5562062440847843915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_1_portrait
+      rect:
+        serializedVersion: 2
+        x: 481
+        y: 648
+        width: 190
+        height: 258
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 55742c7c307e0c520800000000000000
+      internalID: 2720428178354095957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_2
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 640
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b96b6997e16d89210800000000000000
+      internalID: 1340056315520005787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_2_portrait
+      rect:
+        serializedVersion: 2
+        x: 867
+        y: 648
+        width: 186
+        height: 258
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7870f54fb7a2ee50800000000000000
+      internalID: 6837211624255813756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_3
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 640
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21b335dbccea7d3f0800000000000000
+      internalID: -876039408127362286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_3_portrait
+      rect:
+        serializedVersion: 2
+        x: 1248
+        y: 648
+        width: 191
+        height: 261
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8359301b1b76563d0800000000000000
+      internalID: -3214048746182306504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_4
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 640
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a09d7c443df2809a0800000000000000
+      internalID: -6266706297047492342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_4_portrait
+      rect:
+        serializedVersion: 2
+        x: 1634
+        y: 648
+        width: 187
+        height: 261
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4050e3acf8a651320800000000000000
+      internalID: 2528043931644331268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_5
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 640
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0458436a899e52e00800000000000000
+      internalID: 1019477732502046016
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_1_5_portrait
+      rect:
+        serializedVersion: 2
+        x: 2016
+        y: 648
+        width: 191
+        height: 263
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ccd88c00372ba1110800000000000000
+      internalID: 1232493655043378636
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 320
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3921116343376d30800000000000000
+      internalID: 4424561523399141694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_0_portrait
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 328
+        width: 294
+        height: 253
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23afbeefa555e3180800000000000000
+      internalID: -9133769144948491726
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 320
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85c95be52ba843e50800000000000000
+      internalID: 6788203037051952216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_1_portrait
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 328
+        width: 182
+        height: 248
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6deda2ba032db76d0800000000000000
+      internalID: -2991566420985585962
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_2
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 320
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 72c99b4d41602b900800000000000000
+      internalID: 698627578733894695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_2_portrait
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 328
+        width: 216
+        height: 251
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2b34b48cf92ec92d0800000000000000
+      internalID: -3270490053489769550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_3
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 320
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 35d5a49a9c42ba290800000000000000
+      internalID: -7878162674607301293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_3_portrait
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 328
+        width: 287
+        height: 242
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be2810be4ca9d9130800000000000000
+      internalID: 3575183849749054187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_4
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 320
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f7c781e892a8890b0800000000000000
+      internalID: -5721671415491953537
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_4_portrait
+      rect:
+        serializedVersion: 2
+        x: 1624
+        y: 328
+        width: 208
+        height: 241
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3f4ca81690ff5550800000000000000
+      internalID: 6151900143461093182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_5
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 320
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5fb32d9b63b375db0800000000000000
+      internalID: -4803305371335509003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_2_5_portrait
+      rect:
+        serializedVersion: 2
+        x: 2015
+        y: 328
+        width: 193
+        height: 234
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b971ab1683dd19bc0800000000000000
+      internalID: -3777995378159642725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5e07b114dbcb22a0800000000000000
+      internalID: -6761086303875953061
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_0_portrait
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 8
+        width: 178
+        height: 272
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 93a55b2ad6773dcc0800000000000000
+      internalID: -3687472357121369543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_1
+      rect:
+        serializedVersion: 2
+        x: 384
+        y: 0
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8ed513cea839c6c10800000000000000
+      internalID: 2048174155424161256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_1_portrait
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 8
+        width: 191
+        height: 271
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5c308d73b1a0d9590800000000000000
+      internalID: -7665959878697417787
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_2
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6ec22c9a6e830aa0800000000000000
+      internalID: -6195952073794466198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_2_portrait
+      rect:
+        serializedVersion: 2
+        x: 874
+        y: 8
+        width: 172
+        height: 267
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d08f2e6d218816f20800000000000000
+      internalID: 3414159607019534349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_3
+      rect:
+        serializedVersion: 2
+        x: 1152
+        y: 0
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50c1ed6aaf579f430800000000000000
+      internalID: 3817211878575053829
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_3_portrait
+      rect:
+        serializedVersion: 2
+        x: 1242
+        y: 8
+        width: 204
+        height: 268
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5443ceb6ab6cbd5a0800000000000000
+      internalID: -6495379533574949819
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_4
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 0
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a20e200b47eb1b1f0800000000000000
+      internalID: -1030833431312670678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_4_portrait
+      rect:
+        serializedVersion: 2
+        x: 1598
+        y: 8
+        width: 259
+        height: 268
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2c747a46fcbb1a00800000000000000
+      internalID: 728383530747591722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_5
+      rect:
+        serializedVersion: 2
+        x: 1920
+        y: 0
+        width: 384
+        height: 320
+      alignment: 9
+      pivot: {x: 0.5, y: 0.05}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 10eaaa6c6059f59c0800000000000000
+      internalID: -3936263692963107327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: JamesGoofy_3_5_portrait
+      rect:
+        serializedVersion: 2
+        x: 2017
+        y: 8
+        width: 189
+        height: 266
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 320decbec94fefcb0800000000000000
+      internalID: -4828152795686318045
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      JamesGoofy_0_0: 7126914096186103300
+      JamesGoofy_0_0_portrait: 7823396395888680452
+      JamesGoofy_0_1: -3679439615478453234
+      JamesGoofy_0_1_portrait: -3342185047490658622
+      JamesGoofy_0_2: -6920773455625162003
+      JamesGoofy_0_2_portrait: 7192851343315044309
+      JamesGoofy_0_3: 7870520230038870402
+      JamesGoofy_0_3_portrait: -2380651797071464288
+      JamesGoofy_0_4: 6333591284301605395
+      JamesGoofy_0_4_portrait: -1311625763071316208
+      JamesGoofy_0_5: 6487904486111119647
+      JamesGoofy_0_5_portrait: -5197144576971688727
+      JamesGoofy_1_0: 3013123410297690472
+      JamesGoofy_1_0_portrait: 3906056585076888953
+      JamesGoofy_1_1: 5562062440847843915
+      JamesGoofy_1_1_portrait: 2720428178354095957
+      JamesGoofy_1_2: 1340056315520005787
+      JamesGoofy_1_2_portrait: 6837211624255813756
+      JamesGoofy_1_3: -876039408127362286
+      JamesGoofy_1_3_portrait: -3214048746182306504
+      JamesGoofy_1_4: -6266706297047492342
+      JamesGoofy_1_4_portrait: 2528043931644331268
+      JamesGoofy_1_5: 1019477732502046016
+      JamesGoofy_1_5_portrait: 1232493655043378636
+      JamesGoofy_2_0: 4424561523399141694
+      JamesGoofy_2_0_portrait: -9133769144948491726
+      JamesGoofy_2_1: 6788203037051952216
+      JamesGoofy_2_1_portrait: -2991566420985585962
+      JamesGoofy_2_2: 698627578733894695
+      JamesGoofy_2_2_portrait: -3270490053489769550
+      JamesGoofy_2_3: -7878162674607301293
+      JamesGoofy_2_3_portrait: 3575183849749054187
+      JamesGoofy_2_4: -5721671415491953537
+      JamesGoofy_2_4_portrait: 6151900143461093182
+      JamesGoofy_2_5: -4803305371335509003
+      JamesGoofy_2_5_portrait: -3777995378159642725
+      JamesGoofy_3_0: -6761086303875953061
+      JamesGoofy_3_0_portrait: -3687472357121369543
+      JamesGoofy_3_1: 2048174155424161256
+      JamesGoofy_3_1_portrait: -7665959878697417787
+      JamesGoofy_3_2: -6195952073794466198
+      JamesGoofy_3_2_portrait: 3414159607019534349
+      JamesGoofy_3_3: 3817211878575053829
+      JamesGoofy_3_3_portrait: -6495379533574949819
+      JamesGoofy_3_4: -1030833431312670678
+      JamesGoofy_3_4_portrait: 728383530747591722
+      JamesGoofy_3_5: -3936263692963107327
+      JamesGoofy_3_5_portrait: -4828152795686318045
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
