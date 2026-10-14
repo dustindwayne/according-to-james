@@ -36,8 +36,8 @@ namespace AccordingToJames
         {
             if(!owner)return;if(owner.MobileControlsEnabled){var safe=Screen.safeArea;float scale=Mathf.Min(safe.width/1280f,safe.height/800f);root.localScale=Vector3.one*(scale/canvas.scaleFactor);root.anchoredPosition=new Vector2(safe.center.x-Screen.width/2f,safe.center.y-Screen.height/2f)/canvas.scaleFactor;}var g=owner.Game;string key=owner.TitleScreen?"title":"game";
             if(g!=null&&!owner.TitleScreen)key+=":"+g.floor+":"+g.room+":"+(g.Current.boss&&g.Current.enemies.Exists(e=>e.hp>0))+":"+g.status+":"+g.Current.giftTaken+":"+g.Current.fingerPulled;
-            key+=":"+owner.IsPaused+":"+owner.SettingsOpen+":"+owner.MapOpen+":"+owner.Fullscreen+":"+owner.Updater.State+":"+owner.ControllerConnected;
-            if(key!=screenKey){screenKey=key;Rebuild();}Set("update-status",owner.Updater.Message);
+            key+=":"+owner.IsPaused+":"+owner.SettingsOpen+":"+owner.MapOpen+":"+owner.Fullscreen+":"+owner.Updater.State+":"+owner.ControllerConnected+":"+owner.ControllerSettingsOpen+":"+owner.ControllerBridge.Waiting+":"+(owner.ControllerBridge.Source==null?0:owner.ControllerBridge.Source.deviceId);
+            if(key!=screenKey){screenKey=key;Rebuild();}Set("update-status",owner.Updater.Message);Set("controller-status",owner.ControllerBridge.Status);
             if(g!=null&&!owner.TitleScreen){Set("dungeon",GameModel.DungeonNames[g.Dungeon]);Set("floor",g.floor.ToString("00")+" / 30");Set("room",(g.room+1).ToString("00")+" / "+g.rooms.Count.ToString("00"));Set("health",Mathf.CeilToInt(g.player.hp)+" / "+Mathf.CeilToInt(g.player.maxHp));Set("sword",g.Sword.ToString("00"));
                 Fill(healthFill,g.player.hp/g.player.maxHp,218);Fill(dodgeFill,1-g.player.dodgeCooldown/1.25f,96);Set("dodge",g.player.dodgeCooldown>0?"RECHARGING":"DODGE READY");
                 Set("checkpoint",g.checkpointFloor>0?"LAST REST SHRINE · FLOOR "+g.checkpointFloor.ToString("00"):"NO SHRINE SAVE YET · REST ON FLOORS 1, 5, 9 OF EACH DUNGEON");
@@ -64,7 +64,7 @@ namespace AccordingToJames
         }
         Text Text(Transform parent,float x,float y,float w,float h,string value,int size=18,Color? color=null,bool bold=false,TextAnchor align=TextAnchor.UpperLeft,string key=null)
         {
-            var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key=="dungeon"||key=="effect"||key=="james-result"||key=="update-status"){text.resizeTextForBestFit=true;text.resizeTextMinSize=Mathf.Max(12,size-3);text.resizeTextMaxSize=size;}if(key!=null)labels[key]=text;return text;
+            var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key=="dungeon"||key=="effect"||key=="james-result"||key=="update-status"||key=="controller-status"){text.resizeTextForBestFit=true;text.resizeTextMinSize=Mathf.Max(12,size-3);text.resizeTextMaxSize=size;}if(key!=null)labels[key]=text;return text;
         }
         Image Picture(Transform parent,Sprite sprite,float x,float y,float w,float h){var n=Node(parent,"Portrait",x,y,w,h);var image=n.gameObject.AddComponent<Image>();image.sprite=sprite;image.preserveAspect=true;image.raycastTarget=false;return image;}
         void Button(Transform parent,float x,float y,float w,string title,Action action,bool primary=false,bool enabled=true,float height=54)
@@ -77,7 +77,7 @@ namespace AccordingToJames
         {
             if(EventSystem.current)EventSystem.current.SetSelectedGameObject(null);for(int i=root.childCount-1;i>=0;i--){var child=root.GetChild(i).gameObject;child.SetActive(false);Destroy(child);}labels.Clear();navigationRoot=null;healthFill=dodgeFill=bossFill=portrait=null;toastBox=contextBox=null;
             if(owner.TitleScreen)Title();else if(owner.Game!=null)HUD();
-            if(owner.SettingsOpen)Settings();else if(owner.MapOpen)Map();else if(owner.IsPaused)Pause();else if(owner.Game!=null&&!owner.TitleScreen){if(owner.Game.status=="talking")James();else if(owner.Game.status=="dead"||owner.Game.status=="won")Ending();}
+            if(owner.ControllerSettingsOpen)Controllers();else if(owner.SettingsOpen)Settings();else if(owner.MapOpen)Map();else if(owner.IsPaused)Pause();else if(owner.Game!=null&&!owner.TitleScreen){if(owner.Game.status=="talking")James();else if(owner.Game.status=="dead"||owner.Game.status=="won")Ending();}
             if(owner.ControllerConnected&&navigationRoot&&EventSystem.current){foreach(var button in navigationRoot.GetComponentsInChildren<Button>())if(button.interactable){EventSystem.current.SetSelectedGameObject(button.gameObject);break;}}
         }
         void Title()
@@ -142,8 +142,15 @@ namespace AccordingToJames
                 Button(p,410,426,354,owner.Updater.Downloaded?"Open download folder":"Download update",()=>{if(owner.Updater.Downloaded)owner.Updater.OpenDownload();else owner.Updater.Download();},owner.Updater.CanDownload,owner.Updater.CanDownload||owner.Updater.Downloaded,46);
                 Text(p,44,489,712,50,"",16,Cream,false,TextAnchor.MiddleCenter,"update-status");}
             else {Button(p,36,426,728,"View GitHub releases",()=>Application.OpenURL("https://github.com/dustindwayne/according-to-james/releases/latest"),false,true,46);Text(p,44,489,712,50,"Version "+BuildVersion.Current,16,Cream,false,TextAnchor.MiddleCenter);}
-            Text(p,36,533,728,20,"SNES: B Swing · Y Dodge · A Interact · X Map · Start Pause",13,Muted,false,TextAnchor.MiddleCenter);
+            Button(p,36,526,728,"Controller setup · SNES layout",()=>owner.OpenControllerSettings(),false,true,32);
             Button(p,36,561,728,"Done",()=>owner.CloseSettings(),true,true,50);
+        }
+        void Controllers()
+        {
+            var p=Modal("PLUG IN. BAD IDEAS WORK BETTER WITH BUTTONS.","Controller setup",800,640);Text(p,36,151,728,50,"",16,Cream,false,TextAnchor.MiddleCenter,"controller-status");
+            Text(p,36,213,728,44,"B bottom · Y left · A right · X top · Start pauses\nUSB joysticks can bind each button below.",16,Muted,false,TextAnchor.MiddleCenter);
+            string[] names={"B · Swing","Y · Dodge","A · Interact / Confirm","X · Map","Start · Pause","Select · Map"};for(int i=0;i<6;i++){int action=i;Button(p,36+(i%2)*374,275+(i/2)*66,354,owner.ControllerBridge.Waiting==i?"Release, then press a button":names[i]+": "+owner.ControllerBridge.Binding(i),()=>owner.ControllerBridge.Bind(action),false,owner.ControllerBridge.Source!=null,54);}
+            Button(p,36,477,728,"Invert USB vertical axis",()=>owner.ControllerBridge.FlipY(),false,owner.ControllerBridge.Source!=null,46);Text(p,36,534,728,22,"Gamepads use SNES positions automatically. USB bindings are saved.",13,Muted,false,TextAnchor.MiddleCenter);Button(p,36,568,728,"Back to Settings",()=>owner.CloseControllerSettings(),true,true,48);
         }
         void Map()
         {

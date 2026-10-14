@@ -7,6 +7,8 @@ namespace AccordingToJames
 {
     public class GameController : MonoBehaviour
     {
+        public ControllerBridge ControllerBridge {get;private set;}public bool ControllerSettingsOpen {get;private set;}
+        public void OpenControllerSettings(){ControllerSettingsOpen=true;}public void CloseControllerSettings(){ControllerSettingsOpen=false;ControllerBridge.Cancel();}
         public bool ControllerConnected=>Gamepad.current!=null;
         static bool Held(Key key)=>Keyboard.current!=null&&Keyboard.current[key].isPressed;
         static bool Pressed(Key key)=>Keyboard.current!=null&&Keyboard.current[key].wasPressedThisFrame;
@@ -18,7 +20,7 @@ namespace AccordingToJames
         public void SetFullscreen(bool value){Fullscreen=value;Screen.fullScreenMode=value?FullScreenMode.FullScreenWindow:FullScreenMode.Windowed;if(!value)Screen.SetResolution(1280,800,FullScreenMode.Windowed);PlayerPrefs.SetInt("JamesFullscreen",value?1:0);PlayerPrefs.Save();}
         GameModel game;SpriteAtlas art;Chiptunes music;Camera cam;DungeonUI ui;
         public GameModel Game=>game;public SpriteAtlas Art=>art;public bool TitleScreen=>panel=="title";public bool IsPaused=>paused;public bool SettingsOpen=>settingsOpen;public bool MapOpen=>mapOpen;public bool HasCheckpoint=>PlayerPrefs.HasKey("JamesCheckpointV2");public bool ToastVisible=>toastLife>0;public string ToastMessage=>toast;public float Initial=>initial;public float Volume=>volume;public bool ReducedMotion=>reducedMotion;
-        public void NewRun(){StartRun();}public void ContinueRun(){if(HasCheckpoint)StartRun(true);}public void OpenSettings(){settingsOpen=true;}public void CloseSettings(){settingsOpen=false;PlayerPrefs.SetFloat("JamesDifficulty",initial);PlayerPrefs.SetFloat("JamesVolume",volume);PlayerPrefs.SetInt("JamesReducedMotion",reducedMotion?1:0);PlayerPrefs.Save();}
+        public void NewRun(){StartRun();}public void ContinueRun(){if(HasCheckpoint)StartRun(true);}public void OpenSettings(){settingsOpen=true;}public void CloseSettings(){ControllerSettingsOpen=false;ControllerBridge.Cancel();settingsOpen=false;PlayerPrefs.SetFloat("JamesDifficulty",initial);PlayerPrefs.SetFloat("JamesVolume",volume);PlayerPrefs.SetInt("JamesReducedMotion",reducedMotion?1:0);PlayerPrefs.Save();}
         public void SetDifficulty(float value){initial=value;}public void SetVolume(float value){volume=Mathf.Clamp01(value);music.Volume=volume;}public void SetReducedMotion(bool value){reducedMotion=value;}
         public void Resume(){paused=false;music.Play(Tune());}public void TogglePause(){if(game==null||game.status!="playing")return;paused=!paused;if(paused)music.Pause();else music.Play(Tune());}public void ReturnToTitle(){panel="title";paused=settingsOpen=mapOpen=false;music.Play("menu");}public void OpenMap(){if(game!=null&&game.status=="playing")mapOpen=true;}public void CloseMap(){mapOpen=false;}public void TalkChoice(string choice){game.JamesChoice(choice);if(choice=="gift"||choice=="finger"){npcGestureFrame=choice=="gift"?2:3;npcGestureUntil=Time.unscaledTime+1.5f;}ProcessEvents();if(choice=="leave")music.Play(Tune());}
         float npcGestureUntil;int npcGestureFrame;
@@ -32,7 +34,7 @@ namespace AccordingToJames
         bool paused,settingsOpen,mapOpen;string toast="",panel="title";float toastLife;
         float initial=1,volume=.35f;bool reducedMotion;float guiScale,offsetX,offsetY;
         int smokeFrames;bool smoke;string captureDir;
-        void Start(){var args=Environment.GetCommandLineArgs();smoke=Array.IndexOf(args,"--self-test")>=0;int capture=Array.IndexOf(args,"--capture-dir");if(capture>=0&&capture+1<args.Length){captureDir=args[capture+1];System.IO.Directory.CreateDirectory(captureDir);}if(smoke&&captureDir==null)StartRun();if(Array.IndexOf(args,"--controller-check-test")>=0)gameObject.AddComponent<ControllerAudit>().Run(this);if(Array.IndexOf(args,"--quit-title-test")>=0)StartCoroutine(VerifyQuit(false));if(Array.IndexOf(args,"--quit-pause-test")>=0)StartCoroutine(VerifyQuit(true));if(Array.IndexOf(args,"--update-check-test")>=0){int folder=Array.IndexOf(args,"--update-test-directory");if(folder>=0&&folder+1<args.Length)Updater.TestDirectory=args[folder+1];StartCoroutine(VerifyUpdateDownload());}}
+        void Start(){var args=Environment.GetCommandLineArgs();smoke=Array.IndexOf(args,"--self-test")>=0;int capture=Array.IndexOf(args,"--capture-dir");if(capture>=0&&capture+1<args.Length){captureDir=args[capture+1];System.IO.Directory.CreateDirectory(captureDir);}if(smoke&&captureDir==null)StartRun();if(Array.IndexOf(args,"--usb-controller-check-test")>=0)gameObject.AddComponent<USBControllerAudit>().Run(this);if(Array.IndexOf(args,"--controller-check-test")>=0)gameObject.AddComponent<ControllerAudit>().Run(this);if(Array.IndexOf(args,"--quit-title-test")>=0)StartCoroutine(VerifyQuit(false));if(Array.IndexOf(args,"--quit-pause-test")>=0)StartCoroutine(VerifyQuit(true));if(Array.IndexOf(args,"--update-check-test")>=0){int folder=Array.IndexOf(args,"--update-test-directory");if(folder>=0&&folder+1<args.Length)Updater.TestDirectory=args[folder+1];StartCoroutine(VerifyUpdateDownload());}}
         System.Collections.IEnumerator VerifyQuit(bool fromPause){yield return null;if(fromPause){NewRun();TogglePause();}yield return null;ui.PressForCheck("Exit to Desktop");}
         System.Collections.IEnumerator VerifyUpdateDownload(){Updater.Check("0.0.0");while(Updater.Busy)yield return null;if(!Updater.CanDownload)throw new Exception("Update check failed: "+Updater.Message);Updater.Download();while(Updater.Busy)yield return null;if(!Updater.Downloaded)throw new Exception("Update download failed: "+Updater.Message);Debug.Log("ACCORDING_TO_JAMES_UPDATER_OK: checked live GitHub release, downloaded and verified "+Updater.DownloadPath);Application.Quit(0);}
         void CaptureWorld(string name){var target=new RenderTexture(960,600,24);var previous=RenderTexture.active;var oldRect=cam.pixelRect;cam.targetTexture=target;cam.rect=new Rect(0,0,1,1);cam.Render();RenderTexture.active=target;var image=new Texture2D(960,600,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,960,600),0,0);image.Apply();System.IO.File.WriteAllBytes(System.IO.Path.Combine(captureDir,name),image.EncodeToPNG());cam.targetTexture=null;cam.pixelRect=oldRect;RenderTexture.active=previous;target.Release();Destroy(target);Destroy(image);}
@@ -46,7 +48,7 @@ namespace AccordingToJames
         Sprite softLight,softShadow;
         void Awake()
         {
-            Updater=gameObject.AddComponent<ReleaseUpdater>();Fullscreen=PlayerPrefs.GetInt("JamesFullscreen",0)==1;if(!Application.isMobilePlatform)SetFullscreen(Fullscreen);MobileControlsEnabled=Application.isMobilePlatform||Array.IndexOf(Environment.GetCommandLineArgs(),"--touch-preview")>=0;Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
+            ControllerBridge=gameObject.AddComponent<ControllerBridge>();Updater=gameObject.AddComponent<ReleaseUpdater>();Fullscreen=PlayerPrefs.GetInt("JamesFullscreen",0)==1;if(!Application.isMobilePlatform)SetFullscreen(Fullscreen);MobileControlsEnabled=Application.isMobilePlatform||Array.IndexOf(Environment.GetCommandLineArgs(),"--touch-preview")>=0;Application.targetFrameRate=60;Application.runInBackground=true;initial=PlayerPrefs.GetFloat("JamesDifficulty",1);volume=PlayerPrefs.GetFloat("JamesVolume",.35f);reducedMotion=PlayerPrefs.GetInt("JamesReducedMotion",0)==1;
             softLight=Radial(false);softShadow=Radial(true);art=new SpriteAtlas();music=gameObject.AddComponent<Chiptunes>();music.Volume=volume;
             var c=new GameObject("Dungeon Camera");cam=c.AddComponent<Camera>();cam.orthographic=true;cam.orthographicSize=3;cam.transform.position=new Vector3(0,0,-10);cam.clearFlags=CameraClearFlags.SolidColor;cam.backgroundColor=new Color(.025f,.04f,.065f);cam.cullingMask=~(1<<5);c.AddComponent<AudioListener>();music.Play("menu");ui=gameObject.AddComponent<DungeonUI>();ui.Initialize(this);
         }
@@ -65,7 +67,7 @@ namespace AccordingToJames
             if(toastLife>0)toastLife-=Time.unscaledDeltaTime;
             var pad=Gamepad.current;bool handledMenu=false;bool back=pad!=null&&pad.buttonSouth.wasPressedThisFrame&&(settingsOpen||mapOpen||paused||game!=null&&game.status=="talking");
             if(TitleScreen&&pad!=null&&pad.startButton.wasPressedThisFrame){NewRun();handledMenu=true;}
-            else if(Pressed(Key.Escape)||back||pad!=null&&pad.startButton.wasPressedThisFrame){handledMenu=true;if(settingsOpen)CloseSettings();else if(mapOpen)CloseMap();else if(game!=null&&game.status=="talking")TalkChoice("leave");else if(!TitleScreen)TogglePause();}
+            else if(Pressed(Key.Escape)||back||pad!=null&&pad.startButton.wasPressedThisFrame){handledMenu=true;if(ControllerSettingsOpen)CloseControllerSettings();else if(settingsOpen)CloseSettings();else if(mapOpen)CloseMap();else if(game!=null&&game.status=="talking")TalkChoice("leave");else if(!TitleScreen)TogglePause();}
             if(mapOpen&&Pressed(Key.M))CloseMap();
             if(game!=null&&!TitleScreen&&!settingsOpen&&!mapOpen&&!paused&&!handledMenu){
                 if(game.status=="talking"&&Pressed(Key.Escape))TalkChoice("leave");
@@ -121,7 +123,9 @@ namespace AccordingToJames
                     if(smokeFrames==650)CapturePresentation("james-macarena.png");
                     if(smokeFrames==660)game.Current.jamesClock=62;
                     if(smokeFrames==670)CapturePresentation("james-robot.png");
-                    if(smokeFrames==700){Debug.Log("ACCORDING_TO_JAMES_PRESENTATION_OK: title, HUD, dialogue, map, pause, settings, boss, death, victory and actual button actions");Application.Quit(0);}
+                    if(smokeFrames==700){OpenSettings();OpenControllerSettings();}
+                    if(smokeFrames==710)CapturePresentation("controller-settings.png");
+                    if(smokeFrames==730){Debug.Log("ACCORDING_TO_JAMES_PRESENTATION_OK: title, HUD, dialogue, map, pause, settings, boss, death, victory and actual button actions");Application.Quit(0);}
                 }
             }
         }

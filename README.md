@@ -49,3 +49,7 @@ Android controls: drag the left stick to move; use right-side Swing, Dodge and I
 Title and Pause menus include Exit to Desktop. Windowed/Fullscreen is saved in Settings. Check for updates queries the public repository's latest stable release; Download update saves a verified ZIP in the game's persistent-data Updates folder. Open download folder lets you extract the update manually. No downloaded executable is launched automatically. Shrine saves are stored separately from the game installation.
 
 Gamepads follow SNES button positions: B(bottom) Swing, Y(left) Dodge, A(right) Interact/Confirm, X(top) Map, Start Pause, Select Map; D-pad or left stick Move/Menu navigation, B Back. Recognized Input System gamepads use these physical positions even when their printed Xbox/PlayStation labels differ. --controller-check-test verifies these actions and menu navigation with a virtual gamepad; real hardware testing remains useful.
+
+## Windows controller fix (v0.7.1)
+
+Generic USB/HID joysticks now feed the SNES controls alongside recognized gamepads. Settings > Controller setup displays detection status and saves USB button bindings and vertical-axis inversion. Connected Bluetooth devices use the same input paths. --usb-controller-check-test verifies generic joystick actions, rebinding and disconnect handling; physical hardware remains to be verified.
