@@ -1,0 +1,12 @@
+/Library/
+/Temp/
+/Logs/
+/obj/
+/UserSettings/
+/Builds/
+/*.csproj
+*.sln
+/Tests/bin/
+/Tests/obj/
+*.log
+update_ui.py
