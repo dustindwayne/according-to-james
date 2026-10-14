@@ -1,5 +1,9 @@
 # According to James — Unity
 
+The interface uses a native Unity canvas with bronze borders, warm parchment text, health and dodge meters, connected room cards, and matching dialogue, pause, Settings, death and victory menus. The title backdrop was generated from the user's original poster. James has a dedicated full-body sprite with safe space around his cap and boots, so grid slicing cannot clip his head.
+
+For automated presentation checks, run the Windows executable with `--self-test --capture-dir "C:/path/to/screenshots"`. This exercises the actual menu button actions and captures the title, HUD, James conversation, map, pause, Settings, boss, death and victory screens using Unity's renderer.
+
 Open this folder in Unity Hub using Unity 6.3 LTS (6000.3.12f1). Open `Assets/Scenes/Dungeon.unity`, then press Play. The game creates its camera, sprites, music and controls at startup.
 
 Download the Windows ZIP from this repository's Releases, extract it, and run `AccordingToJames.exe`. Keep the executable beside its Data folder and UnityPlayer.dll. Local builds appear in `Builds/Windows`.

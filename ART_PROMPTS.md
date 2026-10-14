@@ -1,5 +1,17 @@
 # Current animation assets
 
+## Assets/Resources/Art/TitleScreen.png
+
+Generated with the built-in image generator using the user's original According to James poster as a visual reference.
+
+Create a landscape 16:10 Unity game title screen background adapted from this original According to James poster. Preserve James's recognizable middle aged smiling face, salt-and-pepper beard, tan trucker cap, navy shirt, denim overalls, brown boots, pointing gesture and dangerous purple potion, dark blue torchlit stone dungeon, treasure, skeletons, goblin and mischievous comedy. Rich polished pixel-like illustrated art, crisp pixel edges beyond SNES. Rearrange composition: LEFT 55 percent contains the exact title 'ACCORDING TO JAMES' in monumental cracked gold stone lettering near upper left, with James seated on a treasure chest below it, torchlight and goblin at his boots. RIGHT 40 percent is a quiet dark recessed stone alcove, simple dark navy bricks, reserved for actual interactive menu buttons added by Unity. No baked-in menu buttons, no speech bubbles, no extra text, no watermarks. Cinematic amber torches against blue dungeon, dark readable right area. Keep all main content comfortably inside canvas borders.
+
+## Assets/Resources/Art/James.png
+
+Generated with the built-in image generator using the user's James photograph as the likeness reference. A single full-body sprite replaces the old grid crop in both the dungeon and conversation card.
+
+Generate ONE SINGLE full-body NPC sprite of James, from this man's supplied likeness. Modern richly shaded pixel-like game art, crisp pixel edges, expressive face. Preserve middle-aged man salt-and-pepper full beard, smiling skeptical mischievous blue-eyed expression, gray and tan trucker cap, navy star T-shirt, blue denim bib overalls with brass buckles, sturdy brown boots. Full body standing facing viewer in slight top-down three-quarter dungeon RPG view, one hand pointing with terrible friendly confidence. Transparent alpha background. IMPORTANT ENTIRE HAT including crown fully visible, full head never clipped, BOTH boots fully visible. Character occupies central 75 percent height, generous completely empty transparent padding 12 percent ABOVE hat, 12 percent BELOW boots and 15 percent on sides. One isolated character only, NO SPRITE GRID, NO extra heads, no shadows, no text, no logo. This asset must fit inside a Unity portrait and world sprite without head cropping. Match face to reference but stylize as detailed pixel-art NPC.
+
 Generated using the built-in image generator. These files belong to this Unity project. No CLI/API fallback was used.
 
 ## Assets/Resources/Art/HeroWalk.png

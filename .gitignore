@@ -10,3 +10,4 @@
 /Tests/obj/
 *.log
 update_ui.py
+upgrade_presentation.py

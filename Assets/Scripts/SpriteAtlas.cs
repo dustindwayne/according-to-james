@@ -3,10 +3,10 @@ namespace AccordingToJames
 {
     public class SpriteAtlas
     {
-        public Sprite[,] Idle,Bosses,Walk,Enemies; public Sprite Room,Slime,Brick,White,Candy,Pin,Needle,Gas,Flour,Yarn,Heart,Chest,Shrine,Gravy,Tray,Sausage,Pit;
+        public Sprite[,] Bosses,Walk,Enemies; public Sprite James,Room,Slime,Brick,White,Candy,Pin,Needle,Gas,Flour,Yarn,Heart,Chest,Shrine,Gravy,Tray,Sausage,Pit;
         public SpriteAtlas()
         {
-            Idle=Read("Characters",3,4,false);Bosses=Read("Bosses",12,4,true,true);Walk=Read("HeroWalk",4,6,true);Enemies=Read("Enemies",3,6,true);
+            James=Single("James");Bosses=Read("Bosses",12,4,true,true);Walk=Read("HeroWalk",4,6,true);Enemies=Read("Enemies",3,6,true);
             var room=Resources.Load<Texture2D>("Art/Room");Room=Sprite.Create(room,new Rect(0,0,room.width,room.height),new Vector2(.5f,.5f),100);
             White=Pixel("White",8,8,(x,y)=>Color.white);
             Pit=Pixel("Pit",64,32,(x,y)=>((x-32)*(x-32)/900f+(y-16)*(y-16)/180f)<1?new Color(.025f,.025f,.035f):Color.clear);
@@ -25,6 +25,13 @@ namespace AccordingToJames
             Heart=Pixel("Heart",40,36,(x,y)=>{float xx=(x-20)/17f,yy=(y-16)/16f;bool inside=Mathf.Pow(xx*xx+yy*yy-1,3)-xx*xx*yy*yy*yy<0;return inside?new Color(1,.76f,.32f):Color.clear;});
         }
         public static int Direction(string dir){return dir=="left"?1:dir=="right"?2:dir=="up"?3:0;}
+        static Sprite Single(string name)
+        {
+            var t=Resources.Load<Texture2D>("Art/"+name);if(!t)throw new System.Exception("Missing Art/"+name);var pixels=t.GetPixels32();int minX=t.width,minY=t.height,maxX=0,maxY=0;
+            for(int y=0;y<t.height;y++)for(int x=0;x<t.width;x++)if(pixels[y*t.width+x].a>25){minX=Mathf.Min(minX,x);minY=Mathf.Min(minY,y);maxX=Mathf.Max(maxX,x);maxY=Mathf.Max(maxY,y);}
+            minX=Mathf.Max(0,minX-12);minY=Mathf.Max(0,minY-12);maxX=Mathf.Min(t.width-1,maxX+12);maxY=Mathf.Min(t.height-1,maxY+12);
+            return Sprite.Create(t,new Rect(minX,minY,maxX-minX+1,maxY-minY+1),new Vector2(.5f,0),100,0,SpriteMeshType.FullRect);
+        }
         static Sprite Cloud(string name,Color color){return Pixel(name,80,80,(x,y)=>((x-27)*(x-27)+(y-30)*(y-30)<650||(x-52)*(x-52)+(y-38)*(y-38)<570||(x-38)*(x-38)+(y-55)*(y-55)<450)?color:Color.clear);}
         static Sprite Pixel(string name,int w,int h,System.Func<int,int,Color> color)
         {
