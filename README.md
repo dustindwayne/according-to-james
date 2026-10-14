@@ -1,5 +1,7 @@
 # According to James — Unity
 
+![According to James cover artwork](Assets/Resources/Art/TitleScreen.png)
+
 The interface uses a native Unity canvas with bronze borders, warm parchment text, health and dodge meters, connected room cards, and matching dialogue, pause, Settings, death and victory menus. The title backdrop was generated from the user's original poster. James has a dedicated full-body sprite with safe space around his cap and boots, so grid slicing cannot clip his head.
 
 For automated presentation checks, run the Windows executable with `--self-test --capture-dir "C:/path/to/screenshots"`. This exercises the actual menu button actions and captures the title, HUD, James conversation, map, pause, Settings, boss, death and victory screens using Unity's renderer.
