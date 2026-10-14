@@ -6,7 +6,7 @@ namespace AccordingToJames.Editor
 {
     public class ArtImporter : AssetPostprocessor
     {
-        void OnPreprocessTexture(){if(!assetPath.Contains("Resources/Art/"))return;var t=(TextureImporter)assetImporter;t.textureType=TextureImporterType.Default;t.isReadable=true;t.mipmapEnabled=false;t.alphaIsTransparency=true;t.filterMode=FilterMode.Point;t.textureCompression=TextureImporterCompression.Uncompressed;t.maxTextureSize=2048;t.npotScale=TextureImporterNPOTScale.None;}
+        void OnPreprocessTexture(){if(!assetPath.Contains("Resources/Art/"))return;var t=(TextureImporter)assetImporter;if(!assetPath.Contains("/Compiled/"))t.textureType=TextureImporterType.Default;t.isReadable=true;t.mipmapEnabled=false;t.alphaIsTransparency=true;t.filterMode=FilterMode.Point;t.textureCompression=TextureImporterCompression.Uncompressed;t.maxTextureSize=4096;t.npotScale=TextureImporterNPOTScale.None;}
     }
     [InitializeOnLoad] public static class ProjectSetup
     {
@@ -21,7 +21,7 @@ namespace AccordingToJames.Editor
             PlayerSettings.companyName="According to James";PlayerSettings.productName="According to James";PlayerSettings.defaultScreenWidth=1280;PlayerSettings.defaultScreenHeight=800;
             AssetDatabase.SaveAssets();
         }
-        public static void BuildWindows(){EnsureScene();Directory.CreateDirectory("Builds/Windows");var report=BuildPipeline.BuildPlayer(new[]{"Assets/Scenes/Dungeon.unity"},"Builds/Windows/AccordingToJames.exe",BuildTarget.StandaloneWindows64,BuildOptions.None);if(report.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new System.Exception("Unity player build failed");}
+        public static void BuildWindows(){EnsureScene();AtlasCompiler.CompileAll();Directory.CreateDirectory("Builds/Windows");var report=BuildPipeline.BuildPlayer(new[]{"Assets/Scenes/Dungeon.unity"},"Builds/Windows/AccordingToJames.exe",BuildTarget.StandaloneWindows64,BuildOptions.None);if(report.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)throw new System.Exception("Unity player build failed");}
         public static void VerifyImport(){EnsureScene();if(!Resources.Load<Texture2D>("Art/HeroWalk"))throw new System.Exception("Missing hero animation");Debug.Log("ACCORDING_TO_JAMES_IMPORT_OK");}
     }
 }

@@ -1,15 +1,13 @@
-# According to James v0.3.0 — Dungeon interface
+# According to James v0.4.0 — Dungeon art and clear menus
 
-A redesigned native Unity interface for the thirty-floor dungeon crawler.
+The start menu now has Start Game, Continue, and Settings on a generated dungeon panel, with the original-poster title artwork. Continue is disabled until a shrine checkpoint exists.
 
-- Generated title backdrop based on the original According to James poster.
-- Bronze-framed HUD with readable health, sword, floor, room and dodge displays.
-- Connected room map and matching pause, Settings, James, death and victory menus.
-- Dedicated replacement James sprite based on the supplied likeness: his whole cap, head and boots fit without grid clipping.
-- Real Unity buttons, visible selected settings, clear disabled actions and legible controls.
-- Difficulty stays in Settings; only rest shrines save progress.
-- Existing mystery gifts, finger pulls, enemy AI, secret pitfalls, trapped chests, bosses and chiptunes remain playable.
+- Generated stone and wood menu graphics, readable dialogue panels, and native Unity buttons.
+- Imported animation sheets for James, the hero, three ridiculous bosses and enemies. James has eight idle and interaction poses with uncropped portraits.
+- Three generated dungeon backgrounds, chest opening/trap states, barred doors, shrines, stairs, pits and attack effects.
+- Doors physically block movement until combat is cleared. Stairs require every room to be visited and cleared; connected exits and interaction areas remain reachable.
+- Health carries between floors; difficulty remains in Settings and saves remain restricted to rest shrines.
 
-Extract the Windows ZIP before running AccordingToJames.exe. Keep the Data folder and DLLs alongside it. Unity editor version: 6000.3.12f1 (6.3 LTS).
+Validation: complete 30-floor campaign checks; 1,800 room layouts across three difficulties and four seeds; Unity Windows build and rendered menu/button checks. Audible playback still needs manual listening.
 
-Verified: campaign mechanic checks, Windows build, native rendered screen checks and actual menu button actions. Audible playback needs a manual playthrough.
+Extract the Windows ZIP before running AccordingToJames.exe. Keep its Data folder and DLLs alongside it. Unity editor: 6000.3.12f1.

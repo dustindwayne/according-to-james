@@ -1,0 +1,121 @@
+{
+    "source": "Assets/ArtSources/BossLunchLady.png",
+    "rows": 4,
+    "columns": 4,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "BossLunchLady_0_0",
+            "sourceX": 44,
+            "sourceY": 951,
+            "sourceWidth": 274,
+            "sourceHeight": 281
+        },
+        {
+            "name": "BossLunchLady_0_1",
+            "sourceX": 348,
+            "sourceY": 951,
+            "sourceWidth": 279,
+            "sourceHeight": 281
+        },
+        {
+            "name": "BossLunchLady_0_2",
+            "sourceX": 665,
+            "sourceY": 947,
+            "sourceWidth": 284,
+            "sourceHeight": 285
+        },
+        {
+            "name": "BossLunchLady_0_3",
+            "sourceX": 973,
+            "sourceY": 949,
+            "sourceWidth": 264,
+            "sourceHeight": 283
+        },
+        {
+            "name": "BossLunchLady_1_0",
+            "sourceX": 15,
+            "sourceY": 646,
+            "sourceWidth": 295,
+            "sourceHeight": 276
+        },
+        {
+            "name": "BossLunchLady_1_1",
+            "sourceX": 327,
+            "sourceY": 643,
+            "sourceWidth": 289,
+            "sourceHeight": 281
+        },
+        {
+            "name": "BossLunchLady_1_2",
+            "sourceX": 640,
+            "sourceY": 641,
+            "sourceWidth": 292,
+            "sourceHeight": 283
+        },
+        {
+            "name": "BossLunchLady_1_3",
+            "sourceX": 952,
+            "sourceY": 644,
+            "sourceWidth": 289,
+            "sourceHeight": 279
+        },
+        {
+            "name": "BossLunchLady_2_0",
+            "sourceX": 13,
+            "sourceY": 342,
+            "sourceWidth": 297,
+            "sourceHeight": 275
+        },
+        {
+            "name": "BossLunchLady_2_1",
+            "sourceX": 322,
+            "sourceY": 341,
+            "sourceWidth": 302,
+            "sourceHeight": 276
+        },
+        {
+            "name": "BossLunchLady_2_2",
+            "sourceX": 652,
+            "sourceY": 339,
+            "sourceWidth": 290,
+            "sourceHeight": 281
+        },
+        {
+            "name": "BossLunchLady_2_3",
+            "sourceX": 981,
+            "sourceY": 340,
+            "sourceWidth": 271,
+            "sourceHeight": 280
+        },
+        {
+            "name": "BossLunchLady_3_0",
+            "sourceX": 15,
+            "sourceY": 30,
+            "sourceWidth": 282,
+            "sourceHeight": 295
+        },
+        {
+            "name": "BossLunchLady_3_1",
+            "sourceX": 322,
+            "sourceY": 31,
+            "sourceWidth": 275,
+            "sourceHeight": 295
+        },
+        {
+            "name": "BossLunchLady_3_2",
+            "sourceX": 632,
+            "sourceY": 29,
+            "sourceWidth": 286,
+            "sourceHeight": 297
+        },
+        {
+            "name": "BossLunchLady_3_3",
+            "sourceX": 951,
+            "sourceY": 26,
+            "sourceWidth": 279,
+            "sourceHeight": 300
+        }
+    ]
+}

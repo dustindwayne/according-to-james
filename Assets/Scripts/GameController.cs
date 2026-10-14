@@ -10,7 +10,10 @@ namespace AccordingToJames
         public GameModel Game=>game;public SpriteAtlas Art=>art;public bool TitleScreen=>panel=="title";public bool IsPaused=>paused;public bool SettingsOpen=>settingsOpen;public bool MapOpen=>mapOpen;public bool HasCheckpoint=>PlayerPrefs.HasKey("JamesCheckpointV2");public bool ToastVisible=>toastLife>0;public string ToastMessage=>toast;public float Initial=>initial;public float Volume=>volume;public bool ReducedMotion=>reducedMotion;
         public void NewRun(){StartRun();}public void ContinueRun(){if(HasCheckpoint)StartRun(true);}public void OpenSettings(){settingsOpen=true;}public void CloseSettings(){settingsOpen=false;PlayerPrefs.SetFloat("JamesDifficulty",initial);PlayerPrefs.SetFloat("JamesVolume",volume);PlayerPrefs.SetInt("JamesReducedMotion",reducedMotion?1:0);PlayerPrefs.Save();}
         public void SetDifficulty(float value){initial=value;}public void SetVolume(float value){volume=Mathf.Clamp01(value);music.Volume=volume;}public void SetReducedMotion(bool value){reducedMotion=value;}
-        public void Resume(){paused=false;music.Play(Tune());}public void TogglePause(){if(game==null||game.status!="playing")return;paused=!paused;if(paused)music.Pause();else music.Play(Tune());}public void ReturnToTitle(){panel="title";paused=settingsOpen=mapOpen=false;music.Play("cellars");}public void OpenMap(){if(game!=null&&game.status=="playing")mapOpen=true;}public void CloseMap(){mapOpen=false;}public void TalkChoice(string choice){game.JamesChoice(choice);ProcessEvents();if(choice=="leave")music.Play(Tune());}
+        public void Resume(){paused=false;music.Play(Tune());}public void TogglePause(){if(game==null||game.status!="playing")return;paused=!paused;if(paused)music.Pause();else music.Play(Tune());}public void ReturnToTitle(){panel="title";paused=settingsOpen=mapOpen=false;music.Play("cellars");}public void OpenMap(){if(game!=null&&game.status=="playing")mapOpen=true;}public void CloseMap(){mapOpen=false;}public void TalkChoice(string choice){game.JamesChoice(choice);if(choice=="gift"||choice=="finger"){npcGestureFrame=choice=="gift"?1:2;npcGestureUntil=Time.unscaledTime+1.5f;}ProcessEvents();if(choice=="leave")music.Play(Tune());}
+        float npcGestureUntil;int npcGestureFrame;
+        public Sprite NpcSprite {get {int row=game!=null&&game.status=="talking"?1:0;int frame=row==1&&Time.unscaledTime<npcGestureUntil?npcGestureFrame:Mathf.FloorToInt((row==1?Time.unscaledTime:game==null?0:game.time)*.8f)%4;return art.JamesFrames[row,frame];}}
+        public Sprite NpcPortrait {get {var sprite=NpcSprite;for(int row=0;row<2;row++)for(int col=0;col<4;col++)if(art.JamesFrames[row,col]==sprite)return art.JamesPortraits[row,col];return art.JamesPortraits[0,0];}}
         readonly List<SpriteRenderer> pool=new List<SpriteRenderer>();int used;
         bool paused,settingsOpen,mapOpen;string toast="",panel="title";float toastLife;
         float initial=1,volume=.35f;bool reducedMotion;float guiScale,offsetX,offsetY;
@@ -64,7 +67,7 @@ namespace AccordingToJames
                 if(captureDir==null){game.Tick(.02f,1,0);if(smokeFrames==140){Debug.Log("ACCORDING_TO_JAMES_RUNTIME_OK");Application.Quit(0);}}
                 else{
                     if(smokeFrames==20)CapturePresentation("title-screen.png");
-                    if(smokeFrames==40)ui.PressForCheck("Enter the dungeon");
+                    if(smokeFrames==40)ui.PressForCheck("Start Game");
                     if(smokeFrames==60)CapturePresentation("game-hud.png");
                     if(smokeFrames==80){game.player.x=480;game.player.y=290;game.Interact();ui.PressForCheck("Accept mystery gift");}
                     if(smokeFrames==110)CapturePresentation("james-menu.png");
@@ -96,7 +99,7 @@ namespace AccordingToJames
                 if(e.type=="heal"){toast="Health restored. A little kindness.";toastLife=2;}
                 if(e.type=="checkpoint")Save();
                 if(e.type=="notice"){toast=game.message;toastLife=7;}
-                if(e.type=="fart")music.Effect("fart");
+                if(e.type=="fart"){music.Effect("fart");npcGestureFrame=3;npcGestureUntil=Time.unscaledTime+1.5f;}
                 if(e.type=="won")PlayerPrefs.DeleteKey("JamesCheckpointV2");
                 if(e.type=="room"||e.type=="floor"||e.type=="james"||e.type=="clear"||e.type=="dead"||e.type=="won")music.Play(Tune());
             }
@@ -110,30 +113,40 @@ namespace AccordingToJames
         {
             var r=Next();r.sprite=s;r.sortingOrder=order;r.transform.position=new Vector3(x/100-4.8f,3-y/100,0);r.transform.localScale=new Vector3(width>0?width/s.rect.width:height/s.rect.height,height/s.rect.height,1);r.transform.rotation=Quaternion.Euler(0,0,rotation);r.color=color??Color.white;
         }
-        void Rect(float x,float y,float w,float h,Color color,int order){Draw(art.White,x+w/2,y+h/2,h,order,color,w);}
-        void Wall(float x,float y,float w,float h){Draw(art.Brick,x+w/2,y+h/2,h,-900,null,w);}
+        void Door(string side)
+        {
+            float x=side=="left"?65:side=="right"?895:480,y=side=="up"?62:side=="down"?538:310;
+            float rotation=side=="left"?90:side=="right"?-90:side=="down"?180:0;
+            Draw(art.Props[1,game.DoorState(side)],x,y,142,-600,null,132,rotation);
+        }
         void RenderWorld()
         {
-            used=0;if(game!=null&&panel!="title")
-            {
-                var r=game.Current;Draw(art.Room,480,300,600,-1000,null,960);
-                if(game.Dungeon>0)Rect(0,0,960,600,game.Dungeon==1?new Color(.8f,.25f,.08f,.1f):new Color(.5f,.15f,.8f,.12f),-990);
-                var n=game.Neighbors(game.room);if(!n.ContainsKey("up"))Wall(435,14,90,86);if(!n.ContainsKey("down"))Wall(438,505,90,95);if(!n.ContainsKey("left"))Wall(0,266,80,86);if(!n.ContainsKey("right"))Wall(883,266,77,86);
-                foreach(var o in r.obstacles)Wall(o.x,o.y,o.w,o.h);foreach(var s in r.spikes)for(int i=0;i<s.w;i+=15)Draw(art.Needle,s.x+i,s.y,18,-800,new Color(.8f,.9f,1),9,90);
-                if(game.room==game.rooms.Count-1&&game.AllCleared){Rect(777,102,90,80,new Color(.9f,.75f,.3f,.3f),-850);for(int i=0;i<5;i++)Rect(785,106+i*13,78,9,i%2==0?new Color(.7f,.65f,.5f):new Color(.2f,.25f,.3f),-840);}else Wall(778,100,95,85);
-                if(r.chest)Draw(art.Chest,195,210,45,400,r.chestOpened?new Color(.45f,.45f,.45f):Color.white);
-                if(r.shrine)Draw(art.Shrine,710,420,60,600);
-                if(r.secret&&r.secretKnown&&!r.secretUsed){Rect(65,115,60,70,new Color(.25f,.65f,.7f,.8f),-700);Draw(art.Gas,100,165,25,-690);}
-                if(r.james)Draw(art.James,480,210,88,410);
-                foreach(var e in r.enemies)if(e.hp>0)
-                {
-                    int order=200+(int)e.y;if(e.boss){int frame=e.moving?Mathf.FloorToInt(e.walkTime*4)%4:0,face=SpriteAtlas.Direction(e.dir);bool mirror=e.kind==2&&face==2;if(e.kind==2&&(face==1||face==2)){face=1;if(frame==3)frame=1;}Draw(art.Bosses[e.kind*4+face,frame],e.x,e.y,e.kind==0?76:e.kind==1?89:90,order,e.flash>0?new Color(1,1,1,.5f):Color.white);pool[used-1].flipX=mirror;}
-                    else {Draw(art.Enemies[e.kind,e.state=="windup"?4:e.state=="strike"?5:e.moving?Mathf.FloorToInt(e.walkTime*4)%4:0],e.x,e.y,58,order,e.flash>0?new Color(1,1,1,.5f):Color.white);pool[used-1].flipX=e.dir=="left";}
-                    if(e.state=="windup"||e.boss&&e.attackTimer<.5f)Draw(art.Heart,e.x,e.y-80,20,950,new Color(1,.2f,.15f));
+            used=0;
+            if(game!=null&&!TitleScreen){
+                var room=game.Current;Draw(art.Rooms[game.Dungeon],480,300,600,-1000,null,960);
+                foreach(string side in new[]{"up","down","left","right"})Door(side);
+                foreach(var obstacle in room.obstacles)Draw(art.Props[3,(game.floor+room.id)%2],obstacle.x+obstacle.w/2,obstacle.y+obstacle.h,obstacle.h*1.4f,200+(int)(obstacle.y+obstacle.h),null,obstacle.w*1.18f);
+                foreach(var trap in room.spikes)Draw(art.Props[3,2],trap.x+trap.w/2,trap.y+trap.h,trap.h*1.6f,130+(int)(trap.y+trap.h),null,trap.w*1.2f);
+                if(game.room==game.rooms.Count-1)Draw(art.Props[2,game.AllCleared?3:2],805,235,118,190,null,118);
+                if(room.chest){int frame=!room.chestOpened?0:room.chestAnim>.55f?1:room.chestTrap&&room.chestAnim>.05f?3:2;Draw(art.Props[0,frame],205,235,86,435,null,90);}
+                if(room.shrine)Draw(art.Props[2,1],710,420,108,620);
+                if(room.secret&&room.secretKnown)Draw(art.Props[1,room.secretUsed?0:3],GameModel.SecretX,62,126,-590,null,108);
+                if(room.james)Draw(NpcSprite,480,235,112,435);
+                foreach(var enemy in room.enemies){
+                    if(enemy.hp<=0)continue;int order=200+(int)enemy.y,frame=enemy.moving&&!reducedMotion?Mathf.FloorToInt(enemy.walkTime*4)%4:0;
+                    Color tint=enemy.flash>0?new Color(1,1,1,.65f):Color.white;
+                    if(enemy.boss)Draw(art.Bosses[enemy.kind*4+SpriteAtlas.Direction(enemy.dir),frame],enemy.x,enemy.y,enemy.kind==0?112:enemy.kind==1?124:128,order,tint);
+                    else {Draw(art.Enemies[enemy.kind,enemy.state=="windup"?4:enemy.state=="strike"?5:frame],enemy.x,enemy.y,90,order,tint);pool[used-1].flipX=enemy.dir=="left";}
+                    if(enemy.state=="windup"||enemy.boss&&enemy.attackTimer<.5f)Draw(art.Effects[1,3],enemy.x,enemy.y-92,32,950);
                 }
-                foreach(var s in r.shots){Sprite sprite=s.type=="gas"?art.Gas:s.type=="flour"?art.Flour:s.type=="gravy"?art.Gravy:s.type=="tray"?art.Tray:s.type=="sausage"?art.Sausage:art.Candy;bool cloud=s.type=="gas"||s.type=="flour"||s.type=="gravy";Draw(sprite,s.x,s.y-12,cloud?80:18,150+(int)s.y,cloud?new Color(1,1,1,Mathf.Min(1,s.age/.45f)*Mathf.Min(1,s.life)):Color.white,s.type=="tray"?40:0,cloud?0:game.time*180);}
-                var p=game.player;if(game.fall>0)Draw(art.Pit,p.x,p.y,36,190+(int)p.y,null,82);Sprite hero=art.Walk[SpriteAtlas.Direction(p.dir),p.moving?Mathf.FloorToInt(p.walkTime*6)%6:0];Draw(hero,p.x,p.y,game.fall>0?76*(.45f+game.fall*.6f):76,200+(int)p.y,p.inv>0&&Mathf.FloorToInt(p.inv*20)%2==0?new Color(1,1,1,.5f):Color.white);
-                if(p.attack>0){float xx=p.dir=="left"?-45:p.dir=="right"?45:0,yy=p.dir=="up"?-55:p.dir=="down"?25:-15;Draw(art.Needle,p.x+xx,p.y+yy,8,900,new Color(1,.85f,.5f),50,p.dir=="up"||p.dir=="down"?90:0);}
+                foreach(var shot in room.shots){
+                    bool cloud=shot.type=="gas"||shot.type=="gravy"||shot.type=="flour";Sprite sprite=cloud?art.Effects[1,shot.type=="gas"?0:shot.type=="gravy"?1:2]:art.Effects[0,shot.type=="tray"?1:shot.type=="sausage"?2:0];
+                    Color tint=cloud?new Color(1,1,1,Mathf.Min(1,shot.age/.45f)*Mathf.Min(1,shot.life)):Color.white;Draw(sprite,shot.x,shot.y-10,cloud?100:shot.type=="tray"?38:26,150+(int)shot.y,tint,0,cloud?0:game.time*150);
+                }
+                var player=game.player;
+                if(game.fall>0)Draw(art.Props[3,3],player.x,player.y+18,68,190+(int)player.y,null,104);
+                int heroFrame=player.attack>0?player.attack>.125f?5:player.attack>.04f?6:7:player.moving&&!reducedMotion?1+Mathf.FloorToInt(player.walkTime*4)%4:0;
+                Draw(art.Hero[SpriteAtlas.Direction(player.dir),heroFrame],player.x,player.y,game.fall>0?96*(.45f+game.fall*.6f):96,200+(int)player.y,player.inv>0&&Mathf.FloorToInt(player.inv*20)%2==0?new Color(1,1,1,.65f):Color.white);
             }
             for(int i=used;i<pool.Count;i++)pool[i].enabled=false;
         }

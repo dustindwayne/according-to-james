@@ -1,0 +1,121 @@
+{
+    "source": "Assets/ArtSources/BossGranny.png",
+    "rows": 4,
+    "columns": 4,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "BossGranny_0_0",
+            "sourceX": 92,
+            "sourceY": 913,
+            "sourceWidth": 198,
+            "sourceHeight": 268
+        },
+        {
+            "name": "BossGranny_0_1",
+            "sourceX": 413,
+            "sourceY": 919,
+            "sourceWidth": 205,
+            "sourceHeight": 270
+        },
+        {
+            "name": "BossGranny_0_2",
+            "sourceX": 735,
+            "sourceY": 915,
+            "sourceWidth": 203,
+            "sourceHeight": 267
+        },
+        {
+            "name": "BossGranny_0_3",
+            "sourceX": 1061,
+            "sourceY": 913,
+            "sourceWidth": 204,
+            "sourceHeight": 265
+        },
+        {
+            "name": "BossGranny_1_0",
+            "sourceX": 62,
+            "sourceY": 625,
+            "sourceWidth": 211,
+            "sourceHeight": 270
+        },
+        {
+            "name": "BossGranny_1_1",
+            "sourceX": 383,
+            "sourceY": 621,
+            "sourceWidth": 225,
+            "sourceHeight": 274
+        },
+        {
+            "name": "BossGranny_1_2",
+            "sourceX": 711,
+            "sourceY": 623,
+            "sourceWidth": 225,
+            "sourceHeight": 272
+        },
+        {
+            "name": "BossGranny_1_3",
+            "sourceX": 1039,
+            "sourceY": 621,
+            "sourceWidth": 219,
+            "sourceHeight": 275
+        },
+        {
+            "name": "BossGranny_2_0",
+            "sourceX": 50,
+            "sourceY": 321,
+            "sourceWidth": 236,
+            "sourceHeight": 276
+        },
+        {
+            "name": "BossGranny_2_1",
+            "sourceX": 380,
+            "sourceY": 322,
+            "sourceWidth": 230,
+            "sourceHeight": 274
+        },
+        {
+            "name": "BossGranny_2_2",
+            "sourceX": 708,
+            "sourceY": 317,
+            "sourceWidth": 219,
+            "sourceHeight": 274
+        },
+        {
+            "name": "BossGranny_2_3",
+            "sourceX": 1038,
+            "sourceY": 324,
+            "sourceWidth": 219,
+            "sourceHeight": 273
+        },
+        {
+            "name": "BossGranny_3_0",
+            "sourceX": 60,
+            "sourceY": 23,
+            "sourceWidth": 189,
+            "sourceHeight": 275
+        },
+        {
+            "name": "BossGranny_3_1",
+            "sourceX": 382,
+            "sourceY": 23,
+            "sourceWidth": 199,
+            "sourceHeight": 273
+        },
+        {
+            "name": "BossGranny_3_2",
+            "sourceX": 713,
+            "sourceY": 24,
+            "sourceWidth": 193,
+            "sourceHeight": 274
+        },
+        {
+            "name": "BossGranny_3_3",
+            "sourceX": 1035,
+            "sourceY": 24,
+            "sourceWidth": 200,
+            "sourceHeight": 272
+        }
+    ]
+}

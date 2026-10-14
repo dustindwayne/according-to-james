@@ -25,3 +25,11 @@ Production game atlas, modern richly shaded PIXEL ART with crisp visible pixel e
 ## Assets/Resources/Art/Enemies.png
 
 Use case: stylized-concept. Production enemy animation atlas for modern top-down dungeon crawler According to James. Rich detailed expressive PIXEL-LIKE art, crisp visible pixels and controlled detailed shading beyond SNES. EXACT grid SIX columns THREE rows, transparent alpha background no shadows no labels no borders. Each row a consistent silly monster: row1 angry green dungeon goblin carrying a wooden spoon, row2 haunted cafeteria pudding cup with little legs and spooky eyes, row3 cowardly animated kitchen dust mop with little eyes and legs. Six frames per row: columns1-4 four coherent walk cycle frames facing down-right, column5 conspicuous attack windup pose (raises weapon or swells), column6 attack pose (swings or spits). Same scale baseline costume per row, evenly spaced equal cells, generous gaps, entirebody contained. Fullbody topdown threequarterview, monsters funny readable at80pixelsheight.
+
+## v0.4 generated production sheets
+
+Sources live in Assets/ArtSources. AtlasCompiler segments alpha silhouettes, aligns frames to shared baselines, and imports rigid Unity sprite rectangles into Resources/Art/Compiled. There are 144 imported sprites, including eight trimmed James portrait views. Actors retain padding around hats and boots.
+
+Generated sheets: Hero (4 directions x 8 poses), JamesAnimated (8 idle/interaction poses), BossGranny, BossLunchLady and BossChef (4 directions x 4 walking poses each), Props (16 chest/door/shrine/stair/obstacle states), Menus (6 stone/parchment/wood panels), Effects (8 projectiles/attack/hazard sprites), and three clear-floor dungeon backgrounds. Enemies uses the existing generated 18-pose sheet.
+
+The built-in image generator produced pixel-like artwork beyond SNES resolution. Prompts specified orthographic top-down actors, consistent scale and silhouettes, transparent evenly separated subjects, no lettering on sprites, no clipped hats or boots, fixed row/column pose order, and clear dungeon floors without baked-in interactive props. James used the supplied photograph for cap, beard, navy shirt and denim overalls. Menu art specified dark stone skull/rivet panels, parchment dialogue and oak/copper buttons without baked-in text. Runtime labels and interactions are Unity UI.

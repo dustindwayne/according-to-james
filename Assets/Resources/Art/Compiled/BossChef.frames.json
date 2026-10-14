@@ -1,0 +1,121 @@
+{
+    "source": "Assets/ArtSources/BossChef.png",
+    "rows": 4,
+    "columns": 4,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "BossChef_0_0",
+            "sourceX": 70,
+            "sourceY": 935,
+            "sourceWidth": 201,
+            "sourceHeight": 273
+        },
+        {
+            "name": "BossChef_0_1",
+            "sourceX": 383,
+            "sourceY": 937,
+            "sourceWidth": 197,
+            "sourceHeight": 269
+        },
+        {
+            "name": "BossChef_0_2",
+            "sourceX": 700,
+            "sourceY": 936,
+            "sourceWidth": 205,
+            "sourceHeight": 272
+        },
+        {
+            "name": "BossChef_0_3",
+            "sourceX": 1018,
+            "sourceY": 935,
+            "sourceWidth": 190,
+            "sourceHeight": 269
+        },
+        {
+            "name": "BossChef_1_0",
+            "sourceX": 60,
+            "sourceY": 633,
+            "sourceWidth": 202,
+            "sourceHeight": 275
+        },
+        {
+            "name": "BossChef_1_1",
+            "sourceX": 384,
+            "sourceY": 631,
+            "sourceWidth": 191,
+            "sourceHeight": 280
+        },
+        {
+            "name": "BossChef_1_2",
+            "sourceX": 680,
+            "sourceY": 631,
+            "sourceWidth": 224,
+            "sourceHeight": 277
+        },
+        {
+            "name": "BossChef_1_3",
+            "sourceX": 1021,
+            "sourceY": 631,
+            "sourceWidth": 199,
+            "sourceHeight": 277
+        },
+        {
+            "name": "BossChef_2_0",
+            "sourceX": 58,
+            "sourceY": 323,
+            "sourceWidth": 207,
+            "sourceHeight": 281
+        },
+        {
+            "name": "BossChef_2_1",
+            "sourceX": 382,
+            "sourceY": 322,
+            "sourceWidth": 206,
+            "sourceHeight": 282
+        },
+        {
+            "name": "BossChef_2_2",
+            "sourceX": 681,
+            "sourceY": 323,
+            "sourceWidth": 236,
+            "sourceHeight": 283
+        },
+        {
+            "name": "BossChef_2_3",
+            "sourceX": 1007,
+            "sourceY": 322,
+            "sourceWidth": 220,
+            "sourceHeight": 284
+        },
+        {
+            "name": "BossChef_3_0",
+            "sourceX": 52,
+            "sourceY": 24,
+            "sourceWidth": 228,
+            "sourceHeight": 280
+        },
+        {
+            "name": "BossChef_3_1",
+            "sourceX": 382,
+            "sourceY": 25,
+            "sourceWidth": 219,
+            "sourceHeight": 280
+        },
+        {
+            "name": "BossChef_3_2",
+            "sourceX": 692,
+            "sourceY": 24,
+            "sourceWidth": 226,
+            "sourceHeight": 282
+        },
+        {
+            "name": "BossChef_3_3",
+            "sourceX": 1021,
+            "sourceY": 25,
+            "sourceWidth": 217,
+            "sourceHeight": 280
+        }
+    ]
+}

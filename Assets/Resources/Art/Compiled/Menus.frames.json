@@ -1,0 +1,51 @@
+{
+    "source": "Assets/ArtSources/Menus.png",
+    "rows": 3,
+    "columns": 2,
+    "cellWidth": 640,
+    "cellHeight": 512,
+    "frames": [
+        {
+            "name": "Menus_0_0",
+            "sourceX": 44,
+            "sourceY": 628,
+            "sourceWidth": 594,
+            "sourceHeight": 491
+        },
+        {
+            "name": "Menus_0_1",
+            "sourceX": 676,
+            "sourceY": 627,
+            "sourceWidth": 591,
+            "sourceHeight": 469
+        },
+        {
+            "name": "Menus_1_0",
+            "sourceX": 40,
+            "sourceY": 358,
+            "sourceWidth": 600,
+            "sourceHeight": 193
+        },
+        {
+            "name": "Menus_1_1",
+            "sourceX": 672,
+            "sourceY": 357,
+            "sourceWidth": 600,
+            "sourceHeight": 192
+        },
+        {
+            "name": "Menus_2_0",
+            "sourceX": 41,
+            "sourceY": 109,
+            "sourceWidth": 598,
+            "sourceHeight": 192
+        },
+        {
+            "name": "Menus_2_1",
+            "sourceX": 672,
+            "sourceY": 109,
+            "sourceWidth": 600,
+            "sourceHeight": 191
+        }
+    ]
+}

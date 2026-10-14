@@ -1,0 +1,233 @@
+{
+    "source": "Assets/ArtSources/Hero.png",
+    "rows": 4,
+    "columns": 8,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "Hero_0_0",
+            "sourceX": 66,
+            "sourceY": 673,
+            "sourceWidth": 122,
+            "sourceHeight": 199
+        },
+        {
+            "name": "Hero_0_1",
+            "sourceX": 269,
+            "sourceY": 668,
+            "sourceWidth": 135,
+            "sourceHeight": 203
+        },
+        {
+            "name": "Hero_0_2",
+            "sourceX": 480,
+            "sourceY": 668,
+            "sourceWidth": 137,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_0_3",
+            "sourceX": 695,
+            "sourceY": 668,
+            "sourceWidth": 132,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_0_4",
+            "sourceX": 926,
+            "sourceY": 668,
+            "sourceWidth": 141,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_0_5",
+            "sourceX": 1129,
+            "sourceY": 669,
+            "sourceWidth": 134,
+            "sourceHeight": 209
+        },
+        {
+            "name": "Hero_0_6",
+            "sourceX": 1333,
+            "sourceY": 673,
+            "sourceWidth": 216,
+            "sourceHeight": 197
+        },
+        {
+            "name": "Hero_0_7",
+            "sourceX": 1585,
+            "sourceY": 673,
+            "sourceWidth": 147,
+            "sourceHeight": 191
+        },
+        {
+            "name": "Hero_1_0",
+            "sourceX": 64,
+            "sourceY": 452,
+            "sourceWidth": 148,
+            "sourceHeight": 198
+        },
+        {
+            "name": "Hero_1_1",
+            "sourceX": 274,
+            "sourceY": 455,
+            "sourceWidth": 136,
+            "sourceHeight": 197
+        },
+        {
+            "name": "Hero_1_2",
+            "sourceX": 490,
+            "sourceY": 454,
+            "sourceWidth": 140,
+            "sourceHeight": 196
+        },
+        {
+            "name": "Hero_1_3",
+            "sourceX": 709,
+            "sourceY": 454,
+            "sourceWidth": 143,
+            "sourceHeight": 196
+        },
+        {
+            "name": "Hero_1_4",
+            "sourceX": 921,
+            "sourceY": 454,
+            "sourceWidth": 139,
+            "sourceHeight": 196
+        },
+        {
+            "name": "Hero_1_5",
+            "sourceX": 1127,
+            "sourceY": 452,
+            "sourceWidth": 154,
+            "sourceHeight": 204
+        },
+        {
+            "name": "Hero_1_6",
+            "sourceX": 1316,
+            "sourceY": 456,
+            "sourceWidth": 225,
+            "sourceHeight": 195
+        },
+        {
+            "name": "Hero_1_7",
+            "sourceX": 1578,
+            "sourceY": 454,
+            "sourceWidth": 154,
+            "sourceHeight": 195
+        },
+        {
+            "name": "Hero_2_0",
+            "sourceX": 38,
+            "sourceY": 232,
+            "sourceWidth": 146,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_2_1",
+            "sourceX": 256,
+            "sourceY": 235,
+            "sourceWidth": 147,
+            "sourceHeight": 203
+        },
+        {
+            "name": "Hero_2_2",
+            "sourceX": 479,
+            "sourceY": 235,
+            "sourceWidth": 144,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_2_3",
+            "sourceX": 698,
+            "sourceY": 235,
+            "sourceWidth": 144,
+            "sourceHeight": 203
+        },
+        {
+            "name": "Hero_2_4",
+            "sourceX": 929,
+            "sourceY": 232,
+            "sourceWidth": 128,
+            "sourceHeight": 205
+        },
+        {
+            "name": "Hero_2_5",
+            "sourceX": 1119,
+            "sourceY": 232,
+            "sourceWidth": 163,
+            "sourceHeight": 209
+        },
+        {
+            "name": "Hero_2_6",
+            "sourceX": 1332,
+            "sourceY": 232,
+            "sourceWidth": 231,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_2_7",
+            "sourceX": 1589,
+            "sourceY": 237,
+            "sourceWidth": 170,
+            "sourceHeight": 196
+        },
+        {
+            "name": "Hero_3_0",
+            "sourceX": 81,
+            "sourceY": 12,
+            "sourceWidth": 121,
+            "sourceHeight": 202
+        },
+        {
+            "name": "Hero_3_1",
+            "sourceX": 295,
+            "sourceY": 12,
+            "sourceWidth": 129,
+            "sourceHeight": 203
+        },
+        {
+            "name": "Hero_3_2",
+            "sourceX": 503,
+            "sourceY": 12,
+            "sourceWidth": 137,
+            "sourceHeight": 203
+        },
+        {
+            "name": "Hero_3_3",
+            "sourceX": 724,
+            "sourceY": 12,
+            "sourceWidth": 130,
+            "sourceHeight": 204
+        },
+        {
+            "name": "Hero_3_4",
+            "sourceX": 940,
+            "sourceY": 12,
+            "sourceWidth": 125,
+            "sourceHeight": 201
+        },
+        {
+            "name": "Hero_3_5",
+            "sourceX": 1144,
+            "sourceY": 12,
+            "sourceWidth": 145,
+            "sourceHeight": 215
+        },
+        {
+            "name": "Hero_3_6",
+            "sourceX": 1318,
+            "sourceY": 12,
+            "sourceWidth": 188,
+            "sourceHeight": 203
+        },
+        {
+            "name": "Hero_3_7",
+            "sourceX": 1607,
+            "sourceY": 12,
+            "sourceWidth": 124,
+            "sourceHeight": 202
+        }
+    ]
+}

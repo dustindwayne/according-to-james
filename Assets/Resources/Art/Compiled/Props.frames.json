@@ -1,0 +1,121 @@
+{
+    "source": "Assets/ArtSources/Props.png",
+    "rows": 4,
+    "columns": 4,
+    "cellWidth": 320,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "Props_0_0",
+            "sourceX": 71,
+            "sourceY": 844,
+            "sourceWidth": 243,
+            "sourceHeight": 208
+        },
+        {
+            "name": "Props_0_1",
+            "sourceX": 437,
+            "sourceY": 842,
+            "sourceWidth": 224,
+            "sourceHeight": 207
+        },
+        {
+            "name": "Props_0_2",
+            "sourceX": 792,
+            "sourceY": 838,
+            "sourceWidth": 224,
+            "sourceHeight": 239
+        },
+        {
+            "name": "Props_0_3",
+            "sourceX": 1153,
+            "sourceY": 837,
+            "sourceWidth": 284,
+            "sourceHeight": 234
+        },
+        {
+            "name": "Props_1_0",
+            "sourceX": 53,
+            "sourceY": 561,
+            "sourceWidth": 281,
+            "sourceHeight": 263
+        },
+        {
+            "name": "Props_1_1",
+            "sourceX": 408,
+            "sourceY": 561,
+            "sourceWidth": 282,
+            "sourceHeight": 263
+        },
+        {
+            "name": "Props_1_2",
+            "sourceX": 762,
+            "sourceY": 562,
+            "sourceWidth": 285,
+            "sourceHeight": 261
+        },
+        {
+            "name": "Props_1_3",
+            "sourceX": 1122,
+            "sourceY": 561,
+            "sourceWidth": 284,
+            "sourceHeight": 262
+        },
+        {
+            "name": "Props_2_0",
+            "sourceX": 73,
+            "sourceY": 286,
+            "sourceWidth": 236,
+            "sourceHeight": 265
+        },
+        {
+            "name": "Props_2_1",
+            "sourceX": 428,
+            "sourceY": 284,
+            "sourceWidth": 237,
+            "sourceHeight": 266
+        },
+        {
+            "name": "Props_2_2",
+            "sourceX": 750,
+            "sourceY": 290,
+            "sourceWidth": 313,
+            "sourceHeight": 247
+        },
+        {
+            "name": "Props_2_3",
+            "sourceX": 1112,
+            "sourceY": 291,
+            "sourceWidth": 306,
+            "sourceHeight": 244
+        },
+        {
+            "name": "Props_3_0",
+            "sourceX": 72,
+            "sourceY": 28,
+            "sourceWidth": 237,
+            "sourceHeight": 236
+        },
+        {
+            "name": "Props_3_1",
+            "sourceX": 414,
+            "sourceY": 36,
+            "sourceWidth": 292,
+            "sourceHeight": 208
+        },
+        {
+            "name": "Props_3_2",
+            "sourceX": 756,
+            "sourceY": 28,
+            "sourceWidth": 297,
+            "sourceHeight": 241
+        },
+        {
+            "name": "Props_3_3",
+            "sourceX": 1120,
+            "sourceY": 27,
+            "sourceWidth": 284,
+            "sourceHeight": 235
+        }
+    ]
+}

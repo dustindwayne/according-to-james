@@ -1,0 +1,65 @@
+{
+    "source": "Assets/ArtSources/JamesAnimated.png",
+    "rows": 2,
+    "columns": 4,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "JamesAnimated_0_0",
+            "sourceX": 75,
+            "sourceY": 539,
+            "sourceWidth": 291,
+            "sourceHeight": 451
+        },
+        {
+            "name": "JamesAnimated_0_1",
+            "sourceX": 446,
+            "sourceY": 539,
+            "sourceWidth": 316,
+            "sourceHeight": 445
+        },
+        {
+            "name": "JamesAnimated_0_2",
+            "sourceX": 820,
+            "sourceY": 539,
+            "sourceWidth": 275,
+            "sourceHeight": 447
+        },
+        {
+            "name": "JamesAnimated_0_3",
+            "sourceX": 1169,
+            "sourceY": 539,
+            "sourceWidth": 326,
+            "sourceHeight": 446
+        },
+        {
+            "name": "JamesAnimated_1_0",
+            "sourceX": 58,
+            "sourceY": 49,
+            "sourceWidth": 310,
+            "sourceHeight": 443
+        },
+        {
+            "name": "JamesAnimated_1_1",
+            "sourceX": 463,
+            "sourceY": 49,
+            "sourceWidth": 276,
+            "sourceHeight": 440
+        },
+        {
+            "name": "JamesAnimated_1_2",
+            "sourceX": 800,
+            "sourceY": 49,
+            "sourceWidth": 317,
+            "sourceHeight": 441
+        },
+        {
+            "name": "JamesAnimated_1_3",
+            "sourceX": 1142,
+            "sourceY": 49,
+            "sourceWidth": 389,
+            "sourceHeight": 432
+        }
+    ]
+}

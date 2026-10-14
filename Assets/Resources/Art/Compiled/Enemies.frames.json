@@ -1,0 +1,135 @@
+{
+    "source": "Assets/ArtSources/Enemies.png",
+    "rows": 3,
+    "columns": 6,
+    "cellWidth": 384,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "Enemies_0_0",
+            "sourceX": 60,
+            "sourceY": 600,
+            "sourceWidth": 220,
+            "sourceHeight": 222
+        },
+        {
+            "name": "Enemies_0_1",
+            "sourceX": 349,
+            "sourceY": 594,
+            "sourceWidth": 219,
+            "sourceHeight": 221
+        },
+        {
+            "name": "Enemies_0_2",
+            "sourceX": 623,
+            "sourceY": 598,
+            "sourceWidth": 233,
+            "sourceHeight": 214
+        },
+        {
+            "name": "Enemies_0_3",
+            "sourceX": 898,
+            "sourceY": 589,
+            "sourceWidth": 220,
+            "sourceHeight": 223
+        },
+        {
+            "name": "Enemies_0_4",
+            "sourceX": 1177,
+            "sourceY": 576,
+            "sourceWidth": 210,
+            "sourceHeight": 302
+        },
+        {
+            "name": "Enemies_0_5",
+            "sourceX": 1453,
+            "sourceY": 586,
+            "sourceWidth": 308,
+            "sourceHeight": 218
+        },
+        {
+            "name": "Enemies_1_0",
+            "sourceX": 59,
+            "sourceY": 327,
+            "sourceWidth": 185,
+            "sourceHeight": 217
+        },
+        {
+            "name": "Enemies_1_1",
+            "sourceX": 349,
+            "sourceY": 325,
+            "sourceWidth": 186,
+            "sourceHeight": 219
+        },
+        {
+            "name": "Enemies_1_2",
+            "sourceX": 630,
+            "sourceY": 327,
+            "sourceWidth": 189,
+            "sourceHeight": 219
+        },
+        {
+            "name": "Enemies_1_3",
+            "sourceX": 907,
+            "sourceY": 334,
+            "sourceWidth": 188,
+            "sourceHeight": 208
+        },
+        {
+            "name": "Enemies_1_4",
+            "sourceX": 1161,
+            "sourceY": 314,
+            "sourceWidth": 229,
+            "sourceHeight": 261
+        },
+        {
+            "name": "Enemies_1_5",
+            "sourceX": 1453,
+            "sourceY": 325,
+            "sourceWidth": 312,
+            "sourceHeight": 237
+        },
+        {
+            "name": "Enemies_2_0",
+            "sourceX": 45,
+            "sourceY": 35,
+            "sourceWidth": 211,
+            "sourceHeight": 274
+        },
+        {
+            "name": "Enemies_2_1",
+            "sourceX": 329,
+            "sourceY": 27,
+            "sourceWidth": 204,
+            "sourceHeight": 276
+        },
+        {
+            "name": "Enemies_2_2",
+            "sourceX": 603,
+            "sourceY": 31,
+            "sourceWidth": 206,
+            "sourceHeight": 273
+        },
+        {
+            "name": "Enemies_2_3",
+            "sourceX": 879,
+            "sourceY": 31,
+            "sourceWidth": 219,
+            "sourceHeight": 273
+        },
+        {
+            "name": "Enemies_2_4",
+            "sourceX": 1153,
+            "sourceY": 22,
+            "sourceWidth": 237,
+            "sourceHeight": 288
+        },
+        {
+            "name": "Enemies_2_5",
+            "sourceX": 1442,
+            "sourceY": 31,
+            "sourceWidth": 316,
+            "sourceHeight": 243
+        }
+    ]
+}

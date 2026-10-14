@@ -1,0 +1,65 @@
+{
+    "source": "Assets/ArtSources/Effects.png",
+    "rows": 2,
+    "columns": 4,
+    "cellWidth": 320,
+    "cellHeight": 320,
+    "frames": [
+        {
+            "name": "Effects_0_0",
+            "sourceX": 40,
+            "sourceY": 500,
+            "sourceWidth": 371,
+            "sourceHeight": 317
+        },
+        {
+            "name": "Effects_0_1",
+            "sourceX": 466,
+            "sourceY": 496,
+            "sourceWidth": 416,
+            "sourceHeight": 291
+        },
+        {
+            "name": "Effects_0_2",
+            "sourceX": 914,
+            "sourceY": 504,
+            "sourceWidth": 381,
+            "sourceHeight": 297
+        },
+        {
+            "name": "Effects_0_3",
+            "sourceX": 1335,
+            "sourceY": 487,
+            "sourceWidth": 408,
+            "sourceHeight": 327
+        },
+        {
+            "name": "Effects_1_0",
+            "sourceX": 38,
+            "sourceY": 79,
+            "sourceWidth": 394,
+            "sourceHeight": 315
+        },
+        {
+            "name": "Effects_1_1",
+            "sourceX": 467,
+            "sourceY": 71,
+            "sourceWidth": 402,
+            "sourceHeight": 302
+        },
+        {
+            "name": "Effects_1_2",
+            "sourceX": 905,
+            "sourceY": 59,
+            "sourceWidth": 417,
+            "sourceHeight": 340
+        },
+        {
+            "name": "Effects_1_3",
+            "sourceX": 1335,
+            "sourceY": 18,
+            "sourceWidth": 425,
+            "sourceHeight": 415
+        }
+    ]
+}

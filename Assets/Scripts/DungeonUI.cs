@@ -11,7 +11,7 @@ namespace AccordingToJames
     {
         GameController owner;Canvas canvas;Camera uiCamera;RectTransform root;
         Font font;string screenKey="";readonly Dictionary<string,Text> labels=new Dictionary<string,Text>();
-        Image healthFill,dodgeFill,bossFill;RectTransform toastBox,contextBox;Text notice,context;
+        Image healthFill,dodgeFill,bossFill,portrait;RectTransform toastBox,contextBox;Text notice,context;
         static readonly Color Ink=new Color(.035f,.045f,.06f),Panel=new Color(.065f,.08f,.10f),Gold=new Color(.87f,.66f,.32f),Cream=new Color(.95f,.9f,.77f),Muted=new Color(.61f,.64f,.65f),Edge=new Color(.35f,.29f,.2f),Red=new Color(.79f,.32f,.27f),Green=new Color(.34f,.67f,.55f);
         public void Initialize(GameController controller)
         {
@@ -35,9 +35,10 @@ namespace AccordingToJames
             if(g!=null&&!owner.TitleScreen){Set("dungeon",GameModel.DungeonNames[g.Dungeon]);Set("floor",g.floor.ToString("00")+" / 30");Set("room",(g.room+1).ToString("00")+" / "+g.rooms.Count.ToString("00"));Set("health",Mathf.CeilToInt(g.player.hp)+" / "+Mathf.CeilToInt(g.player.maxHp));Set("sword",g.Sword.ToString("00"));
                 Fill(healthFill,g.player.hp/g.player.maxHp,218);Fill(dodgeFill,1-g.player.dodgeCooldown/1.25f,96);Set("dodge",g.player.dodgeCooldown>0?"RECHARGING":"DODGE READY");
                 Set("checkpoint",g.checkpointFloor>0?"LAST REST SHRINE · FLOOR "+g.checkpointFloor.ToString("00"):"NO SHRINE SAVE YET · REST ON FLOORS 1, 5, 9 OF EACH DUNGEON");
-                Set("objective",g.AllCleared?"STAIRS OPEN · FINAL ROOM":g.rooms.FindAll(r=>r.cleared).Count+" / "+g.rooms.Count+" ROOMS CLEARED");Set("effect",g.boost>0?"SWORD BOOST · "+Mathf.CeilToInt(g.boost)+"s":g.dizzy>0?"A LITTLE WOBBLY · "+Mathf.CeilToInt(g.dizzy)+"s":"");Set("james-result",g.message.Length>0?g.message:GameModel.Followup[g.Current.advice]);
+                Set("objective",g.AllCleared?"STAIRS OPEN · FINAL ROOM":g.rooms.FindAll(r=>r.cleared&&r.visited).Count+" / "+g.rooms.Count+" ROOMS CLEARED");Set("effect",g.boost>0?"SWORD BOOST · "+Mathf.CeilToInt(g.boost)+"s":g.dizzy>0?"A LITTLE WOBBLY · "+Mathf.CeilToInt(g.dizzy)+"s":"");Set("james-result",g.message.Length>0?g.message:GameModel.Followup[g.Current.advice]);
                 if(toastBox){toastBox.gameObject.SetActive(owner.ToastVisible&&g.status=="playing"&&!owner.IsPaused&&!owner.SettingsOpen&&!owner.MapOpen);notice.text=owner.ToastMessage;}
-                if(contextBox){string c=g.Context();contextBox.gameObject.SetActive(c.Length>0&&g.status=="playing"&&!owner.IsPaused&&!owner.SettingsOpen&&!owner.MapOpen);context.text=c=="james"?"Talk to James":c=="checkpoint"?"Rest & save at shrine":c=="chest"?"Open chest · trust optional":c=="secret"?"Try James’s secret entrance":c=="stairs"?"Descend to the next floor":"Stairs locked · clear every room";}
+                if(contextBox){string c=g.Context();contextBox.gameObject.SetActive(c.Length>0&&g.status=="playing"&&!owner.IsPaused&&!owner.SettingsOpen&&!owner.MapOpen);context.text=c=="james"?"Talk to James":c=="checkpoint"?"Rest & save at shrine":c=="chest"?"Open chest · trust optional":c=="secret"?"Try James’s secret entrance":c=="stairs"?"Descend to the next floor":c=="barred"?"Clear this room to lift the gates":"Stairs locked · clear every room";}
+                if(portrait)portrait.sprite=owner.NpcPortrait;
                 if(bossFill){foreach(var e in g.Current.enemies)if(e.boss&&e.hp>0)Fill(bossFill,e.hp/e.maxHp,400);}
             }
         }
@@ -53,33 +54,32 @@ namespace AccordingToJames
         }
         RectTransform Frame(Transform parent,float x,float y,float w,float h,Color? fill=null)
         {
-            var n=Box(parent,x,y,w,h,fill??Panel).rectTransform;Box(n,0,0,w,2,Edge);Box(n,0,h-2,w,2,Edge);Box(n,0,0,2,h,Edge);Box(n,w-2,0,2,h,Edge);Box(n,12,6,w-24,1,new Color(.6f,.45f,.23f,.4f));
-            foreach(float xx in new[]{7f,w-11})foreach(float yy in new[]{7f,h-11})Box(n,xx,yy,4,4,Gold);return n;
+            var image=Box(parent,x,y,w,h,Color.white);image.sprite=h<115?owner.Art.Menus[2,0]:owner.Art.Menus[0,0];image.type=Image.Type.Sliced;image.pixelsPerUnitMultiplier=h<115?2:1;image.color=new Color(1,1,1,fill.HasValue?fill.Value.a:1);return image.rectTransform;
         }
         Text Text(Transform parent,float x,float y,float w,float h,string value,int size=18,Color? color=null,bool bold=false,TextAnchor align=TextAnchor.UpperLeft,string key=null)
         {
             var n=Node(parent,"Text "+(key??value),x,y,w,h);var text=n.gameObject.AddComponent<Text>();text.font=font;text.fontSize=size;text.fontStyle=bold?FontStyle.Bold:FontStyle.Normal;text.color=color??Cream;text.text=value;text.alignment=align;text.horizontalOverflow=HorizontalWrapMode.Wrap;text.verticalOverflow=VerticalWrapMode.Truncate;text.raycastTarget=false;if(key!=null)labels[key]=text;return text;
         }
-        void Picture(Transform parent,Sprite sprite,float x,float y,float w,float h){var n=Node(parent,"Portrait",x,y,w,h);var image=n.gameObject.AddComponent<Image>();image.sprite=sprite;image.preserveAspect=true;image.raycastTarget=false;}
+        Image Picture(Transform parent,Sprite sprite,float x,float y,float w,float h){var n=Node(parent,"Portrait",x,y,w,h);var image=n.gameObject.AddComponent<Image>();image.sprite=sprite;image.preserveAspect=true;image.raycastTarget=false;return image;}
         void Button(Transform parent,float x,float y,float w,string title,Action action,bool primary=false,bool enabled=true,float height=54)
         {
-            var image=Box(parent,x,y,w,height,primary?Gold:new Color(.11f,.13f,.15f),true);var n=image.rectTransform;Box(n,0,0,w,1,primary?Cream:Edge);Box(n,0,height-1,w,1,Edge);Box(n,0,0,1,height,Edge);Box(n,w-1,0,1,height,Edge);
+            var image=Box(parent,x,y,w,height,Color.white,true);var n=image.rectTransform;image.sprite=owner.Art.Menus[1,primary?1:0];image.type=Image.Type.Sliced;image.pixelsPerUnitMultiplier=2;
             var button=n.gameObject.AddComponent<Button>();button.targetGraphic=image;var colors=button.colors;colors.normalColor=Color.white;colors.highlightedColor=new Color(1.2f,1.15f,1.05f);colors.pressedColor=new Color(.7f,.7f,.7f);colors.disabledColor=new Color(.5f,.5f,.5f,.7f);button.colors=colors;button.interactable=enabled;button.onClick.AddListener(()=>{action();Invalidate();});
-            Text(n,16,0,w-32,height,title,18,primary?Ink:Cream,true,TextAnchor.MiddleCenter);
+            button.transition=Selectable.Transition.SpriteSwap;button.spriteState=new SpriteState{highlightedSprite=primary?owner.Art.Menus[1,1]:owner.Art.Menus[2,1],pressedSprite=owner.Art.Menus[1,1],selectedSprite=primary?owner.Art.Menus[1,1]:owner.Art.Menus[2,1],disabledSprite=owner.Art.Menus[2,0]};Text(n,16,0,w-32,height,title,18,primary&&enabled?Ink:Cream,true,TextAnchor.MiddleCenter);
         }
         void Rebuild()
         {
-            if(EventSystem.current)EventSystem.current.SetSelectedGameObject(null);for(int i=root.childCount-1;i>=0;i--){var child=root.GetChild(i).gameObject;child.SetActive(false);Destroy(child);}labels.Clear();healthFill=dodgeFill=bossFill=null;toastBox=contextBox=null;
+            if(EventSystem.current)EventSystem.current.SetSelectedGameObject(null);for(int i=root.childCount-1;i>=0;i--){var child=root.GetChild(i).gameObject;child.SetActive(false);Destroy(child);}labels.Clear();healthFill=dodgeFill=bossFill=portrait=null;toastBox=contextBox=null;
             if(owner.TitleScreen)Title();else if(owner.Game!=null)HUD();
             if(owner.SettingsOpen)Settings();else if(owner.MapOpen)Map();else if(owner.IsPaused)Pause();else if(owner.Game!=null&&!owner.TitleScreen){if(owner.Game.status=="talking")James();else if(owner.Game.status=="dead"||owner.Game.status=="won")Ending();}
         }
         void Title()
         {
             Box(root,0,0,1280,800,Ink);var tex=Resources.Load<Texture2D>("Art/TitleScreen");if(tex){var image=Node(root,"Generated title artwork",0,0,1280,800).gameObject.AddComponent<RawImage>();image.texture=tex;image.raycastTarget=false;}
-            var p=Frame(root,800,116,398,578,new Color(.025f,.04f,.055f,.94f));Text(p,32,34,334,22,"TRUST HIM AT YOUR OWN RISK",13,Gold,true);Text(p,32,78,334,90,"BAD IDEAS.\nGREAT COMPANY.",34,Cream,true);
-            Text(p,32,190,334,62,"A regular dude. The wrong world.\nOne spectacularly unreliable guide.",18,Muted);Text(p,32,273,334,20,"3 DUNGEONS   /   30 FLOORS",13,Gold,true);
-            Button(p,32,318,334,"Enter the dungeon",()=>owner.NewRun(),true);Button(p,32,386,334,owner.HasCheckpoint?"Continue from rest shrine":"No rest shrine saved",()=>owner.ContinueRun(),false,owner.HasCheckpoint);Button(p,32,454,334,"Settings",()=>owner.OpenSettings());
-            Frame(root,818,708,362,50,new Color(.02f,.035f,.05f,.88f));Text(root,830,713,338,40,"Save at rest shrines.\nTake James’s advice at your own risk.",13,Muted,false,TextAnchor.MiddleCenter);Box(root,28,744,560,36,new Color(.02f,.035f,.05f,.88f));Text(root,44,754,532,24,"WASD MOVE    SPACE SWING    SHIFT DODGE    E INTERACT",12,Cream,true);
+            var p=Frame(root,806,176,390,448);Text(p,34,103,322,24,"3 DUNGEONS · 30 FLOORS",15,Cream,true,TextAnchor.MiddleCenter);
+            Button(p,34,152,322,"Start Game",()=>owner.NewRun(),true,true,60);Button(p,34,229,322,"Continue",()=>owner.ContinueRun(),false,owner.HasCheckpoint,60);Button(p,34,306,322,"Settings",()=>owner.OpenSettings(),false,true,60);
+            Text(p,34,387,322,26,owner.HasCheckpoint?"Continue from your last rest shrine.":"No saved adventure yet.",13,Cream,false,TextAnchor.MiddleCenter);
+            Frame(root,28,744,560,36,new Color(1,1,1,.95f));Text(root,44,754,532,24,"WASD MOVE    SPACE SWING    SHIFT DODGE    E INTERACT",12,Cream,true);
         }
         void HUD()
         {
@@ -97,12 +97,12 @@ namespace AccordingToJames
         }
         RectTransform Modal(string eyebrow,string title,float width,float height)
         {
-            Box(root,0,0,1280,800,new Color(.015f,.02f,.03f,.82f),true);var p=Frame(root,(1280-width)/2,(800-height)/2,width,height);Text(p,36,28,width-72,20,eyebrow,12,Gold,true);Text(p,36,67,width-72,56,title,32,Cream,true);Box(p,36,132,width-72,1,Edge);return p;
+            Box(root,0,0,1280,800,new Color(.015f,.02f,.03f,.82f),true);var p=Frame(root,(1280-width)/2,(800-height-56)/2,width,height+56);Text(p,36,70,width-72,20,eyebrow,12,Gold,true);Text(p,36,110,width-72,56,title,32,Cream,true);Box(p,36,170,width-72,1,Edge);return Node(p,"Menu content",0,38,width,height);
         }
         void James()
         {
-            var g=owner.Game;var p=Modal("ACCORDING TO JAMES…","Advice of questionable quality.",860,548);Picture(p,owner.Art.James,38,155,120,188);
-            Text(p,190,160,628,77,"“"+GameModel.Advice[g.Current.advice]+"”",25,Cream,true);Text(p,190,247,628,80,"",17,Muted,key:"james-result");
+            var g=owner.Game;var p=Modal("ACCORDING TO JAMES…","Advice of questionable quality.",860,548);portrait=Picture(p,owner.NpcPortrait,38,155,120,188);
+            var paper=Box(p,178,150,646,102,Color.white);paper.sprite=owner.Art.Menus[0,1];paper.type=Image.Type.Sliced;Text(p,214,181,574,36,"“"+GameModel.Advice[g.Current.advice]+"”",22,new Color(.2f,.12f,.07f),true);Text(p,190,269,628,66,"",17,Muted,key:"james-result");
             Button(p,36,354,384,g.Current.giftTaken?"Gift already accepted":"Accept mystery gift",()=>owner.TalkChoice("gift"),true,!g.Current.giftTaken);Button(p,440,354,384,g.Current.fingerPulled?"Finger already pulled":"Pull his finger",()=>owner.TalkChoice("finger"),false,!g.Current.fingerPulled);
             Button(p,36,422,384,"Ask about a secret",()=>owner.TalkChoice("secret"),false,g.Current.secret);Button(p,440,422,384,"Thanks, James. I guess.",()=>owner.TalkChoice("leave"));Text(p,36,502,788,22,"No item names. No guarantees. Usually only a little regret.",12,Muted,false,TextAnchor.MiddleCenter);
         }
@@ -122,7 +122,7 @@ namespace AccordingToJames
         {
             var g=owner.Game;var p=Modal("YOUR BAD IDEA, MAPPED","Floor "+g.floor.ToString("00")+" · Room map",700,560);Text(p,36,147,628,25,"Clear every room to open the stairs.",16,Muted);
             for(int i=0;i<g.rooms.Count;i++){float x=75+i%2*310,y=196+i/2*88;foreach(var neighbor in g.Neighbors(i))if(neighbor.Value>i){if(neighbor.Key=="right")Box(p,x+240,y+33,70,2,Edge);if(neighbor.Key=="down")Box(p,x+119,y+68,2,20,Edge);}}
-            for(int i=0;i<g.rooms.Count;i++){var room=g.rooms[i];float x=75+i%2*310,y=196+i/2*88;var node=Frame(p,x,y,240,68,i==g.room?new Color(.23f,.18f,.10f):Panel);Text(node,15,10,210,22,"ROOM "+(i+1).ToString("00")+(i==g.room?" · YOU":""),15,i==g.room?Gold:Cream,true);Text(node,15,36,210,21,!room.visited?"Unexplored":room.cleared?"Cleared":"Enemies remain",12,room.cleared?Green:Muted);}
+            for(int i=0;i<g.rooms.Count;i++){var room=g.rooms[i];float x=75+i%2*310,y=196+i/2*88;var node=Frame(p,x,y,240,68,i==g.room?new Color(.23f,.18f,.10f):Panel);Text(node,15,10,210,22,"ROOM "+(i+1).ToString("00")+(i==g.room?" · YOU":""),15,i==g.room?Gold:Cream,true);Text(node,15,36,210,21,!room.visited?"Unexplored":room.cleared?"Cleared":"Enemies remain",12,room.visited&&room.cleared?Green:Muted);}
             Button(p,36,475,628,"Back to the dungeon",()=>owner.CloseMap(),true);
         }
         void Ending()

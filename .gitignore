@@ -11,3 +11,4 @@
 *.log
 update_ui.py
 upgrade_presentation.py
+art_renderer.py
